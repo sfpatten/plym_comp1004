@@ -1,3 +1,13 @@
+
+/* Basic font settings */
 p, h1, li, td {
     font-family: monospace;
+}
+
+h1 {
+    font-size: 200%;
+}
+
+p, td, li {
+    font-size: 120%;
 }
