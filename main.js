@@ -93,8 +93,31 @@ function render() {
     game.overworld.renderOntoOverworldTable(); // this will change based on where we are when there are multiple Level classes to traverse in future, but for now, one is enough.
 
     // now the player
+        // note - it assumes the player is within bounds of the map, if it is not, it will come up with an exception
     document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].innerHTML = "@";
 
+}
+
+function movePlayerTemp(dir) { // a temporary function
+    // TODO: implement a switch case
+    if (dir == 'U') {
+        if (game.player.ypos > 0) {
+            game.player.ypos -= 1;
+        }
+    } else if (dir == 'D') {
+        if (game.player.ypos < game.overworld.size - 1) {
+            game.player.ypos += 1;
+        }
+    } else if (dir == 'L') {
+        if (game.player.xpos > 0) {
+            game.player.xpos -= 1;
+        }
+    } else if (dir == 'R') {
+        if (game.player.xpos < game.overworld.size - 1) {
+            game.player.xpos += 1;
+        }
+    }
+    render();
 }
 
 let game = new Game();
