@@ -117,6 +117,13 @@ class Battle {
     }
 
     playerTurnStart() {
+        // clear bullets
+        // remove each div
+        for (let bulletNumber = 0; bulletNumber < game.battle.bullets.length; bulletNumber++) {
+                game.battle.bullets[bulletNumber].deleteRender();
+            }
+        this.bullets = []; // clear array
+
         // hide monster attack stuff
         document.getElementById("battle-board").style.display="none";
         document.getElementById("battle-soul").style.display="none";
@@ -135,7 +142,7 @@ class Battle {
         this.playerPosX = 45;
         this.playerPosY = 45;
         this.playerVelX = 0;
-        this.palyerVelY = 0;
+        this.playerVelY = 0;
 
         this.battleFrames = 360;
 
@@ -148,6 +155,8 @@ class Battle {
         document.getElementById("battle-actions").style.display="none";
         this.timeout = setTimeout(this.runDefendFrame, 50);
 
+
+        // TEMP: bullet pattern
         for (let x = 0; x < 8; x++) {
             this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 80, 0, 2, "standard", "?"));
         }
@@ -263,6 +272,7 @@ class Bullet {
         this.bulletDiv.innerHTML = sym;
         this.bulletDiv.className = "battle-bullet";
         document.getElementById("battle-box").appendChild(this.bulletDiv);
+        this.render();
 
 
     }
@@ -278,6 +288,10 @@ class Bullet {
 
         this.bulletDiv.style.left = vwx.toString() + "vw";
         this.bulletDiv.style.top = vwy.toString() + "vw";
+    }
+
+    deleteRender() {
+        this.bulletDiv.remove();
     }
 }
 
