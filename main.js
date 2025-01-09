@@ -1,1 +1,1 @@
-document.getElementById("temp").innerHTML = "JS is working.";
+// document.getElementById("temp").innerHTML = "JS is working.";

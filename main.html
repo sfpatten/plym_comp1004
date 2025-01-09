@@ -8,27 +8,42 @@
 
   </head>
   <body>
-    <h1>CSS test</h1>
-    <p>A fun paragraph of joy and wonder</p>
-    <table>
-      <tr><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-      <tr><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-      <tr><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-      <tr><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-      <tr><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-      <tr><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-      <tr><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-      <tr><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-      <tr><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td></tr>
-    </table>
+    <!-- Overworld screen -->
+    <div class="overworld-grid">
+      <!-- Log and goal  -->
+      <div class="overworld-grid-box" id="logGoal">
+        <h1>LOG</h1>
+        <ul>
+          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+          <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+          <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</li>
+          <li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
+          <li>Log item 5</li>
+        </ul>
 
-    <h1>Inventory</h1>
-    <ul>
-      <li>Hopes x12</li>
-      <li>Dreams x2000</li>
-      <li>Money x1</li>
-      <li>Mysterious artifact x2</li>
-    </ul>
+        <h1>GOAL</h1>
+        <ul>
+          <li>Log item 1</li>
+          <li><b>Log item 2</b></li>
+          <li>Log item 3</li>
+          <li>Log item 4</li>
+          <li>Log item 5</li>
+        </ul>
+      </div>
+
+      <!-- Map -->
+      <div class="overworld-grid-box" id="map">
+        <h1>MAP</h1>
+
+      </div>
+
+      <!-- Stats and inventory -->
+      <div class="overworld-grid-box" id="statsInventory">
+        <h1>INVENTORY</h1>
+      </div>
+
+
+    </div>
 
     <!-- main script here - you need the elements to exist before you can manipulate them -->
     <script src="main.js"></script>

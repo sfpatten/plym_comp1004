@@ -5,9 +5,22 @@ p, h1, li, td {
 }
 
 h1 {
-    font-size: 200%;
+    font-size: 2.5vh;
 }
 
 p, td, li {
-    font-size: 120%;
+    font-size: 1.5vh;
+}
+
+/* overworld grid */
+.overworld-grid {
+    display: grid;
+    grid-template-columns: 20vw 58vw 20vw;
+    grid-template-rows: 98vh;
+    grid-gap: 0.5vw;
+}
+
+.overworld-grid-box {
+    padding: 1vh;
+    border: 1px solid grey;
 }
