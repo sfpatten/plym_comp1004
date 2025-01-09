@@ -1,5 +1,3 @@
-// document.getElementById("temp").innerHTML = "JS is working.";
-
 class Level {
     constructor(size) {
         this.size = size;
@@ -95,6 +93,7 @@ class Battle {
         this.playerPosY = 0;
         this.playerVelX = 0;
         this.playerVelY = 0;
+        this.playerImmunityFrames = 0;
         this.bullets = [];
     }
 
@@ -134,8 +133,8 @@ class Battle {
     playerAttack() {
         let damage = game.player.rollStr();
         damage -= this.enemy.rollArm();
-        if (damage < 0) {
-            damage = 0;
+        if (damage < 1) {
+            damage = 1;
         }
         this.enemy.HP -= damage;
         this.updateHPDisplays();
@@ -144,12 +143,16 @@ class Battle {
     }
 
     enemyAttack() {
+        if (this.playerImmunityFrames > 0) {
+            return;
+        }
         let damage = this.enemy.rollStr();
         damage -= game.player.rollArm();
-        if (damage < 0) {
-            damage = 0;
+        if (damage < 1) {
+            damage = 1;
         }
         game.player.HP -= damage;
+        this.playerImmunityFrames = 20;
     }
 
     enemyTurnStart() {
@@ -237,9 +240,14 @@ class Battle {
                 game.battle.playerPosY = 90;
                 game.battle.playerVelY = 0;
             }
-
+                // update their position
             game.battle.updatePlayerPos();
+                // decrement immunity frames
+            if (game.battle.playerImmunityFrames > 0) {
+                game.battle.playerImmunityFrames--;
+            }
 
+            // Bullets
             for (let bulletNumber = game.battle.bullets.length - 1; bulletNumber > -1; bulletNumber--) {
                 game.battle.bullets[bulletNumber].simulate();
                 game.battle.bullets[bulletNumber].render();
@@ -252,13 +260,7 @@ class Battle {
                 }
             }
 
-
-
-            // TODO: simulate bullets
-
-
-
-            // schedule next one
+            // schedule next frame
             game.battle.battleFrames -= 1;
             game.battle.timeout = setTimeout(game.battle.runDefendFrame, 25);
         } else {
