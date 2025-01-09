@@ -132,10 +132,24 @@ class Battle {
     }
 
     playerAttack() {
-        this.enemy.HP -= game.player.rollStr();
+        let damage = game.player.rollStr();
+        damage -= this.enemy.rollArm();
+        if (damage < 0) {
+            damage = 0;
+        }
+        this.enemy.HP -= damage;
         this.updateHPDisplays();
 
         this.enemyTurnStart();
+    }
+
+    enemyAttack() {
+        let damage = this.enemy.rollStr();
+        damage -= game.player.rollArm();
+        if (damage < 0) {
+            damage = 0;
+        }
+        game.player.HP -= damage;
     }
 
     enemyTurnStart() {
@@ -296,6 +310,7 @@ class Bullet {
         let ydiff = (this.ypos + (this.size / 2)) - (game.battle.playerPosY + 5);
         if (xdiff**2 + ydiff**2 < this.size) {
             this.shouldDelete = true;
+            game.battle.enemyAttack();
         }
     }
 
@@ -377,6 +392,8 @@ class Player extends Entity {
     constructor() {
         super();
         this.name = "Undefined";
+        this.str = 2;
+        this.arm = 1;
     }
 }
 
