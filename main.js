@@ -82,6 +82,14 @@ class Entity {
     constructor() {
         this.xpos = 0;
         this.ypos = 0;
+        this.maxHP = 10;
+        this.HP = this.maxHP;
+        // Stats - the stat is acquired with a roll.
+        this.str = 0; // Strength - how much damage is dealt
+        this.arm = 0; // Armour (basically constitution) - how well you can defend against attacks
+        this.dex = 0; // Dexterity - speed
+        this.int = 0; // Intelligence (merged with TTRPG Wisdom)
+        this.cha = 0; // Charm (TTRPG Charisma)
     }
     move(dir) {
         switch (dir) {
@@ -107,6 +115,26 @@ class Entity {
                 break;
         }
 
+    }
+
+    rollStr() {
+        return Math.floor(Math.random() * 6) + this.str;
+    }
+
+    rollArm() {
+        return Math.floor(Math.random() * 6) + this.arm;
+    }
+
+    rollDex() {
+        return Math.floor(Math.random() * 6) + this.dex;
+    }
+
+    rollInt() {
+        return Math.floor(Math.random() * 6) + this.int;
+    }
+
+    rollCha() {
+        return Math.floor(Math.random() * 6) + this.cha;
     }
 }
 
