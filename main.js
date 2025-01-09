@@ -15,6 +15,13 @@ class Level {
             }
         }
         this.generate("temp");
+
+        // Encounters list
+        this.encounters = [
+            new Encounter(24, 24, "GameBox"),
+            new Encounter(0, 24, "Calculator"),
+            new Encounter(24, 0, "Optical Disk")
+        ];
     }
 
     generate(genType) {
@@ -51,6 +58,21 @@ class Level {
                     theTable.rows[i].cells[j].className = "overworld-map-box-grey";
                 }
             }
+        }
+    }
+
+    simulateAllEncounters() {
+        for (let e = 0; e < this.encounters.length; e++) {
+            this.encounters[e].takeTurn();
+        }
+    }
+
+    clearDefeatedEncounters() {
+        for (let e = this.encounters.length - 1; e >= 0; e--) {
+            if (this.encounters[e].shouldDelete) {
+                this.encounters.splice(e, 1);
+            }
+            this.renderOntoOverworldTable();
         }
     }
 }
@@ -98,26 +120,27 @@ class Entity {
         this.int = 0; // Intelligence (merged with TTRPG Wisdom)
         this.cha = 0; // Charm (TTRPG Charisma)
     }
+
     move(dir) {
         switch (dir) {
             case 'U':
-                if (game.player.ypos > 0 && game.overworld.levelGrid[this.xpos][this.ypos - 1] == "0") {
-                    game.player.ypos -= 1;
+                if (this.ypos > 0 && game.overworld.levelGrid[this.xpos][this.ypos - 1] == "0") {
+                    this.ypos -= 1;
                 }
                 break;
             case 'D':
-                if (game.player.ypos < game.overworld.size - 1 && game.overworld.levelGrid[this.xpos][this.ypos + 1] == "0") {
-                    game.player.ypos += 1;
+                if (this.ypos < game.overworld.size - 1 && game.overworld.levelGrid[this.xpos][this.ypos + 1] == "0") {
+                    this.ypos += 1;
                 }
                 break;
             case 'L':
-                if (game.player.xpos > 0 && game.overworld.levelGrid[this.xpos - 1][this.ypos] == "0") {
-                    game.player.xpos -= 1;
+                if (this.xpos > 0 && game.overworld.levelGrid[this.xpos - 1][this.ypos] == "0") {
+                    this.xpos -= 1;
                 }
                 break;
             case 'R':
-                if (game.player.xpos < game.overworld.size - 1 && game.overworld.levelGrid[this.xpos + 1][this.ypos] == "0") {
-                    game.player.xpos += 1;
+                if (this.xpos < game.overworld.size - 1 && game.overworld.levelGrid[this.xpos + 1][this.ypos] == "0") {
+                    this.xpos += 1;
                 }
                 break;
         }
@@ -185,8 +208,100 @@ class Enemy extends Entity {
         }
         this.HP = this.maxHP; // set their HP to full
     }
+}
 
+class Encounter {
+    constructor(xpos, ypos, type) {
+        this.xpos = xpos;
+        this.ypos = ypos;
+        this.type = type; // Enemy type it spawns in battle
+        this.displaySymbol = type[0];
+        this.shouldDelete = false; // Used so that the game can remove it if it has been defeated
+    }
 
+    move(dir) {
+        switch (dir) {
+            case 'U':
+                if (this.ypos > 0 && game.overworld.levelGrid[this.xpos][this.ypos - 1] == "0") {
+                    this.ypos -= 1;
+                }
+                break;
+            case 'D':
+                if (this.ypos < game.overworld.size - 1 && game.overworld.levelGrid[this.xpos][this.ypos + 1] == "0") {
+                    this.ypos += 1;
+                }
+                break;
+            case 'L':
+                if (this.xpos > 0 && game.overworld.levelGrid[this.xpos - 1][this.ypos] == "0") {
+                    this.xpos -= 1;
+                }
+                break;
+            case 'R':
+                if (this.xpos < game.overworld.size - 1 && game.overworld.levelGrid[this.xpos + 1][this.ypos] == "0") {
+                    this.xpos += 1;
+                }
+                break;
+        }
+
+    }
+
+    takeTurn() {
+        if (Math.random() < 0.1) {
+            return;
+        }
+        let xdiff = game.player.xpos - this.xpos;
+        let ydiff = game.player.ypos - this.ypos;
+        if (Math.abs(xdiff) > 7 | Math.abs(ydiff) > 7) {
+            let direction = Math.floor(Math.random() * 4);
+            switch (direction) {
+                case 0:
+                    this.move('U');
+                    break;
+                case 1:
+                    this.move('D');
+                    break;
+                case 2:
+                    this.move('L');
+                    break;
+                case 3:
+                    this.move('R');
+                    break;
+            }
+        } else {
+            if (xdiff == 0) {
+                if (ydiff < 0) {
+                    this.move('U');
+                } else {
+                    this.move('D');
+                }
+            } else if (ydiff == 0) {
+                if (xdiff < 0) {
+                    this.move('L');
+                } else {
+                    this.move('R');
+                }
+            } else {
+                if (Math.abs(xdiff) > Math.abs(ydiff)) { // Move in x direction
+                    if (xdiff < 0) {
+                        this.move('L');
+                    } else {
+                        this.move('R');
+                    }
+                } else { // Move in y direction
+                    if (ydiff < 0) {
+                        this.move('U');
+                    } else {
+                        this.move('D');
+                    }
+                }
+            }
+        }
+        if ( Math.abs(this.xpos - game.player.xpos) < 2 && Math.abs(this.ypos - game.player.ypos) < 2) {
+            this.shouldDelete = true;
+            game.overworld.clearDefeatedEncounters();
+            game.startBattle(this.type);
+        }
+    }
 }
 
 // Setup
@@ -212,15 +327,23 @@ function generateNewTable(n) {
 }
 
 // UI
-function render() {
+function renderMap() {
     // first we render the overworld
     game.overworld.renderOntoOverworldTable(); // this will change based on where we are when there are multiple Level classes to traverse in future, but for now, one is enough.
+
+
+    // then encounters
+    for (let e = 0; e < game.overworld.encounters.length; e++) {
+        let x = game.overworld.encounters[e].xpos;
+        let y = game.overworld.encounters[e].ypos;
+        document.getElementById("overworld-map-display").rows[y].cells[x].innerHTML = "<b>" + game.overworld.encounters[e].displaySymbol + "</b>";
+        document.getElementById("overworld-map-display").rows[y].cells[x].className = "overworld-map-box";
+    }
 
     // now the player
         // note - it assumes the player is within bounds of the map, if it is not, it will come up with an exception
     document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].innerHTML = "<b>@</b>";
     document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].className = "overworld-map-box";
-
 }
 
 function updateInventoryDisplay() {
@@ -271,7 +394,8 @@ function onKeyDown(e) {
                 success = false; // we don't want to send an overworld update if no valid key was pressed'
         }
         if (success) {
-            render();
+            game.overworld.simulateAllEncounters();
+            renderMap();
         }
     } else if (game.mode == "battle") {
         // TODO: contain this in a battle function
@@ -376,7 +500,7 @@ let keysDown = [false, false, false, false];
 
 // Setup
 generateNewTable(25);
-render();
+renderMap();
 updateInventoryDisplay();
 
 document.addEventListener("keydown", onKeyDown);
