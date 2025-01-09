@@ -16,14 +16,35 @@ class Level {
                 this.levelGrid[i][j] = 0;
             }
         }
+        this.generate("temp");
+    }
 
+    generate(type) {
+        if (type = "temp") {
+            // temp - add two random horizontal and one veritcal wall
+            for (let i =0; i < 2; i++) {
+                let y = Math.floor(Math.random() * (this.size - 4)) + 2;
+                for (let x = 0; x < this.size; x++) {
+                    if (Math.random() > 0.5) {
+                        this.levelGrid[x][y] = 1;
+                    }
+                }
+            }
+            let x = Math.floor(Math.random() * (this.size - 4)) + 2;
+                for (let y = 0; y < this.size; y++) {
+                    if (Math.random() > 0.25) {
+                        this.levelGrid[x][y] = 1;
+                    }
+                }
+
+        }
     }
 
     renderOntoOverworldTable() {
         let theTable = document.getElementById("overworld-map-display");
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
-                theTable.rows[i].cells[j].innerHTML = this.levelGrid[i][j];
+                theTable.rows[i].cells[j].innerHTML = this.levelGrid[j][i];
             }
         }
     }
