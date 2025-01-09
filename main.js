@@ -18,13 +18,48 @@ class Level {
         }
 
     }
+
+    renderOntoOverworldTable() {
+        let theTable = document.getElementById("overworld-map-display");
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                theTable.rows[i].cells[j].innerHTML = this.levelGrid[i][j];
+            }
+        }
+    }
 }
 
 class Game {
     constructor() {
         this.botNumber = 0;
-        this.overworld = new Level(50);
+        this.overworld = new Level(15);
     }
 }
 
+function generateNewTable(n) {
+    // delete old table rows (overarching table does not get destroyed)
+    let oldTableLen = document.getElementById("overworld-map-display").rows.length;
+    for (let i = 0; i < oldTableLen; i++) {
+        document.getElementById("overworld-map-display").deleteRow(0);
+    }
+
+    // create new table
+    let currentRow = null;
+    let currentCell = null;
+    for (let i = 0; i < n; i++) {
+        currentRow = document.createElement("tr");
+        for (let j = 0; j < n; j++) {
+            currentCell = document.createElement("td");
+            currentCell.innerHTML = "#";
+            currentRow.appendChild(currentCell);
+        }
+        document.getElementById("overworld-map-display").appendChild(currentRow);
+    }
+
+
+}
+
 let game = new Game();
+
+generateNewTable(15);
+game.overworld.renderOntoOverworldTable();
