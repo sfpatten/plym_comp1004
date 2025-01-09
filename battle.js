@@ -116,16 +116,12 @@ class Battle {
         switch (this.save) {
             case "str":
                 damage -= game.player.rollStr();
-                break;
             case "dex":
                 damage -= game.player.rollDex();
-                break;
             case "int":
                 damage -= game.player.rollInt();
-                break;
             case "cha":
                 damage -= game.player.rollCha();
-                break;
             default:
                 damage -= game.player.rollArm();
         }
