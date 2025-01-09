@@ -157,29 +157,6 @@ class Player extends Entity {
     }
 }
 
-function generateNewTable(n) {
-    // delete old table rows (overarching table does not get destroyed)
-    let oldTableLen = document.getElementById("overworld-map-display").rows.length;
-    for (let i = 0; i < oldTableLen; i++) {
-        document.getElementById("overworld-map-display").deleteRow(0);
-    }
-
-    // create new table
-    let currentRow = null;
-    let currentCell = null;
-    for (let i = 0; i < n; i++) {
-        currentRow = document.createElement("tr");
-        for (let j = 0; j < n; j++) {
-            currentCell = document.createElement("td");
-            currentCell.innerHTML = "?";
-            currentRow.appendChild(currentCell);
-        }
-        document.getElementById("overworld-map-display").appendChild(currentRow);
-    }
-
-
-}
-
 class Enemy extends Entity {
     constructor(type) {
         super();
@@ -210,6 +187,28 @@ class Enemy extends Entity {
     }
 
 
+}
+
+// Setup
+function generateNewTable(n) {
+    // delete old table rows (overarching table does not get destroyed)
+    let oldTableLen = document.getElementById("overworld-map-display").rows.length;
+    for (let i = 0; i < oldTableLen; i++) {
+        document.getElementById("overworld-map-display").deleteRow(0);
+    }
+
+    // create new table
+    let currentRow = null;
+    let currentCell = null;
+    for (let i = 0; i < n; i++) {
+        currentRow = document.createElement("tr");
+        for (let j = 0; j < n; j++) {
+            currentCell = document.createElement("td");
+            currentCell.innerHTML = "?";
+            currentRow.appendChild(currentCell);
+        }
+        document.getElementById("overworld-map-display").appendChild(currentRow);
+    }
 }
 
 // UI
@@ -375,12 +374,15 @@ let game = new Game();
 
 let keysDown = [false, false, false, false];
 
+// Setup
 generateNewTable(25);
 render();
 updateInventoryDisplay();
 
 document.addEventListener("keydown", onKeyDown);
 document.addEventListener("keyup", onKeyUp);
+
+
 
 // Immediately start a battle for testing
 //game.startBattle("GameBox");
