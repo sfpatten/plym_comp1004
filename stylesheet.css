@@ -12,6 +12,12 @@ p, td, li {
     font-size: 1.5vh;
 }
 
+
+td {
+    line-height: 5vmin;
+    font-size: 4vmin;
+}
+
 /* overworld grid */
 .overworld-grid {
     display: grid;
@@ -21,6 +27,14 @@ p, td, li {
 }
 
 .overworld-grid-box {
-    padding: 1vh;
+    padding: 1vmin;
     border: 1px solid grey;
+}
+
+/* overworld map */
+#overworld-map-display {
+    height: 90vmin;
+    width: 90vmin;
+    max-width: 58vw;
+    max-height: 58vw;
 }
