@@ -74,22 +74,22 @@ class Player {
     move(dir) {
         switch (dir) {
             case 'U':
-                if (game.player.ypos > 0) {
+                if (game.player.ypos > 0 && game.overworld.levelGrid[this.xpos][this.ypos - 1] == "0") {
                     game.player.ypos -= 1;
                 }
                 break;
             case 'D':
-                if (game.player.ypos < game.overworld.size - 1) {
+                if (game.player.ypos < game.overworld.size - 1 && game.overworld.levelGrid[this.xpos][this.ypos + 1] == "0") {
                     game.player.ypos += 1;
                 }
                 break;
             case 'L':
-                if (game.player.xpos > 0) {
+                if (game.player.xpos > 0 && game.overworld.levelGrid[this.xpos - 1][this.ypos] == "0") {
                     game.player.xpos -= 1;
                 }
                 break;
             case 'R':
-                if (game.player.xpos < game.overworld.size - 1) {
+                if (game.player.xpos < game.overworld.size - 1 && game.overworld.levelGrid[this.xpos + 1][this.ypos] == "0") {
                     game.player.xpos += 1;
                 }
                 break;
@@ -135,7 +135,9 @@ function render() {
 
 
 function onKeyDown(e) {
+    // TODO: make this only happen for overworld mode when more than just overworld mode exists
     switch (e.code) {
+        // Arrow keys
         case "ArrowUp":
             game.player.move('U');
             break;
@@ -146,6 +148,19 @@ function onKeyDown(e) {
             game.player.move('L');
             break;
         case "ArrowRight":
+            game.player.move('R');
+            break;
+        // WASD keys
+        case "KeyW":
+            game.player.move('U');
+            break;
+        case "KeyS":
+            game.player.move('D');
+            break;
+        case "KeyA":
+            game.player.move('L');
+            break;
+        case "KeyD":
             game.player.move('R');
             break;
     }
