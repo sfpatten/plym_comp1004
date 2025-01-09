@@ -128,6 +128,7 @@ class Battle {
         document.getElementById("battle-soul").style.display="none";
         // display action buttons
         document.getElementById("battle-actions").style.display="block";
+        document.getElementById("battle-player").style.display="block";
     }
 
     playerAttack() {
@@ -161,7 +162,7 @@ class Battle {
         this.playerVelX = 0;
         this.playerVelY = 0;
 
-        this.battleFrames = 360;
+        this.battleFrames = 0;
 
         this.updatePlayerPos();
 
@@ -170,32 +171,74 @@ class Battle {
         document.getElementById("battle-soul").style.display="block";
         // hide action buttons
         document.getElementById("battle-actions").style.display="none";
+        document.getElementById("battle-player").style.display="none";
         this.timeout = setTimeout(this.runDefendFrame, 50);
 
 
         // TEMP: bullet pattern
-        for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 80, 0, 2, "standard", "?", x * 45, 5));
-        }
+        //for (let x = 0; x < 8; x++) {
+        //    this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 80, 0, 2, "standard", "?", x * 45, 5));
+        //}
 
-        for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 180, 0, 2, "standard", "?", x * 45, 5));
-        }
+        //for (let x = 0; x < 8; x++) {
+        //    this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 180, 0, 2, "standard", "?", x * 45, 5));
+        //}
 
-        for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 280, 0, 2, "standard", "?", x * 45, 5));
-        }
+        //for (let x = 0; x < 8; x++) {
+        //    this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 280, 0, 2, "standard", "?", x * 45, 5));
+        //}
 
-        for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 380, 0, 2, "standard", "?", x * 45, 5));
-        }
+        //for (let x = 0; x < 8; x++) {
+        //    this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 380, 0, 2, "revolving", "?", x * 45, 5));
+        //}
 
-        for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 480, 0, 2, "standard", "?", x * 45, 5));
-        }
+        //for (let x = 0; x < 8; x++) {
+        //    this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 480, 0, 2, "standard", "?", x * 45, 5));
+        //}
 
-        for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 580, 0, 2, "standard", "?", x * 45, 5));
+        //for (let x = 0; x < 8; x++) {
+        //    this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 580, 0, 2, "standard", "?", x * 45, 5));
+        //}
+
+        // temporary battle pattern picker
+        let myOption = Math.floor(Math.random() * 3)
+        switch (myOption) {
+            case 0:
+                this.battleFrames = 400;
+                for (let x = 0; x < 20; x++) {
+                    let r = 10 + Math.random() * 80
+                    let spd = 1 + Math.random() * 3
+                    for (let y = 0; y < 6; y++) {
+                        this.bullets.push(new Bullet(-140 - x*60, r, spd, 0, "revolving", "?", y * 60, spd));
+                    }
+                }
+                break;
+            case 1:
+                this.battleFrames = 280;
+                for (let x = 0; x < 50; x++) {
+                    let r = Math.random() * 100
+                    this.bullets.push(new Bullet(200 - x * -20, r, -5, 0, "standard", "baskintheresplendentgloryofthesun'slife-givingrays"[x], 0, 0));
+                }
+                break;
+            case 2:
+                this.battleFrames = 400;
+                for (let x = 0; x < 12; x++) {
+                    let r = Math.random() * 100
+                    this.bullets.push(new Bullet(200 - x * -80, r, -3, 0, "standard", "x", 0, 0));
+                }
+                for (let x = 0; x < 12; x++) {
+                    let r = Math.random() * 100
+                    this.bullets.push(new Bullet(-200 - x * 80, r, 3, 0, "standard", "x", 0, 0));
+                }
+                for (let x = 0; x < 12; x++) {
+                    let r = Math.random() * 100
+                    this.bullets.push(new Bullet(r, 200 + x * 80, 0, -3, "standard", "x", 0, 0));
+                }
+                for (let x = 0; x < 12; x++) {
+                    let r = Math.random() * 100
+                    this.bullets.push(new Bullet(r, -200 - x * 80, 0, 3, "standard", "x", 0, 0));
+                }
+                break;
         }
     }
 
@@ -288,16 +331,38 @@ class Bullet {
         this.ypos = yp;
         this.xvel = xv;
         this.yvel = yv;
+        this.type = type;
         this.symbol = sym;
-        this.size = 20;
         this.shouldDelete = false;
         this.rotation = rt;
         this.rotvel = rv;
+
+
+        if (this.type == "standard") {
+            this.size = 20;
+        } else if (this.type == "big") {
+            this.size = 40;
+        } else if (this.type == "revolving") {
+            this.size = 20;
+            this.xcpos = xp; // needed to differentiate the center from the relative position
+            this.ycpos = yp;
+        } else if (this.type == "small-revolving") {
+            this.size = 10;
+            this.xcpos = xp; // needed to differentiate the center from the relative position
+            this.ycpos = yp;
+        }
 
         // create rendered element
         this.bulletDiv = document.createElement("div");
         this.bulletDiv.innerHTML = sym;
         this.bulletDiv.className = "battle-bullet";
+
+        // render based on size - this doesn't change by frame
+        this.bulletDiv.style.width = (this.size / 5).toString() + "vw";
+        this.bulletDiv.style.height = (this.size / 5).toString() + "vw";
+        this.bulletDiv.style.fontSize = (this.size / 6.6).toString() + "vw";
+
+        // add to document
         document.getElementById("battle-box").appendChild(this.bulletDiv);
         this.render();
 
@@ -305,9 +370,30 @@ class Bullet {
     }
 
     simulate() {
-        this.xpos += this.xvel;
-        this.ypos += this.yvel;
-        this.rotation += this.rotvel;
+        if (this.type == "standard" | this.type == "big") {
+            this.xpos += this.xvel;
+            this.ypos += this.yvel;
+            this.rotation += this.rotvel;
+
+        } else if (this.type == "revolving" | this.type == "small-revolving") {
+            let space_factor = this.size;
+
+            if (this.type == "small-revolving") {
+                space_factor = this.size * 2;
+            } else {
+                space_factor = this.size;
+            }
+
+            this.xcpos += this.xvel;
+            this.ycpos += this.yvel;
+            this.rotation += this.rotvel;
+
+            // to circle around point (i, j) at angle in radians t, x= i + cos t and y = j + sin t. angles in degrees are much nicer to work in, so we convert here.
+            this.xpos = this.xcpos + space_factor * Math.sin(this.rotation * -0.017);
+            this.ypos = this.ycpos + space_factor * Math.cos(this.rotation * -0.017);
+
+        }
+
         let xdiff = (this.xpos + (this.size / 2)) - (game.battle.playerPosX + 5);
         let ydiff = (this.ypos + (this.size / 2)) - (game.battle.playerPosY + 5);
         if (xdiff**2 + ydiff**2 < this.size) {
@@ -396,6 +482,8 @@ class Player extends Entity {
         this.name = "Undefined";
         this.str = 2;
         this.arm = 1;
+        this.maxHP = 20;
+        this.HP = 20;
     }
 }
 
