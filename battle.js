@@ -30,6 +30,7 @@ class Battle {
         document.getElementById("battle-player-name").innerHTML =  game.player.name;
         document.getElementById("battle-enemy-name").innerHTML = this.enemy.type;
         document.getElementById("battle-enemy").innerHTML = this.enemy.type[0];
+        document.getElementById("battle-enemy").style.display="block";
     }
 
     playerTurnStart() {
