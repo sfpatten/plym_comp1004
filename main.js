@@ -187,4 +187,6 @@ let game = new Game();
 generateNewTable(25);
 render();
 
-document.addEventListener("keydown", onKeyDown)
+document.addEventListener("keydown", onKeyDown);
+
+game.setMode("battle");

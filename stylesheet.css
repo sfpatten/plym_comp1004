@@ -1,6 +1,6 @@
 
 /* Basic font settings */
-p, h1, li, td {
+p, h1, li, td, div {
     font-family: monospace;
 }
 
@@ -55,8 +55,41 @@ td {
 /* battle grid */
 #battle-box {
     display: none;
-    width: 100vw;
-    height: 98vh;
+    width: 98vw;
+    height: 96vh;
     padding: 1vmin;
     border:1px solid grey;
+}
+
+#battle-player {
+    width: 10vw;
+    height: 10vw;
+    border: 1px solid red;
+    text-align: center;
+    font-size: 6vw;
+    position: fixed;
+    left: 30vw;
+    top: 10vw;
+}
+
+#battle-enemy {
+    width: 10vw;
+    height: 10vw;
+    border: 1px solid red;
+    text-align: center;
+    font-size: 6vw;
+    position: fixed;
+    left: 60vw;
+    top: 10vw;
+}
+
+#battle-board {
+    width: 20vw;
+    height: 20vw;
+    border: 1px solid green;
+    text-align: center;
+    font-size: 6vw;
+    position: fixed;
+    left: 40vw;
+    top: 5vw;
 }
