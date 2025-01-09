@@ -105,8 +105,6 @@ class Game {
     }
 }
 
-
-
 class Entity {
     constructor() {
         this.xpos = 0;
@@ -188,22 +186,22 @@ class Enemy extends Entity {
             case "Calculator":
                 this.maxHP = 8;
                 this.str = 1;
-                this.arm = 1;
+                this.arm = 0;
                 break;
             case "Floppy Disk":
                 this.maxHP = 5;
                 this.str = 1;
-                this.arm = 1;
+                this.arm = 0;
                 break;
             case "GameBox":
                 this.maxHP = 20;
                 this.str = 4;
-                this.arm = 1;
+                this.arm = 0;
                 break;
             case "Optical Disk": {
                 this.maxHP = 30;
                 this.str = 3;
-                this.arm = 1;
+                this.arm = 0;
             }
         }
         this.HP = this.maxHP; // set their HP to full
