@@ -49,7 +49,7 @@ class Level {
                     theTable.rows[i].cells[j].innerHTML = "#";
                     theTable.rows[i].cells[j].className = "overworld-map-box";
                 } else {
-                    theTable.rows[i].cells[j].innerHTML = ":";
+                    theTable.rows[i].cells[j].innerHTML = ".";
                     theTable.rows[i].cells[j].className = "overworld-map-box-grey";
                 }
             }
@@ -62,6 +62,19 @@ class Game {
         this.botNumber = 0;
         this.overworld = new Level(25);
         this.player = new Player();
+        this.mode = "overworld";
+    }
+
+    setMode(newMode) {
+        // i need to make a method that hides EVERYTHING and then unhides the correct thing
+        document.getElementById("overworld-grid").style.display="none";
+        document.getElementById("battle-box").style.display="none";
+        if (newMode == "overworld") {
+            document.getElementById("overworld-grid").style.display="grid";
+            this.mode = "overworld";
+        } else if (newMode == "battle") {
+            document.getElementById("battle-box").style.display="block";
+        }
     }
 }
 
@@ -113,7 +126,7 @@ function generateNewTable(n) {
         currentRow = document.createElement("tr");
         for (let j = 0; j < n; j++) {
             currentCell = document.createElement("td");
-            currentCell.innerHTML = "#";
+            currentCell.innerHTML = "?";
             currentRow.appendChild(currentCell);
         }
         document.getElementById("overworld-map-display").appendChild(currentRow);
@@ -128,7 +141,7 @@ function render() {
 
     // now the player
         // note - it assumes the player is within bounds of the map, if it is not, it will come up with an exception
-    document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].innerHTML = "@";
+    document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].innerHTML = "<b>@</b>";
     document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].className = "overworld-map-box";
 
 }
@@ -136,6 +149,9 @@ function render() {
 
 function onKeyDown(e) {
     // TODO: make this only happen for overworld mode when more than just overworld mode exists
+    if (game.mode != "overworld") {
+        return;
+    }
     switch (e.code) {
         // Arrow keys
         case "ArrowUp":

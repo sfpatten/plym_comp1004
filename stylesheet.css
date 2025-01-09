@@ -19,7 +19,7 @@ td {
 }
 
 /* overworld grid */
-.overworld-grid {
+#overworld-grid {
     display: grid;
     grid-template-columns: 20vw 58vw 20vw;
     grid-template-rows: 98vh;
@@ -31,7 +31,7 @@ td {
     border: 1px solid grey;
 }
 
-/* overworld map */
+    /* overworld map */
 #overworld-map-display {
     height: 90vmin;
     width: 90vmin;
@@ -50,4 +50,13 @@ td {
     line-height: 2vmin;
     font-size: 3vmin;
     color: lightgrey;
+}
+
+/* battle grid */
+#battle-box {
+    display: none;
+    width: 100vw;
+    height: 98vh;
+    padding: 1vmin;
+    border:1px solid grey;
 }
