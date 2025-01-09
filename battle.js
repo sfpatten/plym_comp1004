@@ -71,6 +71,7 @@ class Battle {
             setTimeout(this.playerAttackAnimationFrame, 50, 0, true);
         } else {
             setTimeout(this.playerAttackAnimationFrame, 50, 0, false);
+            this.enemyDefeatedFrame(0)
             setTimeout(this.end, 2000);
             //this.end();
         }
@@ -216,6 +217,28 @@ class Battle {
             document.getElementById("battle-player").style.fontSize = "6vw";
             document.getElementById("battle-player").style.left = "30vw";
             document.getElementById("battle-player").style.top = "10vw";
+        }
+    }
+
+    enemyDefeatedFrame(frame) {
+        // 10 FRAMES
+        let x = 60 + (frame * 4);
+        let y = 10 - frame;
+        let rot = frame * 72;
+        document.getElementById("battle-enemy").style.left = x.toString() + "vw";
+        document.getElementById("battle-enemy").style.top = y.toString() + "vw";
+        document.getElementById("battle-enemy").style.rotate = rot.toString() + "deg";
+
+        if (frame < 10) {
+            setTimeout(game.battle.enemyDefeatedFrame, 50, frame + 1);
+        } else {
+            // reset player div appearance and hide it
+            document.getElementById("battle-enemy").style.display="none";
+            document.getElementById("battle-enemy").style.width = "10vw";
+            document.getElementById("battle-enemy").style.height = "10vw";
+            document.getElementById("battle-enemy").style.fontSize = "6vw";
+            document.getElementById("battle-enemy").style.left = "60vw";
+            document.getElementById("battle-enemy").style.top = "10vw";
         }
     }
 
