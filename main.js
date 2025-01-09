@@ -60,7 +60,7 @@ class Level {
 class Game {
     constructor() {
         this.botNumber = 0;
-        this.overworld = new Level(15);
+        this.overworld = new Level(25);
         this.player = new Player();
     }
 }
@@ -70,6 +70,33 @@ class Player {
         this.xpos = 0;
         this.ypos = 0;
     }
+
+    move(dir) {
+        switch (dir) {
+            case 'U':
+                if (game.player.ypos > 0) {
+                    game.player.ypos -= 1;
+                }
+                break;
+            case 'D':
+                if (game.player.ypos < game.overworld.size - 1) {
+                    game.player.ypos += 1;
+                }
+                break;
+            case 'L':
+                if (game.player.xpos > 0) {
+                    game.player.xpos -= 1;
+                }
+                break;
+            case 'R':
+                if (game.player.xpos < game.overworld.size - 1) {
+                    game.player.xpos += 1;
+                }
+                break;
+        }
+        render();
+    }
+
 }
 
 function generateNewTable(n) {
@@ -106,29 +133,27 @@ function render() {
 
 }
 
-function movePlayerTemp(dir) { // a temporary function
-    // TODO: implement a switch case
-    if (dir == 'U') {
-        if (game.player.ypos > 0) {
-            game.player.ypos -= 1;
-        }
-    } else if (dir == 'D') {
-        if (game.player.ypos < game.overworld.size - 1) {
-            game.player.ypos += 1;
-        }
-    } else if (dir == 'L') {
-        if (game.player.xpos > 0) {
-            game.player.xpos -= 1;
-        }
-    } else if (dir == 'R') {
-        if (game.player.xpos < game.overworld.size - 1) {
-            game.player.xpos += 1;
-        }
+
+function onKeyDown(e) {
+    switch (e.code) {
+        case "ArrowUp":
+            game.player.move('U');
+            break;
+        case "ArrowDown":
+            game.player.move('D');
+            break;
+        case "ArrowLeft":
+            game.player.move('L');
+            break;
+        case "ArrowRight":
+            game.player.move('R');
+            break;
     }
-    render();
 }
 
 let game = new Game();
 
-generateNewTable(15);
+generateNewTable(25);
 render();
+
+document.addEventListener("keydown", onKeyDown)
