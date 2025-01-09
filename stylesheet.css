@@ -37,15 +37,17 @@ td {
     width: 90vmin;
     max-width: 58vw;
     max-height: 58vw;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .overworld-map-box {
-    line-height: 5vmin;
-    font-size: 4vmin;
+    line-height: 2vmin;
+    font-size: 3vmin;
 }
 
 .overworld-map-box-grey {
-    line-height: 5vmin;
-    font-size: 4vmin;
+    line-height: 2vmin;
+    font-size: 3vmin;
     color: lightgrey;
 }
