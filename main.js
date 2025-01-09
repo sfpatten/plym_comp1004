@@ -174,72 +174,8 @@ class Battle {
         document.getElementById("battle-player").style.display="none";
         this.timeout = setTimeout(this.runDefendFrame, 50);
 
-
-        // TEMP: bullet pattern
-        //for (let x = 0; x < 8; x++) {
-        //    this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 80, 0, 2, "standard", "?", x * 45, 5));
-        //}
-
-        //for (let x = 0; x < 8; x++) {
-        //    this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 180, 0, 2, "standard", "?", x * 45, 5));
-        //}
-
-        //for (let x = 0; x < 8; x++) {
-        //    this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 280, 0, 2, "standard", "?", x * 45, 5));
-        //}
-
-        //for (let x = 0; x < 8; x++) {
-        //    this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 380, 0, 2, "revolving", "?", x * 45, 5));
-        //}
-
-        //for (let x = 0; x < 8; x++) {
-        //    this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 480, 0, 2, "standard", "?", x * 45, 5));
-        //}
-
-        //for (let x = 0; x < 8; x++) {
-        //    this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 580, 0, 2, "standard", "?", x * 45, 5));
-        //}
-
         // temporary battle pattern picker
-        let myOption = Math.floor(Math.random() * 3)
-        switch (myOption) {
-            case 0:
-                this.battleFrames = 400;
-                for (let x = 0; x < 20; x++) {
-                    let r = 10 + Math.random() * 80
-                    let spd = 1 + Math.random() * 3
-                    for (let y = 0; y < 6; y++) {
-                        this.bullets.push(new Bullet(-140 - x*60, r, spd, 0, "revolving", "?", y * 60, spd));
-                    }
-                }
-                break;
-            case 1:
-                this.battleFrames = 280;
-                for (let x = 0; x < 50; x++) {
-                    let r = Math.random() * 100
-                    this.bullets.push(new Bullet(200 - x * -20, r, -5, 0, "standard", "baskintheresplendentgloryofthesun'slife-givingrays"[x], 0, 0));
-                }
-                break;
-            case 2:
-                this.battleFrames = 400;
-                for (let x = 0; x < 12; x++) {
-                    let r = Math.random() * 100
-                    this.bullets.push(new Bullet(200 - x * -80, r, -3, 0, "standard", "x", 0, 0));
-                }
-                for (let x = 0; x < 12; x++) {
-                    let r = Math.random() * 100
-                    this.bullets.push(new Bullet(-200 - x * 80, r, 3, 0, "standard", "x", 0, 0));
-                }
-                for (let x = 0; x < 12; x++) {
-                    let r = Math.random() * 100
-                    this.bullets.push(new Bullet(r, 200 + x * 80, 0, -3, "standard", "x", 0, 0));
-                }
-                for (let x = 0; x < 12; x++) {
-                    let r = Math.random() * 100
-                    this.bullets.push(new Bullet(r, -200 - x * 80, 0, 3, "standard", "x", 0, 0));
-                }
-                break;
-        }
+        this.enemyBulletPattern();
     }
 
     runDefendFrame() {
@@ -323,21 +259,57 @@ class Battle {
         document.getElementById("battle-soul").style.left = vwx.toString() + "vw";
         document.getElementById("battle-soul").style.top = vwy.toString() + "vw";
     }
+
+    enemyBulletPattern() {
+        switch (this.enemy.type) {
+            case "Calculator":
+                this.battleFrames = 400;
+                for (let i = 0; i < 28; i++) { // Create 28 bullets
+                    let randomX = 10 + Math.random() * 80 // pick a random horizontal position
+                    let randomNumSymbol = "0123456789+-×÷=()%"[Math.floor(Math.random() * 18)]
+                    let randomRot = (Math.random() * 6) - 3
+                    this.bullets.push(new Bullet(randomX, -100, 0, 4, 0, randomRot, "standard", randomNumSymbol, i * 20, 400));
+
+                }
+                //let myOption = Math.floor(Math.random() * 4)
+                break;
+            case "Optical Disk":
+                console.log("hello");
+                this.battleFrames = 300;
+                for (let x = 0; x < 10; x++) {
+                    let r = 10 + Math.random() * 80 // pick a random height
+                    let spd = 2 + Math.random() * 3 // pick a random speed
+                    for (let y = 0; y < 6; y++) { // create six projectiles revolving around one point
+                        this.bullets.push(new Bullet(-250, r, spd, 0,  y * 60, spd, "revolving", "#", x * 30, 400));
+                    }
+                }
+                break;
+            default:
+
+
+                break;
+        }
+    }
 }
 
 class Bullet {
-    constructor(xp, yp, xv, yv, type, sym, rt, rv) {
+    constructor(xp, yp, xv, yv, rt, rv, type, sym, wf, lf) {
+        // Self-explanatory; position, velocity
         this.xpos = xp;
         this.ypos = yp;
         this.xvel = xv;
         this.yvel = yv;
-        this.type = type;
-        this.symbol = sym;
-        this.shouldDelete = false;
         this.rotation = rt;
         this.rotvel = rv;
 
+        this.type = type; // Which behaviour it follows. See below
+        this.symbol = sym; // Which symbol it renders as
+        this.shouldDelete = false; // When it's set to true, the Battle object will delete it.'
 
+        this.waitFrames = wf; // Wait frames: how many frames it should wait before activating
+        this.lifeFrames = lf; // Life frames: how many frames before it should delete automatically
+
+        // Bullet types
         if (this.type == "standard") {
             this.size = 20;
         } else if (this.type == "big") {
@@ -370,6 +342,18 @@ class Bullet {
     }
 
     simulate() {
+        // Handle wait frames and life frames
+        if (this.waitFrames > 0) {
+            this.waitFrames--;
+            return;
+        }
+        if (this.lifeFrames > 0) {
+            this.lifeFrames --;
+        } else {
+            this.shouldDelete = true;
+            return;
+        }
+
         if (this.type == "standard" | this.type == "big") {
             this.xpos += this.xvel;
             this.ypos += this.yvel;
@@ -480,8 +464,8 @@ class Player extends Entity {
     constructor() {
         super();
         this.name = "Undefined";
-        this.str = 2;
-        this.arm = 1;
+        this.str = 5;
+        this.arm = 5;
         this.maxHP = 20;
         this.HP = 20;
     }
@@ -514,12 +498,29 @@ class Enemy extends Entity {
     constructor(type) {
         super();
         this.type = type;
-
-        if (this.type == "Slime") {
-            this.attackTime = 5000;
-        } else {
-            this.attackTime = 5000;
+        switch (this.type) {
+            case "Calculator":
+                this.maxHP = 8;
+                this.str = 1;
+                this.arm = 1;
+                break;
+            case "Floppy Disk":
+                this.maxHP = 5;
+                this.str = 1;
+                this.arm = 1;
+                break;
+            case "GameBox":
+                this.maxHP = 20;
+                this.str = 4;
+                this.arm = 1;
+                break;
+            case "Optical Disk": {
+                this.maxHP = 30;
+                this.str = 3;
+                this.arm = 1;
+            }
         }
+        this.HP = this.maxHP; // set their HP to full
     }
 
 
@@ -668,4 +669,4 @@ render();
 document.addEventListener("keydown", onKeyDown);
 document.addEventListener("keyup", onKeyUp);
 
-game.startBattle("Slime");
+game.startBattle("Optical Disk");
