@@ -138,10 +138,17 @@ class Battle {
         if (damage < 1) {
             damage = 1;
         }
+
+
+        // hide action buttons
+        document.getElementById("battle-actions").style.display="none";
+
+
         this.enemy.HP -= damage;
         this.updateHPDisplays();
 
-        this.enemyTurnStart();
+        setTimeout(this.enemyTurnStart, 1500);
+        setTimeout(this.playerAttackAnimationFrame, 50, 0);
     }
 
     enemyAttack() {
@@ -170,25 +177,89 @@ class Battle {
     }
 
     enemyTurnStart() {
-        this.playerPosX = 45;
-        this.playerPosY = 45;
-        this.playerVelX = 0;
-        this.playerVelY = 0;
-
-        this.battleFrames = 0;
-
-        this.updatePlayerPos();
-
-        // show monster attack stuff
+        // show monster attack stuff and hide player
+        document.getElementById("battle-player").style.display="none";
         document.getElementById("battle-board").style.display="block";
         document.getElementById("battle-soul").style.display="block";
-        // hide action buttons
-        document.getElementById("battle-actions").style.display="none";
-        document.getElementById("battle-player").style.display="none";
-        this.timeout = setTimeout(this.runDefendFrame, 50);
 
-        // temporary battle pattern picker
-        this.enemyBulletPattern();
+        game.battle.playerPosX = 45;
+        game.battle.playerPosY = 45;
+        game.battle.playerVelX = 0;
+        game.battle.playerVelY = 0;
+
+        game.battle.battleFrames = 0;
+
+        game.battle.updatePlayerPos();
+
+
+
+        game.battle.timeout = setTimeout(game.battle.runDefendFrame, 50);
+
+        game.battle.enemyBulletPattern();
+    }
+
+    playerAttackAnimationFrame(frame) {
+        let xpos = (30 + (Math.sin((frame * 3.14) / 10)) * 25);
+        document.getElementById("battle-player").style.left = xpos.toString() + "vw";
+        if (frame < 10) {
+            setTimeout(game.battle.playerAttackAnimationFrame, 50, frame + 1);
+        } else {
+            setTimeout(game.battle.playerShrinkAnimationFrame, 350, 0);
+        }
+    }
+
+    playerShrinkAnimationFrame(frame) {
+        // 10 FRAMES
+        let xpos = (30 + (frame * 19) / 10);
+        document.getElementById("battle-player").style.left = xpos.toString() + "vw";
+        let ypos = (10 + (frame * 4) / 10);
+        document.getElementById("battle-player").style.top = ypos.toString() + "vw";
+        let size = (10 - (frame * 8) / 10);
+        document.getElementById("battle-player").style.width = size.toString() + "vw";
+        document.getElementById("battle-player").style.height = size.toString() + "vw";
+        let fontSize = (6 - (frame * 4.5) / 10);
+        document.getElementById("battle-player").style.fontSize = fontSize.toString() + "vw";
+
+        if (frame < 10) {
+            setTimeout(game.battle.playerShrinkAnimationFrame, 50, frame + 1);
+        } else {
+            // reset player div appearance and hide it
+            document.getElementById("battle-player").style.display="none";
+            document.getElementById("battle-player").style.width = "10vw";
+            document.getElementById("battle-player").style.height = "10vw";
+            document.getElementById("battle-player").style.fontSize = "6vw";
+            document.getElementById("battle-player").style.left = "30vw";
+            document.getElementById("battle-player").style.top = "10vw";
+        }
+    }
+
+    playerGrowAnimationFrame(frame) {
+        // 10 FRAMES
+        let reverseFrame = 10 - frame;
+       //let vwx = 10 + (game.battle.playerPosY / 5);
+        let vwy = -5 + (game.battle.playerPosY / 5);
+        //let xpos = (30 + (reverseFrame * (game.battle.playerPosY / 5)) / 10); // Original - optimised down to the following:
+        //let ypos = (10 + (reverseFrame * -5 + (game.battle.playerPosY / 5)) / 10); // Also optimised down
+        let xpos = 30 + reverseFrame * (1 + (game.battle.playerPosX / 50));
+        document.getElementById("battle-player").style.left = xpos.toString() + "vw";
+        let ypos = 10 + reverseFrame * (-0.5 + (game.battle.playerPosY / 50));
+        document.getElementById("battle-player").style.top = ypos.toString() + "vw";
+        let size = (10 - (reverseFrame * 8) / 10);
+        document.getElementById("battle-player").style.width = size.toString() + "vw";
+        document.getElementById("battle-player").style.height = size.toString() + "vw";
+        let fontSize = (6 - (reverseFrame * 4.5) / 10);
+        document.getElementById("battle-player").style.fontSize = fontSize.toString() + "vw";
+
+        if (frame < 10) {
+            setTimeout(game.battle.playerGrowAnimationFrame, 50, frame + 1);
+        } else {
+            // reset player div appearance and hide it
+            document.getElementById("battle-player").style.width = "10vw";
+            document.getElementById("battle-player").style.height = "10vw";
+            document.getElementById("battle-player").style.fontSize = "6vw";
+            document.getElementById("battle-player").style.left = "30vw";
+            document.getElementById("battle-player").style.top = "10vw";
+        }
     }
 
     runDefendFrame() {
@@ -256,7 +327,9 @@ class Battle {
             game.battle.battleFrames -= 1;
             game.battle.timeout = setTimeout(game.battle.runDefendFrame, 25);
         } else {
+            game.battle.playerGrowAnimationFrame(0);
             game.battle.playerTurnStart();
+
         }
     }
 
@@ -277,7 +350,7 @@ class Battle {
         switch (this.enemy.type) {
             case "Calculator":
                 // Attack - rain down calculator symbols
-                this.battleFrames = 400;
+                this.battleFrames = 40; //TODO: fix
                 this.save = "int";
                 for (let i = 0; i < 28; i++) { // Create 28 bullets
                     let randomX = 10 + Math.random() * 80 // pick a random horizontal position
@@ -466,11 +539,11 @@ class Battle {
                 }
                 break;
             default:
-
-
+                console.log("no monster bullet pattern found");
                 break;
         }
     }
+
 }
 
 class Bullet {
