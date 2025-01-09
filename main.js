@@ -158,27 +158,27 @@ class Battle {
 
         // TEMP: bullet pattern
         for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 80, 0, 2, "standard", "?"));
+            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 80, 0, 2, "standard", "?", x * 45, 5));
         }
 
         for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 180, 0, 2, "standard", "?"));
+            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 180, 0, 2, "standard", "?", x * 45, 5));
         }
 
         for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 280, 0, 2, "standard", "?"));
+            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 280, 0, 2, "standard", "?", x * 45, 5));
         }
 
         for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 380, 0, 2, "standard", "?"));
+            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 380, 0, 2, "standard", "?", x * 45, 5));
         }
 
         for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 480, 0, 2, "standard", "?"));
+            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 480, 0, 2, "standard", "?", x * 45, 5));
         }
 
         for (let x = 0; x < 8; x++) {
-            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 580, 0, 2, "standard", "?"));
+            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 580, 0, 2, "standard", "?", x * 45, 5));
         }
     }
 
@@ -267,7 +267,7 @@ class Battle {
 }
 
 class Bullet {
-    constructor(xp, yp, xv, yv, type, sym) {
+    constructor(xp, yp, xv, yv, type, sym, rt, rv) {
         this.xpos = xp;
         this.ypos = yp;
         this.xvel = xv;
@@ -275,6 +275,8 @@ class Bullet {
         this.symbol = sym;
         this.size = 20;
         this.shouldDelete = false;
+        this.rotation = rt;
+        this.rotvel = rv;
 
         // create rendered element
         this.bulletDiv = document.createElement("div");
@@ -289,6 +291,7 @@ class Bullet {
     simulate() {
         this.xpos += this.xvel;
         this.ypos += this.yvel;
+        this.rotation += this.rotvel;
         let xdiff = (this.xpos + (this.size / 2)) - (game.battle.playerPosX + 5);
         let ydiff = (this.ypos + (this.size / 2)) - (game.battle.playerPosY + 5);
         if (xdiff**2 + ydiff**2 < this.size) {
@@ -302,6 +305,7 @@ class Bullet {
 
         this.bulletDiv.style.left = vwx.toString() + "vw";
         this.bulletDiv.style.top = vwy.toString() + "vw";
+        this.bulletDiv.style.rotate = this.rotation.toString() + "deg";
     }
 
     deleteRender() {
