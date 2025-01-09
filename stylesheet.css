@@ -52,7 +52,7 @@ td {
     color: lightgrey;
 }
 
-/* battle grid */
+/* battle screen */
 #battle-box {
     display: none;
     width: 98vw;
@@ -64,7 +64,6 @@ td {
 #battle-player {
     width: 10vw;
     height: 10vw;
-    border: 1px solid red;
     text-align: center;
     font-size: 6vw;
     position: fixed;
@@ -75,7 +74,6 @@ td {
 #battle-enemy {
     width: 10vw;
     height: 10vw;
-    border: 1px solid red;
     text-align: center;
     font-size: 6vw;
     position: fixed;
@@ -83,13 +81,76 @@ td {
     top: 10vw;
 }
 
+#battle-player-name {
+    width: 10vw;
+    height: 2vw;
+    text-align: center;
+    font-size: 2.5vh;
+    position: fixed;
+    left: 30vw;
+    top: 8vw;
+    font-weight: bold;
+}
+
+#battle-enemy-name {
+    width: 10vw;
+    height: 2vw;
+    text-align: center;
+    font-size: 2.5vh;
+    position: fixed;
+    left: 60vw;
+    top: 8vw;
+    font-weight: bold;
+}
+
+#battle-player-status {
+    width: 10vw;
+    height: 5vw;
+    text-align: center;
+    font-size: 2vh;
+    position: fixed;
+    left: 30vw;
+    top: 20vw;
+    font-weight: bold;
+}
+
+#battle-enemy-status {
+    width: 10vw;
+    height: 5vw;
+    text-align: center;
+    font-size: 2vh;
+    position: fixed;
+    left: 60vw;
+    top: 20vw;
+    font-weight: bold;
+}
+
 #battle-board {
     width: 20vw;
     height: 20vw;
-    border: 1px solid green;
-    text-align: center;
-    font-size: 6vw;
+    border: 1px solid grey;
     position: fixed;
     left: 40vw;
     top: 5vw;
+}
+
+#battle-soul {
+    width: 2vw;
+    height: 2vw;
+    text-align: center;
+    font-size: 1.5vw;
+    position: fixed;
+    left: 49vw;
+    top: 14vw;
+    font-weight: bold;
+}
+
+#battle-log {
+    width: 40vw;
+    height: 10vw;
+    border: 1px solid grey;
+    font-size: 1vw;
+    position: fixed;
+    left: 30vw;
+    top: 25vw;
 }
