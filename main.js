@@ -224,12 +224,21 @@ class Battle {
                 game.battle.playerVelY = 0;
             }
 
-            for (let bulletNumber = 0; bulletNumber < game.battle.bullets.length; bulletNumber++) {
+            game.battle.updatePlayerPos();
+
+            for (let bulletNumber = game.battle.bullets.length - 1; bulletNumber > -1; bulletNumber--) {
                 game.battle.bullets[bulletNumber].simulate();
                 game.battle.bullets[bulletNumber].render();
             }
 
-            game.battle.updatePlayerPos();
+            for (let bulletNumber = game.battle.bullets.length - 1; bulletNumber > -1; bulletNumber--) {
+                if (game.battle.bullets[bulletNumber].shouldDelete) {
+                    game.battle.bullets[bulletNumber].deleteRender();
+                    game.battle.bullets.splice(bulletNumber, 1);
+                }
+            }
+
+
 
             // TODO: simulate bullets
 
@@ -264,7 +273,7 @@ class Bullet {
         this.xvel = xv;
         this.yvel = yv;
         this.symbol = sym;
-        this.size = 10;
+        this.size = 20;
         this.shouldDelete = false;
 
         // create rendered element
@@ -280,6 +289,11 @@ class Bullet {
     simulate() {
         this.xpos += this.xvel;
         this.ypos += this.yvel;
+        let xdiff = (this.xpos + (this.size / 2)) - (game.battle.playerPosX + 5);
+        let ydiff = (this.ypos + (this.size / 2)) - (game.battle.playerPosY + 5);
+        if (xdiff**2 + ydiff**2 < this.size) {
+            this.shouldDelete = true;
+        }
     }
 
     render() {
