@@ -212,6 +212,7 @@ class Enemy extends Entity {
 
 }
 
+// UI
 function render() {
     // first we render the overworld
     game.overworld.renderOntoOverworldTable(); // this will change based on where we are when there are multiple Level classes to traverse in future, but for now, one is enough.
@@ -223,7 +224,20 @@ function render() {
 
 }
 
+function updateInventoryDisplay() {
+    for (let i = 0; i < 8; i++) {
+        if (i < game.player.inventory.length) {
+            document.getElementById("inv-td-i" + i).innerHTML = game.player.inventory[i].displayName + " x" + game.player.inventory[i].count;
+            document.getElementById("inv-td-b" + i).style.display = "inline-block";
+        } else {
+            document.getElementById("inv-td-i" + i).innerHTML = "";
+            document.getElementById("inv-td-b" + i).style.display = "none";
+        }
 
+    }
+}
+
+// Input handling
 function onKeyDown(e) {
     if (game.mode == "overworld") {
         let success = true;
@@ -341,9 +355,12 @@ function battleActionButton(action) {
     }
 }
 
+function inventoryButton(num) {
+    console.log("Not implemented yet");
+}
+
 function battleInventoryButton(num) {
     if (num < game.player.inventory.length) {
-        console.log("yep");
         game.battle.playerUseItem(num);
     }
 }
@@ -360,8 +377,10 @@ let keysDown = [false, false, false, false];
 
 generateNewTable(25);
 render();
+updateInventoryDisplay();
 
 document.addEventListener("keydown", onKeyDown);
 document.addEventListener("keyup", onKeyUp);
 
-game.startBattle("GameBox");
+// Immediately start a battle for testing
+//game.startBattle("GameBox");

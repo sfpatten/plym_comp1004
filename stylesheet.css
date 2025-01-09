@@ -67,6 +67,11 @@ button:hover {
     color: lightgrey;
 }
 
+/* Inventory */
+.inventory-td {
+    font-size: 0.75vw;
+}
+
 /* battle screen */
 #battle-box {
     display: none;
