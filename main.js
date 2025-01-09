@@ -54,6 +54,14 @@ class Game {
     constructor() {
         this.botNumber = 0;
         this.overworld = new Level(15);
+        this.player = new Player();
+    }
+}
+
+class Player {
+    constructor() {
+        this.xpos = 0;
+        this.ypos = 0;
     }
 }
 
@@ -80,7 +88,16 @@ function generateNewTable(n) {
 
 }
 
+function render() {
+    // first we render the overworld
+    game.overworld.renderOntoOverworldTable(); // this will change based on where we are when there are multiple Level classes to traverse in future, but for now, one is enough.
+
+    // now the player
+    document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].innerHTML = "@";
+
+}
+
 let game = new Game();
 
 generateNewTable(15);
-game.overworld.renderOntoOverworldTable();
+render();
