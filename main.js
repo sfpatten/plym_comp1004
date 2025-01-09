@@ -87,7 +87,7 @@ class Entity {
         // Stats - the stat is acquired with a roll.
         this.str = 0; // Strength - how much damage is dealt
         this.arm = 0; // Armour (basically constitution) - how well you can defend against attacks
-        this.dex = 0; // Dexterity - speed
+        this.dex = 10; // Dexterity - speed
         this.int = 0; // Intelligence (merged with TTRPG Wisdom)
         this.cha = 0; // Charm (TTRPG Charisma)
     }
@@ -162,6 +162,13 @@ function generateNewTable(n) {
     }
 
 
+}
+
+class Enemy extends Entity {
+    constructor(type) {
+        super.constructor();
+        this.type = type;
+    }
 }
 
 function render() {
