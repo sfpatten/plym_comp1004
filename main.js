@@ -45,6 +45,13 @@ class Level {
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
                 theTable.rows[i].cells[j].innerHTML = this.levelGrid[j][i];
+                if (this.levelGrid[j][i] == 1) {
+                    theTable.rows[i].cells[j].innerHTML = "#";
+                    theTable.rows[i].cells[j].className = "overworld-map-box";
+                } else {
+                    theTable.rows[i].cells[j].innerHTML = ":";
+                    theTable.rows[i].cells[j].className = "overworld-map-box-grey";
+                }
             }
         }
     }
@@ -95,6 +102,7 @@ function render() {
     // now the player
         // note - it assumes the player is within bounds of the map, if it is not, it will come up with an exception
     document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].innerHTML = "@";
+    document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].className = "overworld-map-box";
 
 }
 
