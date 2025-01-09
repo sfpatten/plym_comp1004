@@ -78,12 +78,11 @@ class Game {
     }
 }
 
-class Player {
+class Entity {
     constructor() {
         this.xpos = 0;
         this.ypos = 0;
     }
-
     move(dir) {
         switch (dir) {
             case 'U':
@@ -107,9 +106,11 @@ class Player {
                 }
                 break;
         }
-        render();
-    }
 
+    }
+}
+
+class Player extends Entity {
 }
 
 function generateNewTable(n) {
@@ -148,10 +149,10 @@ function render() {
 
 
 function onKeyDown(e) {
-    // TODO: make this only happen for overworld mode when more than just overworld mode exists
     if (game.mode != "overworld") {
         return;
     }
+    let success = true;
     switch (e.code) {
         // Arrow keys
         case "ArrowUp":
@@ -179,7 +180,12 @@ function onKeyDown(e) {
         case "KeyD":
             game.player.move('R');
             break;
+        default:
+            success = false; // we don't want to send an overworld update if no valid key was pressed'
     }
+    if (success) {
+            render();
+        }
 }
 
 let game = new Game();
@@ -189,4 +195,4 @@ render();
 
 document.addEventListener("keydown", onKeyDown);
 
-game.setMode("battle");
+//game.setMode("battle");
