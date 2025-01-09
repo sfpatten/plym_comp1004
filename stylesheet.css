@@ -18,6 +18,21 @@ td {
     font-size: 4vmin;
 }
 
+button {
+    text-align: center;
+    border:1px solid black;
+    background-color:white;
+    transition-duration:0.4s;
+}
+
+button:hover {
+    text-align: center;
+    border:1px solid gray;
+    color: gray;
+    background-color:white;
+    transition-duration:0.4s;
+}
+
 /* overworld grid */
 #overworld-grid {
     display: grid;
@@ -155,6 +170,25 @@ td {
     top: 26vw;
 }
 
+#battle-inventory {
+    display: none;
+    width: 20vw;
+    height: 14vw;
+    border: 1px solid grey;
+    position: fixed;
+    left: 40vw;
+    top: 5vw;
+}
+
+#battle-inventory-table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.battle-inventory-td {
+    font-size: 0.75vw;
+}
+
 #battle-actions {
     width: 20vw;
     height: 5vw;
@@ -166,6 +200,18 @@ td {
     font-weight: bold;
 }
 
+#battle-attack-button {
+    display:inline-block;
+}
+
+#battle-item-button {
+    display:inline-block;
+}
+
+#battle-return-button {
+    display:none;
+}
+
 .battle-bullet {
     width: 4vw;
     height: 4vw;
@@ -175,3 +221,4 @@ td {
     left: 49vw;
     top: 14vw;
 }
+

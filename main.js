@@ -17,8 +17,8 @@ class Level {
         this.generate("temp");
     }
 
-    generate(type) {
-        if (type = "temp") {
+    generate(genType) {
+        if (genType == "temp") {
             // temp - add two random horizontal and one veritcal wall
             for (let i =0; i < 2; i++) {
                 let y = Math.floor(Math.random() * (this.size - 4)) + 2;
@@ -153,6 +153,7 @@ class Player extends Entity {
         this.arm = 5;
         this.maxHP = 20;
         this.HP = 20;
+        this.inventory = [new Item("apple"), new Item("toast"), new Item("raisins")];
     }
 }
 
@@ -333,7 +334,9 @@ function battleActionButton(action) {
         if (action == 1) {
             game.battle.playerAttack();
         } else if (action == 2) {
-            game.battle.playerAttack(); // TODO: create item usage menu
+            game.battle.displayBattleInventory()
+        } else if (action == 3) {
+            game.battle.hideBattleInventory()
         }
     }
 }
@@ -354,4 +357,4 @@ render();
 document.addEventListener("keydown", onKeyDown);
 document.addEventListener("keyup", onKeyUp);
 
-game.startBattle("Calculator");
+game.startBattle("GameBox");

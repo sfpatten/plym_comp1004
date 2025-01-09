@@ -49,6 +49,7 @@ class Battle {
     }
 
     playerAttack() {
+        game.battle.hideBattleInventory();
         let damage = game.player.rollStr();
         damage -= this.enemy.rollArm();
         if (damage < 1) {
@@ -65,6 +66,11 @@ class Battle {
 
         setTimeout(this.enemyTurnStart, 1500);
         setTimeout(this.playerAttackAnimationFrame, 50, 0);
+    }
+
+    playerUseItem(number) {
+
+        game.battle.hideBattleInventory();
     }
 
     enemyAttack() {
@@ -460,6 +466,31 @@ class Battle {
         }
     }
 
+    displayBattleInventory() {
+        for (let i = 0; i < 8; i++) {
+            console.log(i);
+            if (i < game.player.inventory.length) {
+                document.getElementById("battle-td-i" + i).innerHTML = game.player.inventory[i].displayName;
+                document.getElementById("battle-td-b" + i).style.display = "inline-block";
+            } else {
+                document.getElementById("battle-td-i" + i).innerHTML = "";
+                document.getElementById("battle-td-b" + i).style.display = "none";
+            }
+
+        }
+        document.getElementById("battle-inventory").style.display = "block";
+        document.getElementById("battle-return-button").style.display = "inline-block";
+        document.getElementById("battle-attack-button").style.display = "none";
+        document.getElementById("battle-item-button").style.display = "none";
+
+    }
+
+    hideBattleInventory() {
+        document.getElementById("battle-inventory").style.display = "none";
+        document.getElementById("battle-attack-button").style.display = "inline-block";
+        document.getElementById("battle-item-button").style.display = "inline-block";
+        document.getElementById("battle-return-button").style.display = "none";
+    }
 }
 
 class Bullet {

@@ -67,14 +67,47 @@
       <div id="battle-soul">@</div>
       <div id="battle-log">BATTLE LOG GOES HERE</div>
 
+      <div id="battle-inventory">
+        <h1>INVENTORY</h1>
+        <table id="battle-inventory-table">
+          <tr>
+            <td class="battle-inventory-td" id="battle-td-i0">Item name 1</td>
+            <td class="battle-inventory-td" id="battle-td-b0"><button>USE</button></td>
+            <td class="battle-inventory-td" id="battle-td-i1">Item name 2</td>
+            <td class="battle-inventory-td" id="battle-td-b1"><button>USE</button></td>
+          </tr>
+          <tr>
+            <td class="battle-inventory-td" id="battle-td-i2">Item name 3</td>
+            <td class="battle-inventory-td" id="battle-td-b2"><button>USE</button></td>
+            <td class="battle-inventory-td" id="battle-td-i3">Item name 4</td>
+            <td class="battle-inventory-td" id="battle-td-b3"><button>USE</button></td>
+          </tr>
+          <tr>
+            <td class="battle-inventory-td" id="battle-td-i4">Item name 5</td>
+            <td class="battle-inventory-td" id="battle-td-b4"><button>USE</button></td>
+            <td class="battle-inventory-td" id="battle-td-i5">Item name 6</td>
+            <td class="battle-inventory-td" id="battle-td-b5"><button>USE</button></td>
+          </tr>
+          <tr>
+            <td class="battle-inventory-td" id="battle-td-i6">Item name 7</td>
+            <td class="battle-inventory-td" id="battle-td-b6"><button>USE</button></td>
+            <td class="battle-inventory-td" id="battle-td-i7">Item name 8</td>
+            <td class="battle-inventory-td" id="battle-td-b7"><button>USE</button></td>
+          </tr>
+        </table>
+
+      </div>
+
       <div id="battle-actions">
-        <button onclick="battleActionButton(1)">Attack</button>
-        <button onclick="battleActionButton(2)">Item</button>
+        <button onclick="battleActionButton(1)" id="battle-attack-button">Attack</button>
+        <button onclick="battleActionButton(2)" id="battle-item-button">Item</button>
+        <button onclick="battleActionButton(3)" id="battle-return-button">Go back</button>
       </div>
     </div>
 
     <!-- script here - you need the elements to exist before you can manipulate them -->
     <script src="battle.js"></script>
+    <script src="item.js"></script>
     <script src="main.js"></script> <!-- Main must be loaded last as it depends on the other classes being declared -->
 
   </body>
