@@ -34,7 +34,7 @@ class Battle {
 
     playerTurnStart() {
         // clear bullets
-        // remove each div
+            // remove each bullet div
         for (let bulletNumber = 0; bulletNumber < game.battle.bullets.length; bulletNumber++) {
                 game.battle.bullets[bulletNumber].deleteRender();
             }
@@ -66,8 +66,15 @@ class Battle {
         this.enemy.HP -= damage;
         this.updateHPDisplays();
 
-        setTimeout(this.enemyTurnStart, 1500);
-        setTimeout(this.playerAttackAnimationFrame, 50, 0);
+        if (this.enemy.HP > 0) {
+            setTimeout(this.enemyTurnStart, 1500);
+            setTimeout(this.playerAttackAnimationFrame, 50, 0, true);
+        } else {
+            setTimeout(this.playerAttackAnimationFrame, 50, 0, false);
+            setTimeout(this.end, 2000);
+            //this.end();
+        }
+
     }
     playerUseItem(number) {
         if (number >= game.player.inventory.length) { // ensure we aren't dealing with a nonexistent item
@@ -97,7 +104,6 @@ class Battle {
 
         setTimeout(this.enemyTurnStart, 850);
         setTimeout(game.battle.playerShrinkAnimationFrame, 350, 0);
-        //this.enemyTurnStart();
     }
 
     enemyAttack() {
@@ -147,13 +153,15 @@ class Battle {
         game.battle.enemyBulletPattern();
     }
 
-    playerAttackAnimationFrame(frame) {
+    playerAttackAnimationFrame(frame, followByShrink) {
         let xpos = (30 + (Math.sin((frame * 3.14) / 10)) * 25);
         document.getElementById("battle-player").style.left = xpos.toString() + "vw";
         if (frame < 10) {
-            setTimeout(game.battle.playerAttackAnimationFrame, 50, frame + 1);
+            setTimeout(game.battle.playerAttackAnimationFrame, 50, frame + 1, followByShrink);
         } else {
-            setTimeout(game.battle.playerShrinkAnimationFrame, 350, 0);
+            if (followByShrink) {
+                setTimeout(game.battle.playerShrinkAnimationFrame, 350, 0);
+            }
         }
     }
 
