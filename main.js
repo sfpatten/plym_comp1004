@@ -153,7 +153,7 @@ class Player extends Entity {
         this.arm = 5;
         this.maxHP = 20;
         this.HP = 20;
-        this.inventory = [new Item("apple"), new Item("toast"), new Item("raisins")];
+        this.inventory = [new Item("apple", 2), new Item("toast", 1), new Item("raisins", 1)];
     }
 }
 
@@ -338,6 +338,13 @@ function battleActionButton(action) {
         } else if (action == 3) {
             game.battle.hideBattleInventory()
         }
+    }
+}
+
+function battleInventoryButton(num) {
+    if (num < game.player.inventory.length) {
+        console.log("yep");
+        game.battle.playerUseItem(num);
     }
 }
 

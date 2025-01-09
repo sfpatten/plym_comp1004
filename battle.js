@@ -45,7 +45,9 @@ class Battle {
         document.getElementById("battle-soul").style.display="none";
         // display action buttons
         document.getElementById("battle-actions").style.display="block";
-        document.getElementById("battle-player").style.display="block";
+        document.getElementById("battle-player").style.display="block"
+
+        this.hideBattleInventory(); // Show action buttons
     }
 
     playerAttack() {
@@ -67,10 +69,35 @@ class Battle {
         setTimeout(this.enemyTurnStart, 1500);
         setTimeout(this.playerAttackAnimationFrame, 50, 0);
     }
-
     playerUseItem(number) {
+        if (number >= game.player.inventory.length) { // ensure we aren't dealing with a nonexistent item
+            return;
+        }
+
+        // hide action buttons
+        document.getElementById("battle-actions").style.display="none";
+
+        if (game.player.inventory[number].consumable) {
+            game.player.HP += game.player.inventory[number].consumeHP;
+            if (game.player.HP > game.player.maxHP) {
+                game.player.HP = game.player.maxHP;
+            }
+            this.updateHPDisplays();
+            document.getElementById("battle-log").innerHTML = game.player.inventory[number].useText;
+        }
+
+        // Decrease the number of items
+        if (game.player.inventory[number].count < 2) {
+            game.player.inventory.splice(number, 1);
+        } else {
+            game.player.inventory[number].count --;
+        }
 
         game.battle.hideBattleInventory();
+
+        setTimeout(this.enemyTurnStart, 850);
+        setTimeout(game.battle.playerShrinkAnimationFrame, 350, 0);
+        //this.enemyTurnStart();
     }
 
     enemyAttack() {
@@ -450,7 +477,6 @@ class Battle {
                 break; // End of GameBox option switch
             case "Optical Disk":
                 // Attack - roll wheels
-                console.log("hello");
                 this.battleFrames = 300;
                 for (let x = 0; x < 10; x++) {
                     let r = 10 + Math.random() * 80 // pick a random height
@@ -468,9 +494,8 @@ class Battle {
 
     displayBattleInventory() {
         for (let i = 0; i < 8; i++) {
-            console.log(i);
             if (i < game.player.inventory.length) {
-                document.getElementById("battle-td-i" + i).innerHTML = game.player.inventory[i].displayName;
+                document.getElementById("battle-td-i" + i).innerHTML = game.player.inventory[i].displayName + " x" + game.player.inventory[i].count;
                 document.getElementById("battle-td-b" + i).style.display = "inline-block";
             } else {
                 document.getElementById("battle-td-i" + i).innerHTML = "";
