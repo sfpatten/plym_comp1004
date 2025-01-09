@@ -152,5 +152,26 @@ td {
     font-size: 1vw;
     position: fixed;
     left: 30vw;
-    top: 25vw;
+    top: 26vw;
+}
+
+#battle-actions {
+    width: 20vw;
+    height: 5vw;
+    text-align: center;
+    font-size: 2vh;
+    position: fixed;
+    left: 40vw;
+    top: 20vw;
+    font-weight: bold;
+}
+
+.battle-bullet {
+    width: 4vw;
+    height: 4vw;
+    text-align: center;
+    font-size: 3vw;
+    position: fixed;
+    left: 49vw;
+    top: 14vw;
 }

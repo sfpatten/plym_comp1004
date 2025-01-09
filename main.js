@@ -95,6 +95,7 @@ class Battle {
         this.playerPosY = 0;
         this.playerVelX = 0;
         this.playerVelY = 0;
+        this.bullets = [];
     }
 
     start() {
@@ -131,18 +132,49 @@ class Battle {
     }
 
     enemyTurnStart() {
+        this.playerPosX = 45;
+        this.playerPosY = 45;
+        this.playerVelX = 0;
+        this.palyerVelY = 0;
+
+        this.battleFrames = 360;
+
+        this.updatePlayerPos();
+
         // show monster attack stuff
         document.getElementById("battle-board").style.display="block";
         document.getElementById("battle-soul").style.display="block";
         // hide action buttons
         document.getElementById("battle-actions").style.display="none";
-
-        this.battleFrames = 120;
         this.timeout = setTimeout(this.runDefendFrame, 50);
-        //this.runDefendFrame();
+
+        for (let x = 0; x < 8; x++) {
+            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 80, 0, 2, "standard", "?"));
+        }
+
+        for (let x = 0; x < 8; x++) {
+            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 180, 0, 2, "standard", "?"));
+        }
+
+        for (let x = 0; x < 8; x++) {
+            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 280, 0, 2, "standard", "?"));
+        }
+
+        for (let x = 0; x < 8; x++) {
+            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 380, 0, 2, "standard", "?"));
+        }
+
+        for (let x = 0; x < 8; x++) {
+            this.bullets.push(new Bullet(20 + x * 10 ,x * -5 - 480, 0, 2, "standard", "?"));
+        }
+
+        for (let x = 0; x < 8; x++) {
+            this.bullets.push(new Bullet(70 - x * 10 ,x * -5 - 580, 0, 2, "standard", "?"));
+        }
     }
 
     runDefendFrame() {
+        // NOTE: because of JS's quirks, the "this" keyword does not work, hence the constant convoluted self-referencing.
         if (game.battle.battleFrames > 1) {
             game.battle.updateHPDisplays();
 
@@ -183,13 +215,16 @@ class Battle {
                 game.battle.playerVelY = 0;
             }
 
+            for (let bulletNumber = 0; bulletNumber < game.battle.bullets.length; bulletNumber++) {
+                game.battle.bullets[bulletNumber].simulate();
+                game.battle.bullets[bulletNumber].render();
+            }
+
+            game.battle.updatePlayerPos();
+
             // TODO: simulate bullets
 
-            let vwx = 40 + (game.battle.playerPosX / 5)
-            let vwy = 5 + (game.battle.playerPosY / 5)
 
-            document.getElementById("battle-soul").style.left = vwx.toString() + "vw";
-            document.getElementById("battle-soul").style.top = vwy.toString() + "vw";
 
             // schedule next one
             game.battle.battleFrames -= 1;
@@ -202,6 +237,47 @@ class Battle {
     end() {
         game.setMode("overworld");
         // TODO: add functionality for this
+    }
+
+    updatePlayerPos() {
+        let vwx = 40 + (game.battle.playerPosX / 5)
+        let vwy = 5 + (game.battle.playerPosY / 5)
+
+        document.getElementById("battle-soul").style.left = vwx.toString() + "vw";
+        document.getElementById("battle-soul").style.top = vwy.toString() + "vw";
+    }
+}
+
+class Bullet {
+    constructor(xp, yp, xv, yv, type, sym) {
+        this.xpos = xp;
+        this.ypos = yp;
+        this.xvel = xv;
+        this.yvel = yv;
+        this.symbol = sym;
+        this.size = 10;
+        this.shouldDelete = false;
+
+        // create rendered element
+        this.bulletDiv = document.createElement("div");
+        this.bulletDiv.innerHTML = sym;
+        this.bulletDiv.className = "battle-bullet";
+        document.getElementById("battle-box").appendChild(this.bulletDiv);
+
+
+    }
+
+    simulate() {
+        this.xpos += this.xvel;
+        this.ypos += this.yvel;
+    }
+
+    render() {
+        let vwx = 40 + (this.xpos / 5)
+        let vwy = 5 + (this.ypos / 5)
+
+        this.bulletDiv.style.left = vwx.toString() + "vw";
+        this.bulletDiv.style.top = vwy.toString() + "vw";
     }
 }
 
