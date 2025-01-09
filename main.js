@@ -63,6 +63,7 @@ class Game {
         this.overworld = new Level(25);
         this.player = new Player();
         this.mode = "overworld";
+        this.battle = null;
     }
 
     setMode(newMode) {
@@ -75,6 +76,132 @@ class Game {
         } else if (newMode == "battle") {
             document.getElementById("battle-box").style.display="block";
         }
+    }
+
+    startBattle(enemyType) {
+        this.setMode("battle");
+        this.battle = new Battle(enemyType);
+        this.battle.start();
+    }
+}
+
+class Battle {
+    constructor(enemyType) {
+        this.enemy = new Enemy(enemyType);
+        this.waitingForPlayer = false;
+        this.battleFrames = 0; // frames left of battle
+        this.timeout = null;
+        this.playerPosX = 0;
+        this.playerPosY = 0;
+        this.playerVelX = 0;
+        this.playerVelY = 0;
+    }
+
+    start() {
+        this.updateHPDisplays();
+        this.updateNameDisplays();
+        this.playerTurnStart();
+        resetKeysDown();
+    }
+
+    updateHPDisplays() {
+        document.getElementById("battle-player-status").innerHTML = "HP: " + game.player.HP + "/" + game.player.maxHP;
+        document.getElementById("battle-enemy-status").innerHTML = "HP: " + this.enemy.HP + "/" + this.enemy.maxHP;
+    }
+
+    updateNameDisplays() {
+        document.getElementById("battle-player-name").innerHTML =  game.player.name;
+        document.getElementById("battle-enemy-name").innerHTML = this.enemy.type;
+        document.getElementById("battle-enemy").innerHTML = this.enemy.type[0];
+    }
+
+    playerTurnStart() {
+        // hide monster attack stuff
+        document.getElementById("battle-board").style.display="none";
+        document.getElementById("battle-soul").style.display="none";
+        // display action buttons
+        document.getElementById("battle-actions").style.display="block";
+    }
+
+    playerAttack() {
+        this.enemy.HP -= game.player.rollStr();
+        this.updateHPDisplays();
+
+        this.enemyTurnStart();
+    }
+
+    enemyTurnStart() {
+        // show monster attack stuff
+        document.getElementById("battle-board").style.display="block";
+        document.getElementById("battle-soul").style.display="block";
+        // hide action buttons
+        document.getElementById("battle-actions").style.display="none";
+
+        this.battleFrames = 120;
+        this.timeout = setTimeout(this.runDefendFrame, 50);
+        //this.runDefendFrame();
+    }
+
+    runDefendFrame() {
+        if (game.battle.battleFrames > 1) {
+            game.battle.updateHPDisplays();
+
+            // simulate player
+            if (keysDown[0]) {
+                game.battle.playerVelY -= 1
+            }
+            if (keysDown[1]) {
+                game.battle.playerVelY += 1
+            }
+            if (keysDown[2]) {
+                game.battle.playerVelX -= 1
+            }
+            if (keysDown[3]) {
+                game.battle.playerVelX += 1
+            }
+
+                // update player's position and velocity
+            game.battle.playerPosX += game.battle.playerVelX;
+            game.battle.playerPosY += game.battle.playerVelY;
+
+            game.battle.playerVelX *= 0.5;
+            game.battle.playerVelY *= 0.5;
+
+                // wall collision
+            if (game.battle.playerPosX < 0) {
+                game.battle.playerPosX = 0;
+                game.battle.playerVelX = 0;
+            } else if (game.battle.playerPosX > 90) {
+                game.battle.playerPosX = 90;
+                game.battle.playerVelX = 0;
+            }
+            if (game.battle.playerPosY < 0) {
+                game.battle.playerPosY = 0;
+                game.battle.playerVelY = 0;
+            } else if (game.battle.playerPosY > 90) {
+                game.battle.playerPosY = 90;
+                game.battle.playerVelY = 0;
+            }
+
+            // TODO: simulate bullets
+
+            let vwx = 40 + (game.battle.playerPosX / 5)
+            let vwy = 5 + (game.battle.playerPosY / 5)
+
+            document.getElementById("battle-soul").style.left = vwx.toString() + "vw";
+            document.getElementById("battle-soul").style.top = vwy.toString() + "vw";
+
+            // schedule next one
+            game.battle.battleFrames -= 1;
+            game.battle.timeout = setTimeout(game.battle.runDefendFrame, 25);
+        } else {
+            game.battle.playerTurnStart();
+        }
+    }
+
+    end() {
+        game.setMode("overworld");
+        // TODO: add functionality for this
     }
 }
 
@@ -139,6 +266,10 @@ class Entity {
 }
 
 class Player extends Entity {
+    constructor() {
+        super();
+        this.name = "Undefined";
+    }
 }
 
 function generateNewTable(n) {
@@ -166,9 +297,17 @@ function generateNewTable(n) {
 
 class Enemy extends Entity {
     constructor(type) {
-        super.constructor();
+        super();
         this.type = type;
+
+        if (this.type == "Slime") {
+            this.attackTime = 5000;
+        } else {
+            this.attackTime = 5000;
+        }
     }
+
+
 }
 
 function render() {
@@ -184,50 +323,134 @@ function render() {
 
 
 function onKeyDown(e) {
-    if (game.mode != "overworld") {
-        return;
-    }
-    let success = true;
-    switch (e.code) {
+    if (game.mode == "overworld") {
+        let success = true;
+        switch (e.code) {
         // Arrow keys
-        case "ArrowUp":
-            game.player.move('U');
-            break;
-        case "ArrowDown":
-            game.player.move('D');
-            break;
-        case "ArrowLeft":
-            game.player.move('L');
-            break;
-        case "ArrowRight":
-            game.player.move('R');
-            break;
-        // WASD keys
-        case "KeyW":
-            game.player.move('U');
-            break;
-        case "KeyS":
-            game.player.move('D');
-            break;
-        case "KeyA":
-            game.player.move('L');
-            break;
-        case "KeyD":
-            game.player.move('R');
-            break;
-        default:
-            success = false; // we don't want to send an overworld update if no valid key was pressed'
-    }
-    if (success) {
+            case "ArrowUp":
+                game.player.move('U');
+                break;
+            case "ArrowDown":
+                game.player.move('D');
+                break;
+            case "ArrowLeft":
+                game.player.move('L');
+                break;
+            case "ArrowRight":
+                game.player.move('R');
+                break;
+            // WASD keys
+            case "KeyW":
+                game.player.move('U');
+                break;
+            case "KeyS":
+                game.player.move('D');
+                break;
+            case "KeyA":
+                game.player.move('L');
+                break;
+            case "KeyD":
+                game.player.move('R');
+                break;
+            default:
+                success = false; // we don't want to send an overworld update if no valid key was pressed'
+        }
+        if (success) {
             render();
         }
+    } else if (game.mode == "battle") {
+        // TODO: contain this in a battle function
+        if (game.battle.battleFrames > 0) {
+            switch (e.code) {
+                case "ArrowUp":
+                    keysDown[0] = true;
+                    break;
+                case "ArrowDown":
+                    keysDown[1] = true;
+                    break;
+                case "ArrowLeft":
+                    keysDown[2] = true;
+                    break;
+                case "ArrowRight":
+                    keysDown[3] = true;
+                    break;
+                // WASD keys
+                case "KeyW":
+                    keysDown[0] = true;
+                    break;
+                case "KeyS":
+                    keysDown[1] = true;
+                    break;
+                case "KeyA":
+                    keysDown[2] = true;
+                    break;
+                case "KeyD":
+                    keysDown[3] = true;
+                    break;
+            }
+        }
+    }
+}
+
+function onKeyUp(e) {
+    if (game.mode == "battle") {
+        // TODO: contain this in a battle function
+        if (game.battle.battleFrames > 0) {
+            switch (e.code) {
+                case "ArrowUp":
+                    keysDown[0] = false;
+                    break;
+                case "ArrowDown":
+                    keysDown[1] = false;
+                    break;
+                case "ArrowLeft":
+                    keysDown[2] = false;
+                    break;
+                case "ArrowRight":
+                    keysDown[3] = false;
+                    break;
+                // WASD keys
+                case "KeyW":
+                    keysDown[0] = false;
+                    break;
+                case "KeyS":
+                    keysDown[1] = false;
+                    break;
+                case "KeyA":
+                    keysDown[2] = false;
+                    break;
+                case "KeyD":
+                    keysDown[3] = false;
+                    break;
+            }
+        }
+    }
+}
+
+function battleActionButton(action) {
+    if (game.mode = "battle") {
+        if (action == 1) {
+            game.battle.playerAttack();
+        } else if (action == 2) {
+            game.battle.playerAttack(); // TODO: create item usage menu
+        }
+    }
+}
+
+function resetKeysDown() {
+    for (let x = 0; x < 4; x++) {
+        keysDown[x] = false;
+    }
 }
 
 let game = new Game();
+
+let keysDown = [false, false, false, false];
 
 generateNewTable(25);
 render();
 
 document.addEventListener("keydown", onKeyDown);
+document.addEventListener("keyup", onKeyUp);
 
-//game.setMode("battle");
+game.startBattle("Slime");
