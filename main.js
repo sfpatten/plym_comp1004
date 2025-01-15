@@ -80,6 +80,7 @@ class Level {
 class Game {
     constructor() {
         this.botNumber = 0;
+        this.spareBots = {};
         this.overworld = new Level(25);
         this.player = new Player();
         this.mode = "overworld";
@@ -175,6 +176,8 @@ class Player extends Entity {
         this.maxHP = 20;
         this.HP = 20;
         this.inventory = [new Item("apple", 2), new Item("toast", 1), new Item("raisins", 1)];
+        this.dream = "friendship";
+        this.favFood = "apple";
     }
 }
 
@@ -205,6 +208,20 @@ class Enemy extends Entity {
             }
         }
         this.HP = this.maxHP; // set their HP to full
+    }
+}
+
+class SpareBot { // A separate class to reduce memory usage - they would be structs if they existed in JS, hence not appearing on class diagrams
+    constructor(name, maxHP, str, arm, dex, int, cha, dream, favFood) {
+        this.name = name;
+        this.maxHP = maxHP;
+        this.str = str;
+        this.arm = arm;
+        this.dex = dex;
+        this.int = int;
+        this.cha = cha;
+        this.dream = dream;
+        this.favFood = favFood;
     }
 }
 

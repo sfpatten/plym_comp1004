@@ -599,8 +599,6 @@ class Bullet {
         // add to document
         document.getElementById("battle-box").appendChild(this.bulletDiv);
         this.render();
-
-
     }
 
     simulate() {
