@@ -80,7 +80,12 @@ class Level {
 class Game {
     constructor() {
         this.botNumber = 0;
-        this.spareBots = {};
+        this.spareBots = [ // A temporary list of instantiated SpareBots
+            new SpareBot("Chappell Roan", 20, 4, 6, 8, 2, 5, "friendship", "apple"),
+            new SpareBot("Cecil Baldwin", 20, 1, 9, 6, 3, 6, "friendship", "biscuit"),
+            new SpareBot("Robot 3", 20, 5, 5, 2, 11, 2, "revenge", "teabag"),
+            new SpareBot("Peter Lukas from The Magnus Archives", 20, 3, 7, 1, 4, 10, "money", "soap"),
+        ];
         this.overworld = new Level(25);
         this.player = new Player();
         this.mode = "overworld";
@@ -115,7 +120,7 @@ class Entity {
         // Stats - the stat is acquired with a roll.
         this.str = 0; // Strength - how much damage is dealt
         this.arm = 0; // Armour (basically constitution) - how well you can defend against attacks
-        this.dex = 10; // Dexterity - speed
+        this.dex = 0; // Dexterity - speed
         this.int = 0; // Intelligence (merged with TTRPG Wisdom)
         this.cha = 0; // Charm (TTRPG Charisma)
     }
@@ -170,7 +175,7 @@ class Entity {
 class Player extends Entity {
     constructor() {
         super();
-        this.name = "Undefined";
+        this.name = "Robot 1";
         this.str = 5;
         this.arm = 5;
         this.maxHP = 20;
