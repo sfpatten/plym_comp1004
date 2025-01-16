@@ -109,6 +109,26 @@ class Game {
         this.battle = new Battle(enemyType);
         this.battle.start();
     }
+
+    robotDied() {
+        if (this.botNumber < 4) {
+            // TODO: death popup window
+            this.player.name = this.spareBots[0].name;
+            this.player.maxHP = this.spareBots[0].maxHP;
+            this.player.HP = this.spareBots[0].maxHP;
+            this.player.str = this.spareBots[0].str;
+            this.player.arm = this.spareBots[0].arm;
+            this.player.dex = this.spareBots[0].dex;
+            this.player.int = this.spareBots[0].int;
+            this.player.cha = this.spareBots[0].cha;
+            this.player.dream = this.spareBots[0].dream;
+            this.player.favFood = this.spareBots[0].favFood;
+            this.botNumber++;
+            this.spareBots.splice(0, 1);
+        } else { // game over - to do
+            console.log("game over");
+        }
+    }
 }
 
 class Entity {

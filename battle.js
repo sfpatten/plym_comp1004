@@ -74,7 +74,6 @@ class Battle {
             setTimeout(this.playerAttackAnimationFrame, 50, 0, false);
             this.enemyDefeatedFrame(0)
             setTimeout(this.end, 2000);
-            //this.end();
         }
 
     }
@@ -134,7 +133,16 @@ class Battle {
             damage = 1;
         }
         game.player.HP -= damage;
-        this.playerImmunityFrames = 20;
+
+        if (game.player.HP > 0) {
+            this.playerImmunityFrames = 20;
+        } else {
+            this.battleFrames = 0;
+            game.robotDied();
+            this.updateNameDisplays();
+            this.updateHPDisplays();
+        }
+
     }
 
     enemyTurnStart() {
