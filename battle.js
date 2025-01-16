@@ -581,11 +581,11 @@ class Bullet {
 
         // Bullet types
         if (this.type == "standard") {
-            this.size = 20;
+            this.size = 25;
         } else if (this.type == "big") {
             this.size = 40;
         } else if (this.type == "revolving") {
-            this.size = 20;
+            this.size = 25;
             this.xcpos = xp; // needed to differentiate the center from the relative position
             this.ycpos = yp;
         } else if (this.type == "small-revolving") {
@@ -602,7 +602,7 @@ class Bullet {
         // render based on size - this doesn't change by frame
         this.bulletDiv.style.width = (this.size / 5).toString() + "vw";
         this.bulletDiv.style.height = (this.size / 5).toString() + "vw";
-        this.bulletDiv.style.fontSize = (this.size / 6.6).toString() + "vw";
+        this.bulletDiv.style.fontSize = (this.size / 8).toString() + "vw";
 
         // add to document
         document.getElementById("battle-box").appendChild(this.bulletDiv);
