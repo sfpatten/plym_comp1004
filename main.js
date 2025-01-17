@@ -19,6 +19,9 @@ class Level {
         // Encounters list
         this.encounters = [
             new Encounter(24, 24, "GameBox"),
+            new Encounter(12, 24, "GameBox"),
+            new Encounter(24, 12, "GameBox"),
+            new Encounter(12, 12, "GameBox"),
             new Encounter(0, 24, "Calculator"),
             new Encounter(24, 0, "Optical Disk")
         ];
@@ -96,11 +99,14 @@ class Game {
         // i need to make a method that hides EVERYTHING and then unhides the correct thing
         document.getElementById("overworld-grid").style.display="none";
         document.getElementById("battle-box").style.display="none";
+        document.getElementById("death-screen-box").style.display="none";
         if (newMode == "overworld") {
             document.getElementById("overworld-grid").style.display="grid";
             this.mode = "overworld";
         } else if (newMode == "battle") {
             document.getElementById("battle-box").style.display="block";
+        } else if (newMode == "death") {
+            document.getElementById("death-screen-box").style.display="block";
         }
     }
 
@@ -126,7 +132,12 @@ class Game {
             this.botNumber++;
             this.spareBots.splice(0, 1);
         } else { // game over - to do
+            if (this.mode == "battle") {
+                this.battle.end();
+            }
+            this.setMode("death");
             console.log("game over");
+
         }
     }
 }

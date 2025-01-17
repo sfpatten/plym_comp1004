@@ -1,11 +1,18 @@
+body {
+    margin: 1vh 1vw;
+}
 
 /* Basic font settings */
-p, h1, li, td, div {
+p, h1, h2, li, td, div {
     font-family: monospace;
 }
 
 h1 {
     font-size: 2.5vh;
+}
+
+h2 {
+    font-size: 2vh;
 }
 
 p, td, li {
@@ -14,15 +21,16 @@ p, td, li {
 
 
 td {
-    line-height: 5vmin;
     font-size: 4vmin;
+    line-height: 5vmin;
 }
 
 button {
+    font-size: 1.5vh;
     text-align: center;
     border:1px solid black;
     background-color:white;
-    transition-duration:0.4s;
+    transition: border, color 0.4s;
 }
 
 button:hover {
@@ -30,13 +38,13 @@ button:hover {
     border:1px solid gray;
     color: gray;
     background-color:white;
-    transition-duration:0.4s;
+    transition: border, color 0.4s;
 }
 
 /* overworld grid */
 #overworld-grid {
     display: grid;
-    grid-template-columns: 20vw 58vw 20vw;
+    grid-template-columns: 20vw 57vw 20vw;
     grid-template-rows: 98vh;
     grid-gap: 0.5vw;
 }
@@ -75,7 +83,7 @@ button:hover {
 /* battle screen */
 #battle-box {
     display: none;
-    width: 98vw;
+    width: 97vw;
     height: 96vh;
     padding: 1vmin;
     border:1px solid grey;
@@ -227,3 +235,11 @@ button:hover {
     top: 14vw;
 }
 
+/* death screen */
+#death-screen-box {
+    display: none;
+    width: 98vw;
+    height: 96vh;
+    padding: 1vmin;
+    border:1px solid grey;
+}
