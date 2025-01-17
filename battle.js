@@ -345,11 +345,11 @@ class Battle {
                 // Attack - rain down calculator symbols
                 this.battleFrames = 400;
                 this.save = "int";
-                for (let i = 0; i < 28; i++) { // Create 28 bullets
+                for (let i = 0; i < 56; i++) { // Create 28 bullets
                     let randomX = 10 + Math.random() * 80 // pick a random horizontal position
                     let randomNumSymbol = "0123456789+-×÷=()%"[Math.floor(Math.random() * 18)]
                     let randomRot = (Math.random() * 6) - 3
-                    this.bullets.push(new Bullet(randomX, -100, 0, 4, 0, randomRot, "standard", randomNumSymbol, i * 20, 400));
+                    this.bullets.push(new Bullet(randomX, -100, 0, 4, 0, randomRot, "standard", randomNumSymbol, i * 10, 400));
 
                 }
 
