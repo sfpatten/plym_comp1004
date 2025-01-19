@@ -41,6 +41,15 @@ button:hover {
     transition: border, color 0.4s;
 }
 
+/* common */
+.screen-box {
+    display: none;
+    width: 97vw;
+    height: 95vh;
+    padding: 1vmin;
+    border:1px solid grey;
+}
+
 /* overworld grid */
 #overworld-grid {
     display: grid;
@@ -81,14 +90,6 @@ button:hover {
 }
 
 /* battle screen */
-#battle-box {
-    display: none;
-    width: 97vw;
-    height: 96vh;
-    padding: 1vmin;
-    border:1px solid grey;
-}
-
 #battle-player {
     width: 10vw;
     height: 10vw;
@@ -233,13 +234,4 @@ button:hover {
     position: fixed;
     left: 49vw;
     top: 14vw;
-}
-
-/* death screen */
-#death-screen-box {
-    display: none;
-    width: 98vw;
-    height: 96vh;
-    padding: 1vmin;
-    border:1px solid grey;
 }
