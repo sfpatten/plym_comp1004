@@ -484,7 +484,6 @@ function onKeyDown(e) {
 
 function onKeyUp(e) {
     if (game.mode == "battle") {
-        // TODO: contain this in a battle function
         if (game.battle.battleFrames > 0) {
             switch (e.code) {
                 case "ArrowUp":
@@ -514,6 +513,12 @@ function onKeyUp(e) {
                     break;
             }
         }
+    }
+}
+
+function resetKeysUp() {
+    for (let i = 0; i < 4; i++) {
+        keysDown[i] = false;
     }
 }
 

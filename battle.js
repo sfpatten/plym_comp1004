@@ -146,6 +146,7 @@ class Battle {
     }
 
     enemyTurnStart() {
+        resetKeysDown();
         // show monster attack stuff and hide player
         document.getElementById("battle-player").style.display="none";
         document.getElementById("battle-board").style.display="block";
