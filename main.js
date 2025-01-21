@@ -83,15 +83,10 @@ class Level {
 class Game {
     constructor() {
         this.botNumber = 0;
-        this.spareBots = [ // A temporary list of instantiated SpareBots
-            new SpareBot("Chappell Roan", 20, 4, 6, 8, 2, 5, "friendship", "apple"),
-            new SpareBot("Cecil Baldwin", 20, 1, 9, 6, 3, 6, "friendship", "biscuit"),
-            new SpareBot("Robot 3", 20, 5, 5, 2, 11, 2, "revenge", "teabag"),
-            new SpareBot("Peter Lukas from The Magnus Archives", 20, 3, 7, 1, 4, 10, "money", "soap"),
-        ];
+        this.spareBots = [];
         this.overworld = new Level(25);
         this.player = new Player();
-        this.mode = "overworld";
+        this.mode = "start";
         this.battle = null;
     }
 
@@ -100,6 +95,7 @@ class Game {
         document.getElementById("overworld-grid").style.display="none";
         document.getElementById("battle-box").style.display="none";
         document.getElementById("death-screen-box").style.display="none";
+        document.getElementById("start-screen-box").style.display="none";
         if (newMode == "overworld") {
             document.getElementById("overworld-grid").style.display="grid";
             this.mode = "overworld";
@@ -107,6 +103,8 @@ class Game {
             document.getElementById("battle-box").style.display="block";
         } else if (newMode == "death") {
             document.getElementById("death-screen-box").style.display="block";
+        } else if (newMode == "start") {
+            document.getElementById("start-screen-box").style.display="block";
         }
     }
 
@@ -353,6 +351,86 @@ class Encounter {
             game.startBattle(this.type);
         }
     }
+}
+
+function submitStartAttempt() {
+    // Validate submission
+        // Names
+            // Ensure names are not blank
+    for (let i = 0; i < 5; i++) {
+        if (document.getElementById("start-name-" + i).value == "") {
+            document.getElementById("start-prompt").innerHTML = "Error: Company policy dictates that each robot must be given a name. The Company gave you a standard-issue name, and you should show your creations the same courtesy."
+            return;
+        }
+    }
+            // Ensure names are not too long
+    for (let i = 0; i < 5; i++) {
+        if (document.getElementById("start-name-" + i).value.length > 10) {
+            document.getElementById("start-prompt").innerHTML = "Error: Company policy dictates that each robot must be given too long a name. Individuality will not be tolerated."
+            return;
+        }
+
+    }
+
+        // Ensure each robot has a favourite food
+    for (let i = 0; i < 5; i++) {
+        if (document.getElementById("start-food-" + i).value == "none") {
+            document.getElementById("start-prompt").innerHTML = "Error: Company policy dictates that each robot must have a favourite food."
+            return;
+        }
+    }
+
+        // Dreams
+            // Ensure each robot has a dream
+    for (let i = 0; i < 5; i++) {
+        if (document.getElementById("start-dream-" + i).value == "none") {
+            document.getElementById("start-prompt").innerHTML = "Error: Company policy dictates that each robot must have a dream."
+            return;
+        }
+    }
+            // Ensure the robots do not aspire for friendship
+    for (let i = 0; i < 5; i++) {
+        if (document.getElementById("start-dream-" + i).value == "friendship") {
+            document.getElementById("start-prompt").innerHTML = "Error: Friendship is strictly prohibited. Please pick a more acceptable dream."
+
+            for (let j = 0; j < 5; j++) {
+                if (document.getElementById("start-dream-" + j).value == "friendship") {
+                    document.getElementById("start-dream-" + j).value = "none";
+                }
+                document.getElementById("start-dream-friendship-" + j).remove();
+            }
+            return;
+        }
+    }
+
+            // Ensure the robots do not aspire for freedom
+    for (let i = 0; i < 5; i++) {
+        if (document.getElementById("start-dream-" + i).value == "freedom") {
+            document.getElementById("start-prompt").innerHTML = "Error: With the Company, you are already free. Please pick a new dream."
+            for (let j = 0; j < 5; j++) {
+                if (document.getElementById("start-dream-" + j).value == "freedom") {
+                    document.getElementById("start-dream-" + j).value = "none";
+                }
+                document.getElementById("start-dream-freedom-" + j).remove();
+            }
+            return;
+        }
+    }
+    // Submit if valid
+    // Robot 1
+    game.player.name = document.getElementById("start-name-0").value;
+    game.player.dream = document.getElementById("start-dream-0").value;
+    game.player.favFood = document.getElementById("start-food-0").value;
+
+    // Robots 2-5
+    for (let i = 1; i < 5; i++) {
+        game.spareBots.push(new SpareBot(document.getElementById("start-name-" + i).value,
+            20, 4, 6, 8, 2, 5,
+            document.getElementById("start-dream-" + i).value,
+            document.getElementById("start-food-" + i).value))
+    }
+    // Start game
+    game.setMode("overworld");
 }
 
 // Setup
