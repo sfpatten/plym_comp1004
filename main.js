@@ -25,6 +25,8 @@ class Level {
             new Encounter(0, 24, "Calculator"),
             new Encounter(24, 0, "Optical Disk")
         ];
+        // POIs - Points of Interest (things that do something when you try to walk into them)
+        this.pois = [new POI(8, 8, "bed")];
     }
 
     generate(genType) {
@@ -353,6 +355,23 @@ class Encounter {
     }
 }
 
+class POI {
+    constructor(xpos, ypos, type) {
+        this.xpos = xpos;
+        this.ypos = ypos;
+        this.type = type;
+        this.displaySymbol = "b";
+        this.shouldDelete = false;
+    }
+
+    use() {
+        if (this.type == "bed") {
+            game.player.HP = game.player.maxHP;
+            //TODO: put a message in the log upon use, set a robot with a dream of "rest"'s status to dream fulfilled
+        }
+    }
+}
+
 function submitStartAttempt() {
     // Validate submission
         // Names
@@ -493,6 +512,14 @@ function renderMap() {
         let x = game.overworld.encounters[e].xpos;
         let y = game.overworld.encounters[e].ypos;
         document.getElementById("overworld-map-display").rows[y].cells[x].innerHTML = "<b>" + game.overworld.encounters[e].displaySymbol + "</b>";
+        document.getElementById("overworld-map-display").rows[y].cells[x].className = "overworld-map-box";
+    }
+
+    // then pois
+    for (let p = 0; p < game.overworld.pois.length; p++) {
+        let x = game.overworld.pois[p].xpos;
+        let y = game.overworld.pois[p].ypos;
+        document.getElementById("overworld-map-display").rows[y].cells[x].innerHTML = "<b>" + game.overworld.pois[p].displaySymbol + "</b>";
         document.getElementById("overworld-map-display").rows[y].cells[x].className = "overworld-map-box";
     }
 
