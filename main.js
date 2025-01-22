@@ -418,19 +418,46 @@ function submitStartAttempt() {
     }
     // Submit if valid
     // Robot 1
+    let stats = getStatsForDream(document.getElementById("start-dream-0").value);
     game.player.name = document.getElementById("start-name-0").value;
     game.player.dream = document.getElementById("start-dream-0").value;
     game.player.favFood = document.getElementById("start-food-0").value;
+    game.player.str = stats[0];
+    game.player.arm = stats[1];
+    game.player.dex = stats[2];
+    game.player.int = stats[3];
+    game.player.cha = stats[4];
 
     // Robots 2-5
     for (let i = 1; i < 5; i++) {
+        stats = getStatsForDream(document.getElementById("start-dream-" + i).value);
         game.spareBots.push(new SpareBot(document.getElementById("start-name-" + i).value,
-            20, 4, 6, 8, 2, 5,
+            20, stats[0], stats[1], stats[2], stats[3], stats[4],
             document.getElementById("start-dream-" + i).value,
             document.getElementById("start-food-" + i).value))
     }
     // Start game
     game.setMode("overworld");
+}
+
+function getStatsForDream(dream) {
+    if (dream == "chef") { // if JS had enums this would be much easier
+        return [4, 6, 5, 6, 4];
+    } else if (dream == "rest") {
+        return [6, 6, 3, 5, 5];
+    } else if (dream == "hygiene") {
+        return [4, 4, 4, 8, 5];
+    } else if (dream == "daredevil") {
+        return [4, 7, 5, 4, 5];
+    } else if (dream == "sell") {
+        return [4, 4, 4, 6, 7];
+    } else if (dream == "explore") {
+        return [4, 4, 6, 7, 4];
+    } else if (dream == "revenge") {
+        return [6, 6, 6, 4, 3];
+    } else { // dreams "momey", "perfection", "buy" and any invalid values get the default of all stats being 5
+        return [5, 5, 5, 5, 5];
+    }
 }
 
 // Setup
