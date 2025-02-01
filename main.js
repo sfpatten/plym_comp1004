@@ -389,6 +389,10 @@ let keysDown = [false, false, false, false];
 
 // Setup
 generateNewTable(25);
+game.overworld.generate("narrow");
+game.player.xpos = game.overworld.spawnPoint[0];
+game.player.ypos = game.overworld.spawnPoint[1];
+
 renderMap();
 updateInventoryDisplay();
 
