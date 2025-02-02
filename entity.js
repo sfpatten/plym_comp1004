@@ -77,27 +77,44 @@ class Enemy extends Entity {
     constructor(type) {
         super();
         this.type = type;
+        this.flavourText = ["Flavour text placeholder"];
+        this.flavourTextLow = "Low HP placeholder";
         switch (this.type) {
             case "Calculator":
                 this.maxHP = 8;
                 this.str = 1;
                 this.arm = 0;
+                this.flavourText = ["The Calculator is full of add-ticipation.", "Calculator is positive it is going to win."]
+                this.flavourTextLow = "The Calculator's screen is cracked.";
                 break;
             case "Floppy Disk":
                 this.maxHP = 5;
                 this.str = 1;
                 this.arm = 0;
+                this.flavourText = ["It seems you are fighting a floppy disk.", "Up to a megabyte of storage!", "Floppy disk's expression is unreadable."]
+                this.flavourTextLow = "Floppy disk has nearly reached capacity.";
                 break;
             case "GameBox":
                 this.maxHP = 15;
                 this.str = 4;
                 this.arm = 0;
+                this.flavourText = ["Power plug sold separately!", "Controller sold separately!", "Graphics card sold separately!"];
+                this.flavourTextLow = "GameBox is coming to an afterlife near you.";
                 break;
-            case "Optical Disk": {
-                this.maxHP = 13;
+            case "Optical Disk":
+                this.maxHP = 16;
                 this.str = 3;
+                this.arm = 0;
+                this.flavourText = ["The Optical disk dazzles you with its iridescent shine.", "The Optical Disk attempts to insert itself in a slot, upside down."];
+                this.flavourTextLow = "The Optical disk is badly scratched.";
+                break;
+            case "Keyboard":
+                this.maxHP = 13;
+                this.str = 4;
                 this.arm = 2;
-            }
+                this.flavourText = ["Keyboard is spreading misinformation online.", "Keyboard takes control of the situation."];
+                this.flavourTextLow = "The keyboard is missig a few keys"; // Intentional typo here - it is allegedly funny
+                break;
         }
         this.HP = this.maxHP; // set their HP to full
     }

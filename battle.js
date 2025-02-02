@@ -41,6 +41,14 @@ class Battle {
             }
         this.bullets = []; // clear array
 
+        // Set flavour text
+        if (this.enemy.HP < this.enemy.maxHP * 0.25) {
+            document.getElementById("battle-log").innerHTML = this.enemy.flavourTextLow;
+        } else {
+            let flavourText = this.enemy.flavourText[Math.floor(Math.random() * this.enemy.flavourText.length)]
+            document.getElementById("battle-log").innerHTML = flavourText;
+        }
+
         // hide monster attack stuff
         document.getElementById("battle-board").style.display="none";
         document.getElementById("battle-soul").style.display="none";
@@ -86,12 +94,17 @@ class Battle {
         document.getElementById("battle-actions").style.display="none";
 
         if (game.player.inventory[number].consumable) {
-            game.player.HP += game.player.inventory[number].consumeHP;
+            if (game.player.favFood == game.player.inventory[number].type) {
+                game.player.HP += Math.floor(game.player.inventory[number].consumeHP * 1.5);
+                document.getElementById("battle-log").innerHTML = "You ate " + game.player.inventory[number].displayName + ", your favourite food. Delicious.";
+            } else {
+                game.player.HP += game.player.inventory[number].consumeHP;
+                document.getElementById("battle-log").innerHTML = game.player.inventory[number].useText;
+            }
             if (game.player.HP > game.player.maxHP) {
                 game.player.HP = game.player.maxHP;
             }
             this.updateHPDisplays();
-            document.getElementById("battle-log").innerHTML = game.player.inventory[number].useText;
         }
 
         // Decrease the number of items
