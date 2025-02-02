@@ -343,6 +343,125 @@ class Level {
                     }
                 }
             }
+        } else if (genType == "wide") {
+            // Clear
+            for (let i = 0; i < 25; i++) {
+                for (let j = 0; j < 25; j++) {
+                    this.levelGrid[i][j] = 0;
+                }
+            }
+
+            // Create main corridor
+            for (let y = 0; y < 25; y++) { // Vertical walls
+                this.levelGrid[6][y] = 1;
+                this.levelGrid[18][y] = 1;
+            }
+            for (let x = 7; x < 18; x++) {
+                this.levelGrid[x][0] = 1;
+                this.levelGrid[x][24] = 1;
+            }
+            // Exit point and spawn point
+            this.levelGrid[12][0] = 0;
+            this.levelGrid[12][24] = 0;
+            this.pois.push(new POI(12, 0, "exit"));
+            this.spawnPoint = [12, 24];
+
+            // Spawn monsters in corridor
+            this.spawnEncountersRandomWithinBounds(["Keyboard", "Keyboard", "Keyboard", "Optical Disk",
+                "Optical Disk"], 7, 1, 17, 19)
+
+
+            // Decide which rooms to do
+            // 0 - None
+            // 1 - Left
+            // 2 - Right
+            // 3 - Both
+            //let choice = Math.floor(Math.random() * 4);
+            let choice = 3
+
+            // Left room
+            if (choice == 1 || choice == 3) {
+                // Pick where the walls are going
+                let topWallY = 1 + Math.floor(Math.random() * 8);
+                let bottomWallY = 16 + Math.floor(Math.random() * 8);
+                // Make the top and bottom walls
+                for (let x = 0; x < 6; x++) {
+                    this.levelGrid[x][topWallY] = 1;
+                    this.levelGrid[x][bottomWallY] = 1;
+                }
+                for (let y = topWallY + 1; y < bottomWallY; y++) {
+                    this.levelGrid[0][y] = 1;
+                }
+
+                // Make doorway
+                let doorY = topWallY + 1 + Math.floor(Math.random() * (bottomWallY - topWallY));
+                this.levelGrid[6][doorY] = 0;
+
+                // Determine whether any POIs are going to be added into the room
+                let bonusFeature = Math.floor(Math.random() * 4);
+                // 1 = Vending machine
+                // 2 = Grill
+                // 3 = Cactus
+                if (bonusFeature != 0) {
+                    let poiY = topWallY + 1 + Math.floor(Math.random() * (bottomWallY - topWallY - 1));
+                    switch (bonusFeature) {
+                        case 1:
+                            this.pois.push(new POI(1, poiY, "vendingMachine"))
+                            break;
+                        case 2:
+                            this.pois.push(new POI(1, poiY, "grill"))
+                            break;
+                        case 3:
+                            this.pois.push(new POI(1, poiY, "cactus"))
+                            break;
+                    }
+                }
+                // Spawn room enemies
+                this.spawnEncountersRandomWithinBounds(["GameBox"], 1, topWallY + 1
+                    , 5, bottomWallY - 1);
+            }
+
+            // Right room
+            if (choice == 2 || choice == 3) {
+                // Pick where the walls are going
+                let topWallY = 1 + Math.floor(Math.random() * 8);
+                let bottomWallY = 16 + Math.floor(Math.random() * 8);
+                // Make the top and bottom walls
+                for (let x = 19; x < 25; x++) {
+                    this.levelGrid[x][topWallY] = 1;
+                    this.levelGrid[x][bottomWallY] = 1;
+                }
+                for (let y = topWallY + 1; y < bottomWallY; y++) {
+                    this.levelGrid[24][y] = 1;
+                }
+
+                // Make doorway
+                let doorY = topWallY + 1 + Math.floor(Math.random() * (bottomWallY - topWallY - 1));
+                this.levelGrid[18][doorY] = 0;
+
+                // Determine whether any POIs are going to be added into the room
+                let bonusFeature = Math.floor(Math.random() * 4);
+                // 1 = Vending machine
+                // 2 = Grill
+                // 3 = Cactus
+                if (bonusFeature != 0) {
+                    let poiY = topWallY + 1 + Math.floor(Math.random() * (bottomWallY - topWallY));
+                    switch (bonusFeature) {
+                        case 1:
+                            this.pois.push(new POI(23, poiY, "vendingMachine"))
+                            break;
+                        case 2:
+                            this.pois.push(new POI(23, poiY, "grill"))
+                            break;
+                        case 3:
+                            this.pois.push(new POI(23, poiY, "cactus"))
+                            break;
+                    }
+                }
+                // Spawn room enemies
+                this.spawnEncountersRandomWithinBounds(["GameBox"], 19, topWallY + 1
+                    , 23, bottomWallY - 1);
+            }
         }
     }
 
