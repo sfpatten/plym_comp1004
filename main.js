@@ -20,10 +20,13 @@ class Game {
             this.mode = "overworld";
         } else if (newMode == "battle") {
             document.getElementById("battle-box").style.display="block";
+            this.mode = "battle";
         } else if (newMode == "death") {
             document.getElementById("death-screen-box").style.display="block";
+            this.mode = "death";
         } else if (newMode == "start") {
             document.getElementById("start-screen-box").style.display="block";
+            this.mode = "start";
         }
     }
 
@@ -282,7 +285,6 @@ function onKeyDown(e) {
             renderMap();
         }
     } else if (game.mode == "battle") {
-        // TODO: contain this in a battle function
         if (game.battle.battleFrames > 0) {
             switch (e.code) {
                 case "ArrowUp":
