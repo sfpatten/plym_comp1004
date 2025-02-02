@@ -522,8 +522,8 @@ class Battle {
                 break; // End of GameBox option switch
             case "Optical Disk":
                 // Attack - roll wheels
-                this.battleFrames = 300;
-                for (let x = 0; x < 10; x++) {
+                this.battleFrames = 200;
+                for (let x = 0; x < 6; x++) {
                     let r = 10 + Math.random() * 80 // pick a random height
                     let spd = 2 + Math.random() * 3 // pick a random speed
                     for (let y = 0; y < 6; y++) { // create six projectiles revolving around one point
@@ -531,6 +531,26 @@ class Battle {
                     }
                 }
                 break;
+			case "Keyboard":
+				this.battleFrames = 300;
+				let randomPhrase = [
+					"don'tythrowcstoneshwhenqyouxhavezbrittleibonesgsiogjigpfsgs3",
+					"baskhinsthejresplendentqglorynofsthehsun'sqlife-givingbrays?",
+					"mayqthebweatherxbezpleasantkandfyourshousebnotzonhfire5tijgh",
+					"what'suwithtthe5airlinevfoodhthesezdays?xit'shreallygnothon.",
+					"turns6out9yourhmanvwithzawplantwasujustvaxmannequin[pgfdjgdf",
+                    "thevthing1about5life[you'vedgoteto2remembercisvthatxithstops",
+                    "youvaretprotectedainpasway6you2willb5neverjrealise47dfbpodas",
+                    "forawhatnit'sbworth,bforywhatpitzisn'tbworthfojfhdgfdhdfhnhf",
+                    "grifjhkfsipo65hhfdmgrsfgfngrpdmgfdnmct4hnrsbofsdni9t4bgnrsou",
+                    "there'scnothingblessucomfortable3thanmseverexpainf23r4t49gfn"
+				][Math.floor(Math.random() * 5)]
+				for (let i = 0; i < 60; i++) {
+					let x = -10 + Math.random() * 120; // pick a random x position
+					let spd = -8 + Math.random() * 3;
+					this.bullets.push(new Bullet(x, 300, 0, spd, 0, 0, "standard", randomPhrase[i], i * 4, 150));
+				}
+				break;
             default:
                 console.log("no monster bullet pattern found");
                 break;

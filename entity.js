@@ -89,14 +89,14 @@ class Enemy extends Entity {
                 this.arm = 0;
                 break;
             case "GameBox":
-                this.maxHP = 20;
+                this.maxHP = 15;
                 this.str = 4;
                 this.arm = 0;
                 break;
             case "Optical Disk": {
-                this.maxHP = 30;
+                this.maxHP = 13;
                 this.str = 3;
-                this.arm = 0;
+                this.arm = 2;
             }
         }
         this.HP = this.maxHP; // set their HP to full
