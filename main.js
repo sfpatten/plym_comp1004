@@ -7,12 +7,14 @@ class Game {
         this.player = new Player();
         this.mode = "start";
         this.battle = null;
+        this.flight = null;
     }
 
     setMode(newMode) {
         // i need to make a method that hides EVERYTHING and then unhides the correct thing
         document.getElementById("overworld-grid").style.display="none";
         document.getElementById("battle-box").style.display="none";
+        document.getElementById("fly-box").style.display="none";
         document.getElementById("death-screen-box").style.display="none";
         document.getElementById("start-screen-box").style.display="none";
         if (newMode == "overworld") {
@@ -27,7 +29,16 @@ class Game {
         } else if (newMode == "start") {
             document.getElementById("start-screen-box").style.display="block";
             this.mode = "start";
+        } else if (newMode == "fly") {
+            document.getElementById("fly-box").style.display="block";
+            this.mode = "fly";
         }
+    }
+
+    startFlight(mode) {
+        this.flight = new Flight();
+        this.flight.start();
+        this.setMode("fly");
     }
 
     startBattle(enemyType) {
@@ -314,6 +325,34 @@ function onKeyDown(e) {
                     break;
             }
         }
+    } else if (game.mode == "fly") {
+        switch (e.code) {
+            case "ArrowUp":
+                keysDown[0] = true;
+                break;
+            case "ArrowDown":
+                keysDown[1] = true;
+                break;
+            case "ArrowLeft":
+                keysDown[2] = true;
+                break;
+            case "ArrowRight":
+                keysDown[3] = true;
+                break;
+            // WASD keys
+            case "KeyW":
+                keysDown[0] = true;
+                break;
+            case "KeyS":
+                keysDown[1] = true;
+                break;
+            case "KeyA":
+                keysDown[2] = true;
+                break;
+            case "KeyD":
+                keysDown[3] = true;
+                break;
+        }
     }
 }
 
@@ -348,12 +387,34 @@ function onKeyUp(e) {
                     break;
             }
         }
-    }
-}
-
-function resetKeysUp() {
-    for (let i = 0; i < 4; i++) {
-        keysDown[i] = false;
+    } else if (game.mode == "fly") {
+        switch (e.code) {
+            case "ArrowUp":
+                keysDown[0] = false;
+                break;
+            case "ArrowDown":
+                keysDown[1] = false;
+                break;
+            case "ArrowLeft":
+                keysDown[2] = false;
+                break;
+            case "ArrowRight":
+                keysDown[3] = false;
+                break;
+            // WASD keys
+            case "KeyW":
+                keysDown[0] = false;
+                break;
+            case "KeyS":
+                keysDown[1] = false;
+                break;
+            case "KeyA":
+                keysDown[2] = false;
+                break;
+            case "KeyD":
+                keysDown[3] = false;
+                break;
+        }
     }
 }
 
@@ -401,7 +462,7 @@ updateInventoryDisplay();
 document.addEventListener("keydown", onKeyDown);
 document.addEventListener("keyup", onKeyUp);
 
-
+game.startFlight("none");
 
 // Immediately start a battle for testing
 //game.startBattle("GameBox");

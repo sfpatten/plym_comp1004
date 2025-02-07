@@ -83,6 +83,59 @@ select:hover {
     text-align: center;
 }
 
+/* fly screen */
+#fly-player {
+    width: 4vw;
+    height: 4vw;
+    text-align: center;
+    font-size: 3vw;
+    position: fixed;
+    left: 48vw;
+    top: 80vh;
+    border: 1px solid red;
+}
+
+#fly-progress-bar {
+    width: 4vh;
+    height: 30vh;
+    text-align: center;
+    position: fixed;
+    left: 3vw;
+    top: 35vh;
+    border: 1px solid black;
+}
+
+#fly-progress-top {
+    width: 4vh;
+    height: 2vh;
+    text-align: center;
+    font-size: 1.5vh;
+    position: fixed;
+    left: 3vw;
+    top: 32vh;
+}
+
+#fly-progress-bottom {
+    width: 4vh;
+    height: 2vh;
+    text-align: center;
+    font-size: 1.5vh;
+    position: fixed;
+    left: 3vw;
+    top: 66vh;
+}
+
+#fly-progress-player {
+    width: 4vh;
+    height: 4vh;
+    text-align: center;
+    font-size: 3vh;
+    position: fixed;
+    left: 3vw;
+    top: 61vh;
+    border: 1px solid black;
+}
+
 /* overworld grid */
 #overworld-grid {
     display: none;

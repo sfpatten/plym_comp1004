@@ -208,10 +208,23 @@
         <!-- This is a regular button rather than a form buttonto allow custom behaviour on input validation -->
         <button id="game-begin-button" onclick="submitStartAttempt()">BEGIN</button>
       </span>
-
-
-
     </div>
+
+    <div id="fly-box" class="screen-box">
+      <h1>FLIGHT</h1>
+      <!-- Main elements -->
+      <div id="fly-player">@</div>
+
+      <!-- Flying HUD -->
+        <div id="fly-progress-bar"></div>
+      <div id="fly-progress-player">@</div>
+
+
+      <div id="fly-progress-top">END</div>
+      <div id="fly-progress-bottom">START</div>
+      <div id="fly-hull-HP"></div>
+    </div>
+
     <!-- Overworld screen -->
     <div id="overworld-grid" class="hidden">
       <!-- Log and goal  -->
@@ -352,6 +365,7 @@
       <button>TRY AGAIN</button>
     </div>
     <!-- script here - you need the elements to exist before you can manipulate them -->
+    <script src="flight.js"></script>
     <script src="battle.js"></script>
     <script src="item.js"></script>
     <script src="level.js"></script>
