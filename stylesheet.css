@@ -92,7 +92,6 @@ select:hover {
     position: fixed;
     left: 48vw;
     top: 80vh;
-    border: 1px solid red;
 }
 
 #fly-progress-bar {
@@ -133,7 +132,36 @@ select:hover {
     position: fixed;
     left: 3vw;
     top: 61vh;
-    border: 1px solid black;
+}
+
+#fly-status-player {
+    width: 6vh;
+    height: 6vh;
+    text-align: center;
+    position: fixed;
+    font-size:4vh;
+    right: 2.5vw;
+    top: 47vh;
+}
+
+#fly-status-name {
+    width: 10vh;
+    height: 2vh;
+    text-align: center;
+    position: fixed;
+    font-size:1.5vh;
+    right: 1.5vw;
+    top: 45vh;
+}
+
+#fly-status-HP {
+    width: 10vh;
+    height: 2vh;
+    text-align: center;
+    position: fixed;
+    font-size:1.5vh;
+    right: 1.5vw;
+    top: 53vh;
 }
 
 /* overworld grid */

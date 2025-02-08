@@ -171,7 +171,7 @@ function submitStartAttempt() {
             document.getElementById("start-food-" + i).value))
     }
     // Start game
-    game.setMode("overworld");
+    game.startFlight("enter")
 }
 
 function getStatsForDream(dream) {
@@ -461,8 +461,6 @@ updateInventoryDisplay();
 
 document.addEventListener("keydown", onKeyDown);
 document.addEventListener("keyup", onKeyUp);
-
-game.startFlight("none");
 
 // Immediately start a battle for testing
 //game.startBattle("GameBox");
