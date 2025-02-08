@@ -376,8 +376,7 @@ class Level {
             // 1 - Left
             // 2 - Right
             // 3 - Both
-            //let choice = Math.floor(Math.random() * 4);
-            let choice = 3
+            let choice = Math.floor(Math.random() * 4);
 
             // Left room
             if (choice == 1 || choice == 3) {
@@ -394,7 +393,7 @@ class Level {
                 }
 
                 // Make doorway
-                let doorY = topWallY + 1 + Math.floor(Math.random() * (bottomWallY - topWallY));
+                let doorY = topWallY + 1 + Math.floor(Math.random() * (bottomWallY - topWallY - 1));
                 this.levelGrid[6][doorY] = 0;
 
                 // Determine whether any POIs are going to be added into the room
