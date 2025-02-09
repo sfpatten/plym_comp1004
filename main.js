@@ -174,6 +174,34 @@ function submitStartAttempt() {
     game.startFlight("enter")
 }
 
+function randomiseStartEntries() { // To make the "randomise" button work
+    let pick = 0;
+    // Names
+    let names = ["Sprocket", "Rusty", "Pico", "Clank II", "Mettaton", "Plug", "Atlas", "Robot #5", "Gears",
+        "Polished", "Silver", "Tungsten V", "Clunk III", "Clink IV", "Calibrated", "Magnus", "Jerry", "Wheatley",
+        "Saturn", "Venus"]
+    for (let i = 0; i < 5; i++) {
+        pick = Math.floor(Math.random() * (20 - i));
+        document.getElementById("start-name-" + i).value = names[pick];
+        names.splice(pick, 1);
+    }
+    // Favourite food
+    let foods = ["apple", "carrot", "rice", "toast", "biscuit", "teabag"];
+    for (let i = 0; i < 5; i++) {
+        pick = Math.floor(Math.random() * (6 - i));
+        document.getElementById("start-food-" + i).value = foods[pick];
+        foods.splice(pick, 1);
+    }
+    // Dream
+    let dreams = ["money", "chef", "rest", "hygiene", "perfection", "daredevil", "sell", "explore", "buy",
+        "revenge"]
+    for (let i = 0; i < 5; i++) {
+        pick = Math.floor(Math.random() * (10 - i));
+        document.getElementById("start-dream-" + i).value = dreams[pick];
+        dreams.splice(pick, 1);
+    }
+}
+
 function getStatsForDream(dream) {
     if (dream == "chef") { // if JS had enums this would be much easier
         return [4, 6, 5, 6, 4];
@@ -189,7 +217,7 @@ function getStatsForDream(dream) {
         return [4, 4, 6, 7, 4];
     } else if (dream == "revenge") {
         return [6, 6, 6, 4, 3];
-    } else { // dreams "momey", "perfection", "buy" and any invalid values get the default of all stats being 5
+    } else { // dreams "money", "perfection", "buy" and any invalid values get the default of all stats being 5
         return [5, 5, 5, 5, 5];
     }
 }
