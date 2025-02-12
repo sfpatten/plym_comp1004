@@ -20,6 +20,8 @@ class Game {
         document.getElementById("start-screen-box").style.display="none";
         if (newMode == "overworld") {
             document.getElementById("overworld-grid").style.display="grid";
+            updateStatDisplay();
+            updateInventoryDisplay();
             this.mode = "overworld";
         } else if (newMode == "battle") {
             document.getElementById("battle-box").style.display="block";
@@ -187,6 +189,8 @@ function submitStartAttempt() {
             document.getElementById("start-food-" + i).value))
     }
     // Start game
+    updateStatDisplay();
+    updateInventoryDisplay();
     game.startFlight("enter")
 }
 
@@ -215,26 +219,6 @@ function randomiseStartEntries() { // To make the "randomise" button work
         pick = Math.floor(Math.random() * (10 - i));
         document.getElementById("start-dream-" + i).value = dreams[pick];
         dreams.splice(pick, 1);
-    }
-}
-
-function getStatsForDream(dream) {
-    if (dream == "chef") { // if JS had enums this would be much easier
-        return [4, 6, 5, 6, 4];
-    } else if (dream == "rest") {
-        return [6, 6, 3, 5, 5];
-    } else if (dream == "hygiene") {
-        return [4, 4, 4, 8, 5];
-    } else if (dream == "daredevil") {
-        return [4, 7, 5, 4, 5];
-    } else if (dream == "sell") {
-        return [4, 4, 4, 6, 7];
-    } else if (dream == "explore") {
-        return [4, 4, 6, 7, 4];
-    } else if (dream == "revenge") {
-        return [6, 6, 6, 4, 3];
-    } else { // dreams "money", "perfection", "buy" and any invalid values get the default of all stats being 5
-        return [5, 5, 5, 5, 5];
     }
 }
 
@@ -286,6 +270,19 @@ function renderMap() {
         // note - it assumes the player is within bounds of the map, if it is not, it will come up with an exception
     document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].innerHTML = "<b>@</b>";
     document.getElementById("overworld-map-display").rows[game.player.ypos].cells[game.player.xpos].className = "overworld-map-box";
+}
+
+function updateStatDisplay() {
+    document.getElementById("stats-title").innerHTML = game.player.name;
+    document.getElementById("stats-HP").innerHTML = "HP: " + game.player.HP + "/" + game.player.maxHP;
+    document.getElementById("stats-str").innerHTML = "STR: " + game.player.str;
+    document.getElementById("stats-arm").innerHTML = "ARM: " + game.player.arm;
+    document.getElementById("stats-dex").innerHTML = "DEX: " + game.player.dex;
+    document.getElementById("stats-int").innerHTML = "INT: " + game.player.int;
+    document.getElementById("stats-cha").innerHTML = "CHA: " + game.player.cha;
+    document.getElementById("stats-favFood").innerHTML = "Favourite food: " + getNameFromItemIDGood(game.player.favFood);
+    document.getElementById("stats-dream").innerHTML = "Dream: " + getDreamFromID(game.player.dream);
+    document.getElementById("stats-roboNum").innerHTML = "Robot " + (game.botNumber + 1) + " of 5";
 }
 
 function updateInventoryDisplay() {
@@ -507,7 +504,6 @@ game.player.xpos = game.overworld.spawnPoint[0];
 game.player.ypos = game.overworld.spawnPoint[1];
 
 renderMap();
-updateInventoryDisplay();
 
 document.addEventListener("keydown", onKeyDown);
 document.addEventListener("keyup", onKeyUp);

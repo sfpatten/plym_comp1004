@@ -260,8 +260,16 @@
 
       <!-- Stats and inventory -->
       <div class="overworld-grid-box" id="statsInventory">
-        <h1>STATS</h1>
-        <p>(to be implemented)</p>
+        <h1 id="stats-title">STATS</h1>
+        <p id="stats-HP">HP</p>
+        <p id="stats-str">STR</p>
+        <p id="stats-arm">ARM</p>
+        <p id="stats-dex">DEX</p>
+        <p id="stats-int">INT</p>
+        <p id="stats-cha">CHA</p>
+        <p id="stats-favFood">Favourite food</p>
+        <p id="stats-dream">Dream</p>
+        <p id="stats-roboNum">Robot number</p>
         <h1>INVENTORY</h1>
         <table id="inventory-table">
           <tr>
@@ -372,6 +380,7 @@
     <script src="item.js"></script>
     <script src="level.js"></script>
     <script src="entity.js"></script>
+    <script src="utils.js"></script>
     <script src="main.js"></script> <!-- Main must be loaded last as it depends on the other classes being declared -->
 
   </body>
