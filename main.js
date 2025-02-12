@@ -77,7 +77,12 @@ class Game {
         this.level++;
         this.overworld.encounters.length = 0;
         this.overworld.pois.length = 0;
-        this.overworld.generate("narrow");
+        if (this.level < 5) {
+            this.overworld.generate("narrow");
+        } else {
+            this.overworld.generate("wide");
+        } //TODO: add vault room when it's created
+
         game.player.xpos = game.overworld.spawnPoint[0];
         game.player.ypos = game.overworld.spawnPoint[1];
         renderMap();
@@ -497,7 +502,7 @@ let keysDown = [false, false, false, false];
 
 // Setup
 generateNewTable(25);
-game.overworld.generate("wide");
+game.overworld.generate("storage");
 game.player.xpos = game.overworld.spawnPoint[0];
 game.player.ypos = game.overworld.spawnPoint[1];
 
