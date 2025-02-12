@@ -4,6 +4,7 @@ class Game {
         this.botNumber = 0;
         this.spareBots = [];
         this.overworld = new Level(25);
+        this.level = 1;
         this.player = new Player();
         this.mode = "start";
         this.battle = null;
@@ -70,6 +71,16 @@ class Game {
             console.log("game over");
 
         }
+    }
+
+    overworldLevelUp() {
+        this.level++;
+        this.overworld.encounters.length = 0;
+        this.overworld.pois.length = 0;
+        this.overworld.generate("narrow");
+        game.player.xpos = game.overworld.spawnPoint[0];
+        game.player.ypos = game.overworld.spawnPoint[1];
+        renderMap();
     }
 }
 
@@ -472,6 +483,12 @@ function resetKeysDown() {
     for (let x = 0; x < 4; x++) {
         keysDown[x] = false;
     }
+}
+
+function debugOPMode() {
+    game.player.maxHP = 2000;
+    game.player.HP = 2000;
+    game.player.str = 2000;
 }
 
 let game = new Game();

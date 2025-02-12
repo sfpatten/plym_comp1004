@@ -622,7 +622,9 @@ class POI {
     }
 
     use() {
-        if (this.type == "bed") {
+        if (this.type = "exit") {
+            game.overworldLevelUp();
+        } else if (this.type == "bed") {
             game.player.HP = game.player.maxHP;
             //TODO: put a message in the log upon use, set a robot with a dream of "rest"'s status to dream fulfilled
         }
