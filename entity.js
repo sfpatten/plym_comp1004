@@ -75,6 +75,7 @@ class Player extends Entity {
         this.inventory = [new Item("apple", 2), new Item("toast", 1), new Item("raisins", 1)];
         this.dream = "friendship";
         this.favFood = "apple";
+        this.credits = 5000000;
     }
 }
 

@@ -280,6 +280,7 @@ function updateStatDisplay() {
     document.getElementById("stats-dex").innerHTML = "DEX: " + game.player.dex;
     document.getElementById("stats-int").innerHTML = "INT: " + game.player.int;
     document.getElementById("stats-cha").innerHTML = "CHA: " + game.player.cha;
+    document.getElementById("stats-credits").innerHTML = "Credits: " + game.player.credits;
     document.getElementById("stats-favFood").innerHTML = "Favourite food: " + getNameFromItemIDGood(game.player.favFood);
     document.getElementById("stats-dream").innerHTML = "Dream: " + getDreamFromID(game.player.dream);
     document.getElementById("stats-roboNum").innerHTML = "Robot " + (game.botNumber + 1) + " of 5";
