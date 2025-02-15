@@ -3,7 +3,7 @@ body {
 }
 
 /* Basic font settings */
-p, h1, h2, li, td, div, label, option {
+p, h1, h2, li, td, div, label, select, option, button, input {
     font-family: monospace;
 }
 
