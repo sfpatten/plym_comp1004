@@ -4,7 +4,7 @@ class Game {
         this.botNumber = 0;
         this.spareBots = [];
         this.overworld = new Level(25);
-        this.level = 1;
+        this.overworldLevel = 1;
         this.player = new Player();
         this.mode = "start";
         this.battle = null;
@@ -18,6 +18,7 @@ class Game {
         document.getElementById("fly-box").style.display="none";
         document.getElementById("death-screen-box").style.display="none";
         document.getElementById("start-screen-box").style.display="none";
+        document.getElementById("save-box").style.display="none";
         if (newMode == "overworld") {
             document.getElementById("overworld-grid").style.display="grid";
             updateStatDisplay();
@@ -35,6 +36,31 @@ class Game {
         } else if (newMode == "fly") {
             document.getElementById("fly-box").style.display="block";
             this.mode = "fly";
+        }
+    }
+
+    showSave() {
+        document.getElementById("overworld-grid").style.display="none";
+        document.getElementById("battle-box").style.display="none";
+        document.getElementById("fly-box").style.display="none";
+        document.getElementById("death-screen-box").style.display="none";
+        document.getElementById("start-screen-box").style.display="none";
+        document.getElementById("save-box").style.display="none";
+        document.getElementById("save-box").style.display="block";
+    }
+
+    hideSave() {
+        document.getElementById("save-box").style.display="none";
+        if (this.mode == "overworld") {
+            document.getElementById("overworld-grid").style.display="grid";
+        } else if (this.mode == "battle") {
+            document.getElementById("battle-box").style.display="block";
+        } else if (this.mode == "death") {
+            document.getElementById("death-screen-box").style.display="block";
+        } else if (this.mode == "start") {
+            document.getElementById("start-screen-box").style.display="block";
+        } else if (this.mode == "fly") {
+            document.getElementById("fly-box").style.display="block";
         }
     }
 
@@ -76,18 +102,110 @@ class Game {
     }
 
     overworldLevelUp() {
-        this.level++;
+        this.overworldLevel++;
         this.overworld.encounters.length = 0;
         this.overworld.pois.length = 0;
-        if (this.level < 5) {
+        if (this.overworldLevel < 5) {
             this.overworld.generate("narrow");
         } else {
             this.overworld.generate("wide");
         } //TODO: add vault room when it's created
 
-        game.player.xpos = game.overworld.spawnPoint[0];
-        game.player.ypos = game.overworld.spawnPoint[1];
+        this.player.xpos = this.overworld.spawnPoint[0];
+        this.player.ypos = this.overworld.spawnPoint[1];
         renderMap();
+        this.showSave();
+    }
+
+    generateSaveLink() {
+        let tempSaveObj = {
+            "game":{
+                "botNumber":this.botNumber,
+                "mode":"" // Populated below
+            },
+            "currentPlayer":{
+                "position":[this.player.xpos, game.player.ypos],
+                "inventory":[], // Populated below
+                "credits":this.player.credits,
+                "name":this.player.name,
+                "HP":this.player.HP,
+                "maxHP":this.player.maxHP,
+                "str":this.player.str,
+                "arm":this.player.arm,
+                "dex":this.player.dex,
+                "int":this.player.int,
+                "cha":this.player.cha,
+                "dream":this.player.dream,
+                "favFood":this.player.favFood
+            },
+            "spareBots": [], // Populated below
+            "currentLevel":{
+                "grid":[], // Populated below
+                "spawnPoint":this.overworld.spawnPoint,
+                "encounters":[], // Populated below
+                "pois":[] // Populated below
+            }
+        };
+        // There are a few parts of this that are not so trivial to populate:
+            // Mode
+        if (this.mode == "overworld") {
+            tempSaveObj.game.mode = "o" + this.overworldLevel;
+        } else if (this.mode == "vault") {
+            tempSaveObj.game.mode = "v0";
+            // TODO: implement when vault is implemented
+        } else if (this.mode == "flight") {
+            tempSaveObj.game.mode = "f0";
+        }
+            // Inventory
+        for (let itemSlot = 0; itemSlot < this.player.inventory.length; itemSlot++) {
+            tempSaveObj.currentPlayer.inventory.push({"item":this.player.inventory[itemSlot].type, "count":this.player.inventory[itemSlot].count});
+        }
+            // Other players
+        for (let playerIndex = 0; playerIndex < this.spareBots.length; playerIndex++) {
+            tempSaveObj.spareBots.push({
+                "name":this.spareBots[playerIndex].name,
+                "maxHP":this.spareBots[playerIndex].maxHP, // We don't need HP because all robots start on full
+                "str":this.spareBots[playerIndex].str,
+                "arm":this.spareBots[playerIndex].arm,
+                "dex":this.spareBots[playerIndex].dex,
+                "int":this.spareBots[playerIndex].int,
+                "cha":this.spareBots[playerIndex].cha,
+                "dream":this.spareBots[playerIndex].dream,
+                "favFood":this.spareBots[playerIndex].favFood,
+            });
+        }
+
+            // Level grid
+        // NOTE: you may see that the array is rotated in-file - this is because it is stored in this format in the game
+        // so that in the codebase we can refer to a grid position as the more natural [x][y] rather than [y][x].
+        for (let row = 0; row < this.overworld.size; row++) {
+            tempSaveObj.currentLevel.grid.push(new Array(this.overworld.size));
+        }
+        for (let row = 0; row < this.overworld.size; row++) {
+            for (let col = 0; col < this.overworld.size; col++) {
+                tempSaveObj.currentLevel.grid[row][col] = this.overworld.levelGrid[row][col];
+            }
+        }
+            // Encounters
+        for (let encNum = 0; encNum < this.overworld.encounters.length; encNum++) {
+            tempSaveObj.currentLevel.encounters.push({
+                "type":this.overworld.encounters[encNum].type,
+                "pos":[this.overworld.encounters[encNum].xpos, this.overworld.encounters[encNum].ypos]
+            });
+        }
+            // POIs
+        for (let poiNum = 0; poiNum < this.overworld.pois.length; poiNum++) {
+            tempSaveObj.currentLevel.pois.push({
+                "type":this.overworld.pois[poiNum].type,
+                "pos":[this.overworld.pois[poiNum].xpos, this.overworld.pois[poiNum].ypos]
+            });
+        }
+
+        // Now we can generate the link
+        let tempSaveBlob = new Blob([JSON.stringify(tempSaveObj)]);
+        let saveLink = document.getElementById("save-anchor");
+        saveLink.href = URL.createObjectURL(tempSaveBlob);
+        saveLink.download = "HEART-SAVE.json";
     }
 }
 
@@ -295,7 +413,6 @@ function updateInventoryDisplay() {
             document.getElementById("inv-td-i" + i).innerHTML = "";
             document.getElementById("inv-td-b" + i).style.display = "none";
         }
-
     }
 }
 
@@ -479,6 +596,19 @@ function inventoryButton(num) {
 function battleInventoryButton(num) {
     if (num < game.player.inventory.length) {
         game.battle.playerUseItem(num);
+    }
+}
+
+function saveButton(num) {
+    if (num == 0) {
+        game.generateSaveLink();
+        document.getElementById("save-options").style.display = "none";
+        document.getElementById("save-download").style.display = "block";
+    } else if (num == 1) {
+        document.getElementById("save-options").style.display = "none";
+        document.getElementById("save-why").style.display = "block";
+    } else if (num == 2) {
+        game.hideSave();
     }
 }
 

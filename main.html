@@ -211,6 +211,7 @@
       </span>
     </div>
 
+    <!-- Flight screen -->
     <div id="fly-box" class="screen-box">
       <h1>FLIGHT</h1>
       <!-- Main elements -->
@@ -364,6 +365,26 @@
         <button onclick="battleActionButton(1)" id="battle-attack-button">Attack</button>
         <button onclick="battleActionButton(2)" id="battle-item-button">Item</button>
         <button onclick="battleActionButton(3)" id="battle-return-button">Go back</button>
+      </div>
+    </div>
+
+    <!-- Save screen -->
+    <div id="save-box" class="screen-box">
+      <h1>SAVE</h1>
+      <div id="save-options">
+        <p>Acceptable work so far, employee.</p>
+        <p id="save-lore-paragraph">Your contributions have been noted.</p>
+        <p>However, your mission is not over. Do you want to save your progress before you continue?</p>
+        <button onclick="saveButton(0)">SAVE</button> <button onclick="saveButton(1)">DO NOT</button>
+      </div>
+      <div id="save-download">
+        <a id="save-anchor"><button>Click to download your file.</button></a>
+        <p>After clicking the button above to save your progress, click the button below to continue:</p>
+        <button onclick="saveButton(2)">CONTINUE</button>
+      </div>
+      <div id="save-why">
+        <p>The Company does not understand why you have not saved your data, but you may proceed.</p>
+        <button onclick="saveButton(2)">CONTINUE</button>
       </div>
     </div>
 

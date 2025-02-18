@@ -349,3 +349,9 @@ select:hover {
     left: 49vw;
     top: 14vw;
 }
+
+/* Save creen */
+
+#save-download, #save-why {
+    display: none;
+}
