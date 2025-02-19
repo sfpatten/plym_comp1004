@@ -123,7 +123,7 @@ class Game {
         this.showSave();
     }
 
-    generateSaveLink() {
+    generateSaveObject() {
         let tempSaveObj = {
             "game":{
                 "botNumber":this.botNumber,
@@ -153,7 +153,7 @@ class Game {
             }
         };
         // There are a few parts of this that are not so trivial to populate:
-            // Mode
+        // Mode
         if (this.mode == "overworld") {
             tempSaveObj.game.mode = "o" + this.overworldLevel;
         } else if (this.mode == "vault") {
@@ -162,11 +162,11 @@ class Game {
         } else if (this.mode == "flight") {
             tempSaveObj.game.mode = "f0";
         }
-            // Inventory
+        // Inventory
         for (let itemSlot = 0; itemSlot < this.player.inventory.length; itemSlot++) {
             tempSaveObj.currentPlayer.inventory.push({"item":this.player.inventory[itemSlot].type, "count":this.player.inventory[itemSlot].count});
         }
-            // Other players
+        // Other players
         for (let playerIndex = 0; playerIndex < this.spareBots.length; playerIndex++) {
             tempSaveObj.spareBots.push({
                 "name":this.spareBots[playerIndex].name,
@@ -181,7 +181,7 @@ class Game {
             });
         }
 
-            // Level grid
+        // Level grid
         // NOTE: you may see that the array is rotated in-file - this is because it is stored in this format in the game
         // so that in the codebase we can refer to a grid position as the more natural [x][y] rather than [y][x].
         for (let row = 0; row < this.overworld.size; row++) {
@@ -192,20 +192,30 @@ class Game {
                 tempSaveObj.currentLevel.grid[row][col] = this.overworld.levelGrid[row][col];
             }
         }
-            // Encounters
+        // Encounters
         for (let encNum = 0; encNum < this.overworld.encounters.length; encNum++) {
             tempSaveObj.currentLevel.encounters.push({
                 "type":this.overworld.encounters[encNum].type,
                 "pos":[this.overworld.encounters[encNum].xpos, this.overworld.encounters[encNum].ypos]
             });
         }
-            // POIs
+        // POIs
         for (let poiNum = 0; poiNum < this.overworld.pois.length; poiNum++) {
             tempSaveObj.currentLevel.pois.push({
                 "type":this.overworld.pois[poiNum].type,
                 "pos":[this.overworld.pois[poiNum].xpos, this.overworld.pois[poiNum].ypos]
             });
         }
+
+        return tempSaveObj;
+    }
+
+    saveInLocalStorage() {
+        localStorage["saveGame"] = JSON.stringify(this.generateSaveObject());
+    }
+
+    generateSaveLink() {
+        let tempSaveObj = this.generateSaveObject();
 
         // Now we can generate the link
         let tempSaveBlob = new Blob([JSON.stringify(tempSaveObj)]);
@@ -615,6 +625,7 @@ function battleInventoryButton(num) {
 
 function saveButton(num) {
     if (num == 0) {
+        game.saveInLocalStorage();
         game.generateSaveLink();
         document.getElementById("save-options").style.display = "none";
         document.getElementById("save-download").style.display = "block";
