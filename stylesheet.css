@@ -66,11 +66,51 @@ select:hover {
     border:1px solid grey;
 }
 
-/* start screen */
-#start-screen-box {
+/* main menu */
+#main-menu-box {
     display: block;
 }
 
+#main-menu-title {
+    position:fixed;
+    top: -1vh;
+    padding:1vw;
+    width:25vw;
+}
+
+#main-menu-title-title {
+    font-size: 7.5vh;
+    margin-bottom: 0px;
+}
+
+#main-menu-options {
+    position:fixed;
+    top: 70vh;
+    right: 10vw;
+    border:1px solid grey;
+    padding:1vw;
+    width:10vw;
+}
+
+#main-menu-lore {
+    position:fixed;
+    top: 20vh;
+    left: 30vw;
+    border:1px solid grey;
+    padding:1vw;
+    width:50vw;
+}
+
+#main-menu-how-to-play {
+    position:fixed;
+    top: 60vh;
+    left: 10vw;
+    border:1px solid grey;
+    padding:1vw;
+    width:40vw;
+}
+
+/* start screen */
 #start-screen-forms-box {
     display:block;
     align-content: center;

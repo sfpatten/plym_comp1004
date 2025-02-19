@@ -19,7 +19,10 @@ class Game {
         document.getElementById("death-screen-box").style.display="none";
         document.getElementById("start-screen-box").style.display="none";
         document.getElementById("save-box").style.display="none";
-        if (newMode == "overworld") {
+        document.getElementById("main-menu-box").style.display="none";
+        if (newMode == "main-menu") {
+            document.getElementById("main-menu-box").style.display = "block";
+        } else if (newMode == "overworld") {
             document.getElementById("overworld-grid").style.display="grid";
             updateStatDisplay();
             updateInventoryDisplay();
@@ -574,6 +577,14 @@ function onKeyUp(e) {
                 keysDown[3] = false;
                 break;
         }
+    }
+}
+
+function mainMenuButton(action) {
+    if (action == 1) { // 1 - new game
+        game.setMode("start");
+    } else { // 2 - load game
+
     }
 }
 
