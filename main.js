@@ -50,6 +50,9 @@ class Game {
         document.getElementById("start-screen-box").style.display="none";
         document.getElementById("save-box").style.display="none";
         document.getElementById("save-box").style.display="block";
+        document.getElementById("save-download").style.display="none";
+        document.getElementById("save-why").style.display="none";
+        document.getElementById("save-options").style.display="block";
     }
 
     hideSave() {
