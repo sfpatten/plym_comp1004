@@ -36,7 +36,6 @@ class Entity {
                 break;
         }
         for (let poiN = 0; poiN < game.overworld.pois.length; poiN++) {
-            console.log("hello");
             if (game.overworld.pois[poiN].xpos == this.xpos && game.overworld.pois[poiN].ypos == this.ypos) {
                 game.overworld.pois[poiN].use();
             }
