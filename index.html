@@ -20,7 +20,7 @@
       <div id="main-menu-options">
         <h1>BEGIN</h1>
         <button onclick="mainMenuButton(1)">CREATE NEW GAME</button><br><br>
-        <button>LOAD SAVED GAME FILE</button>
+        <button onclick="mainMenuButton(2)">LOAD SAVED GAME FILE</button>
       </div>
 
       <div id="main-menu-lore">
@@ -430,6 +430,31 @@
       </div>
     </div>
 
+    <!-- Load screen -->
+    <div id="load-box" class="screen-box">
+      <h1>LOAD GAME</h1>
+      <p id="load-status">LOAD STATUS</p>
+      <div id="load-file-valid">
+        <div id="load-you">
+          <p id="load-you-name">Name</p>
+          <p id="load-you-@"><b>@</b></p>
+          <p id="load-you-HP">HP</p>
+          <p id="load-you-level">Level</p>
+        </div>
+        <br>
+        <button id="load-local-loadThisFile" onclick="game.loadFile()">LOAD THIS FILE</button>
+      </div>
+
+      <p id="load-upload-prompt">LOAD UPLOAD PROMPT</p>
+      <form>
+        <input type="file" id="load-file-input">
+      </form>
+      <br>
+      <button id="load-upload-file-button">UPLOAD FILE</button>
+      <p id="load-new-file-prompt">Alternatively, you can create a new game below:</p>
+      <button onclick="mainMenuButton(1)">START NEW GAME</button>
+    </div>
+
     <!-- Death screen -->
     <div id="death-screen-box" class="screen-box">
       <h1>MISSION FAILED</h1>
@@ -440,6 +465,7 @@
     </div>
     <!-- script here - you need the elements to exist before you can manipulate them -->
     <script src="flight.js"></script>
+    <script src="validateFile.js"></script>
     <script src="battle.js"></script>
     <script src="item.js"></script>
     <script src="level.js"></script>

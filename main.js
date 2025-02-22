@@ -9,6 +9,84 @@ class Game {
         this.mode = "start";
         this.battle = null;
         this.flight = null;
+        this.fileTemp = null; // Used in loading files
+    }
+
+    loadFile() {
+        // This assumes the file has been validated because that is the only way fileTemp should be populated, and the
+        // button triggering this function to be available.
+
+        this.botNumber = this.fileTemp["game"]["botNumber"];
+        // Current player
+        this.player.name = this.fileTemp["currentPlayer"]["name"];
+        this.player.HP = this.fileTemp["currentPlayer"]["HP"];
+        this.player.maxHP = this.fileTemp["currentPlayer"]["maxHP"];
+        this.player.str = this.fileTemp["currentPlayer"]["str"];
+        this.player.arm = this.fileTemp["currentPlayer"]["arm"];
+        this.player.dex = this.fileTemp["currentPlayer"]["dex"];
+        this.player.int = this.fileTemp["currentPlayer"]["int"];
+        this.player.cha = this.fileTemp["currentPlayer"]["cha"];
+        this.player.dream = this.fileTemp["currentPlayer"]["dream"];
+        this.player.favFood = this.fileTemp["currentPlayer"]["favFood"];
+        this.player.credits = this.fileTemp["currentPlayer"]["credits"];
+        this.player.xpos = this.fileTemp["currentPlayer"]["position"][0];
+        this.player.ypos = this.fileTemp["currentPlayer"]["position"][1];
+
+            // Inventory
+        this.player.inventory.length = 0;
+        for (let slot = 0; slot < this.fileTemp["currentPlayer"]["inventory"].length; slot++) {
+            this.player.inventory.push(new Item(this.fileTemp["currentPlayer"]["inventory"][slot]["item"],
+                this.fileTemp["currentPlayer"]["inventory"][slot]["count"]));
+        }
+
+        // Spare robots (if any left)
+        this.spareBots.length = 0;
+        for (let botNum = 0; botNum < this.fileTemp["spareBots"].length; botNum++) {
+            this.spareBots.push(new SpareBot(this.fileTemp["spareBots"][botNum]["name"],
+                this.fileTemp["spareBots"][botNum]["maxHP"], this.fileTemp["spareBots"][botNum]["str"],
+                this.fileTemp["spareBots"][botNum]["arm"], this.fileTemp["spareBots"][botNum]["dex"],
+                this.fileTemp["spareBots"][botNum]["int"], this.fileTemp["spareBots"][botNum]["cha"],
+            this.fileTemp["spareBots"][botNum]["dream"], this.fileTemp["spareBots"][botNum]["favFood"]));
+        }
+
+        let modeTemp = this.fileTemp["game"]["mode"];
+        if (modeTemp[0] == "o") { // There is no need to initialise overworld if the player is in the vault or exiting
+            this.overworldLevel = Number(modeTemp.slice(1));
+
+            // Overworld level
+                // Grid
+            for (let x = 0; x < 25; x++) {
+                for (let y = 0; y < 25; y++) {
+                    this.overworld.levelGrid[x][y] = this.fileTemp["currentLevel"]["grid"][x][y];
+                }
+            }
+
+                // Spawn point
+            this.overworld.spawnPoint = this.fileTemp["currentLevel"]["spawnPoint"];
+
+                // Encounters
+            this.overworld.encounters.length = 0;
+            for (let e = 0; e < this.fileTemp["currentLevel"]["encounters"].length; e++) {
+                this.overworld.encounters.push(new Encounter(this.fileTemp["currentLevel"]["encounters"][e]["pos"][0],
+                    this.fileTemp["currentLevel"]["encounters"][e]["pos"][1],
+                    this.fileTemp["currentLevel"]["encounters"][e]["type"]))
+            }
+
+                // POIs
+            this.overworld.pois.length = 0;
+            for (let e = 0; e < this.fileTemp["currentLevel"]["pois"].length; e++) {
+                this.overworld.pois.push(new Encounter(this.fileTemp["currentLevel"]["pois"][e]["pos"][0],
+                    this.fileTemp["currentLevel"]["pois"][e]["pos"][1],
+                    this.fileTemp["currentLevel"]["pois"][e]["type"]))
+            }
+
+            this.setMode("overworld");
+            renderMap();
+            updateInventoryDisplay();
+            updateStatDisplay();
+        } else {
+            console.log("Not yet implemented."); // TODO: add file loading for vault and escape when implemented
+        }
     }
 
     setMode(newMode) {
@@ -19,6 +97,7 @@ class Game {
         document.getElementById("death-screen-box").style.display="none";
         document.getElementById("start-screen-box").style.display="none";
         document.getElementById("save-box").style.display="none";
+        document.getElementById("load-box").style.display="none";
         document.getElementById("main-menu-box").style.display="none";
         if (newMode == "main-menu") {
             document.getElementById("main-menu-box").style.display = "block";
@@ -42,7 +121,7 @@ class Game {
         }
     }
 
-    showSave() {
+    openSaveScreen() {
         document.getElementById("overworld-grid").style.display="none";
         document.getElementById("battle-box").style.display="none";
         document.getElementById("fly-box").style.display="none";
@@ -55,7 +134,7 @@ class Game {
         document.getElementById("save-options").style.display="block";
     }
 
-    hideSave() {
+    closeSaveScreen() {
         document.getElementById("save-box").style.display="none";
         if (this.mode == "overworld") {
             document.getElementById("overworld-grid").style.display="grid";
@@ -67,6 +146,43 @@ class Game {
             document.getElementById("start-screen-box").style.display="block";
         } else if (this.mode == "fly") {
             document.getElementById("fly-box").style.display="block";
+        }
+    }
+
+    openLoadScreen() {
+        document.getElementById("main-menu-box").style.display="none";
+        document.getElementById("load-box").style.display="block";
+
+        // Validate our local save file to decide what to do next
+        let file = JSON.parse(localStorage["saveGame"])
+        let validFile = validateFile(file);
+
+        if (validFile) {
+            this.fileTemp = file;
+            document.getElementById("load-status").innerHTML = "A save file has been detected:"
+            document.getElementById("load-upload-prompt").innerHTML = "You can also upload a local save file below:";
+            document.getElementById("load-new-file-prompt").innerHTML = "Otherwise, you can start a new game here:";
+            document.getElementById("load-file-valid").style.display = "block";
+            document.getElementById("load-you-name").innerHTML = file["currentPlayer"]["name"];
+            document.getElementById("load-you-HP").innerHTML = "HP: " + file["currentPlayer"]["HP"] + "/" +
+                file["currentPlayer"]["maxHP"];
+            let tempLevel = file["game"]["mode"];
+            if (tempLevel[0] == "o") {
+                document.getElementById("load-you-level").innerHTML = "Level " + tempLevel.slice(1);
+            } else if (tempLevel[0] == "v") {
+                document.getElementById("load-you-level").innerHTML = "The Vault";
+            } else if (tempLevel[0] == "e") {
+                document.getElementById("load-you-level").innerHTML = "The Escape";
+            }
+            // console.log("valid file in local storage :)"); // This line of code was a reassuring presence for the nine hours it took to implement save file validation, I'm not yet ready to say goodbye to it
+        } else {
+            document.getElementById("load-status").innerHTML = "No save file has been detected:"
+            document.getElementById("load-upload-prompt").innerHTML = "You can upload a local save file below:";
+            document.getElementById("load-new-file-prompt").innerHTML = "Otherwise, you can start a new game here:";
+            document.getElementById("load-file-valid").style.display = "none";
+            // If there is no valid file, we will hide the "load-you" div and indicate that the player must either
+            // upload a file or start a new game.
+
         }
     }
 
@@ -120,7 +236,7 @@ class Game {
         this.player.xpos = this.overworld.spawnPoint[0];
         this.player.ypos = this.overworld.spawnPoint[1];
         renderMap();
-        this.showSave();
+        this.openSaveScreen();
     }
 
     generateSaveObject() {
@@ -160,7 +276,7 @@ class Game {
             tempSaveObj.game.mode = "v0";
             // TODO: implement when vault is implemented
         } else if (this.mode == "flight") {
-            tempSaveObj.game.mode = "f0";
+            tempSaveObj.game.mode = "e0";
         }
         // Inventory
         for (let itemSlot = 0; itemSlot < this.player.inventory.length; itemSlot++) {
@@ -597,7 +713,7 @@ function mainMenuButton(action) {
     if (action == 1) { // 1 - new game
         game.setMode("start");
     } else { // 2 - load game
-
+        game.openLoadScreen();
     }
 }
 
@@ -633,7 +749,7 @@ function saveButton(num) {
         document.getElementById("save-options").style.display = "none";
         document.getElementById("save-why").style.display = "block";
     } else if (num == 2) {
-        game.hideSave();
+        game.closeSaveScreen();
     }
 }
 

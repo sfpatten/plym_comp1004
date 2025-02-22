@@ -390,8 +390,32 @@ select:hover {
     top: 14vw;
 }
 
-/* Save creen */
+/* Save screen */
 
 #save-download, #save-why {
     display: none;
+}
+
+/* Load screen */
+
+#load-file-valid {
+    text-align: center;
+}
+
+#load-you {
+    margin: auto;
+    text-align: center;
+    width: 20vh;
+    height: 20vh;
+    border: 1px solid black;
+}
+
+#load-you-\@ {
+    font-size: 5vh;
+    margin-top: -1vh;
+    margin-bottom: -1vh;
+}
+
+#load-file-input {
+    font-size: 1.5vh;
 }
