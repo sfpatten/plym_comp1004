@@ -114,9 +114,9 @@ class Enemy extends Entity {
                 this.flavourTextLow = "The Optical disk is badly scratched.";
                 break;
             case "Keyboard":
-                this.maxHP = 13;
+                this.maxHP = 9;
                 this.str = 4;
-                this.arm = 2;
+                this.arm = 1;
                 this.flavourText = ["Keyboard is spreading misinformation online.", "Keyboard takes control of the situation."];
                 this.flavourTextLow = "The keyboard is missig a few keys"; // Intentional typo here - it is allegedly funny
                 break;
