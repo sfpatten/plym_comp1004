@@ -75,7 +75,7 @@ class Game {
                 // POIs
             this.overworld.pois.length = 0;
             for (let e = 0; e < this.fileTemp["currentLevel"]["pois"].length; e++) {
-                this.overworld.pois.push(new Encounter(this.fileTemp["currentLevel"]["pois"][e]["pos"][0],
+                this.overworld.pois.push(new POI(this.fileTemp["currentLevel"]["pois"][e]["pos"][0],
                     this.fileTemp["currentLevel"]["pois"][e]["pos"][1],
                     this.fileTemp["currentLevel"]["pois"][e]["type"]))
             }
