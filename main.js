@@ -186,6 +186,40 @@ class Game {
         }
     }
 
+    localLoadFromUploadedFile() { // Assumes openLoadScreen() has already been called
+        let fileListTemp = document.getElementById("load-file-input").files;
+        if (fileListTemp.length > 0) {
+            let reader = new FileReader();
+            // It's time for some asynchronous antics here, with a lambda function to respond once it's finished
+            reader.onload = function () {
+                try {
+                    let parsedData = JSON.parse(reader.result);
+                    if (validateFile(parsedData)) {
+                        game.fileTemp = parsedData;
+                        document.getElementById("load-status").innerHTML = "You have uploaded the following file:";
+                        document.getElementById("load-upload-prompt").innerHTML = "You can upload another local save file below:";
+                        document.getElementById("load-you-name").innerHTML = game.fileTemp["currentPlayer"]["name"];
+                        document.getElementById("load-you-HP").innerHTML = "HP: " + game.fileTemp["currentPlayer"]["HP"] + "/" +
+                            game.fileTemp["currentPlayer"]["maxHP"];
+                        let tempLevel = game.fileTemp["game"]["mode"];
+                        if (tempLevel[0] == "o") {
+                            document.getElementById("load-you-level").innerHTML = "Level " + tempLevel.slice(1);
+                        } else if (tempLevel[0] == "v") {
+                            document.getElementById("load-you-level").innerHTML = "The Vault";
+                        } else if (tempLevel[0] == "e") {
+                            document.getElementById("load-you-level").innerHTML = "The Escape";
+                        }
+                    } else {
+                        document.getElementById("load-upload-prompt").innerHTML = "Invalid file. You can try uploading another:";
+                    }
+                } catch {
+                    document.getElementById("load-upload-prompt").innerHTML = "Invalid file. You can try uploading another:";
+                }
+            }
+            reader.readAsText(fileListTemp[0]);
+        }
+    }
+
     startFlight(mode) {
         this.flight = new Flight();
         this.flight.start();

@@ -447,10 +447,10 @@
 
       <p id="load-upload-prompt">LOAD UPLOAD PROMPT</p>
       <form>
-        <input type="file" id="load-file-input">
+        <input type="file" id="load-file-input" accept="application/json">
       </form>
       <br>
-      <button id="load-upload-file-button">UPLOAD FILE</button>
+      <button id="load-upload-file-button" onclick="game.localLoadFromUploadedFile()">UPLOAD FILE</button>
       <p id="load-new-file-prompt">Alternatively, you can create a new game below:</p>
       <button onclick="mainMenuButton(1)">START NEW GAME</button>
     </div>
