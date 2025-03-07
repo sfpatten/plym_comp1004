@@ -71,7 +71,16 @@ class Player extends Entity {
         this.arm = 5;
         this.maxHP = 20;
         this.HP = 20;
-        this.inventory = [new Item("apple", 2), new Item("toast", 1), new Item("raisins", 1)];
+        this.inventory = [ // Temporarily populated to stress test the UI
+            new Item("apple", 2),
+            new Item("toast", 1),
+            new Item("raisins", 1),
+            new Item("carrot", 1),
+            new Item("rice", 1),
+            new Item("soap", 1),
+            new Item("biscuit", 1),
+            new Item("teabag", 1),
+        ];
         this.dream = "friendship";
         this.favFood = "apple";
         this.credits = 5000000;

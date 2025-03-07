@@ -10,6 +10,13 @@ class Game {
         this.battle = null;
         this.flight = null;
         this.fileTemp = null; // Used in loading files
+        this.overworldLog = [
+            "",
+            "",
+            "",
+            "",
+            "The H.E.A.R.T unit is ready for action.",
+        ]; // Used in overworld to display the log
     }
 
     loadFile() {
@@ -233,6 +240,7 @@ class Game {
     }
 
     robotDied() {
+        this.addToLog(this.player.name + " has fallen.");
         if (this.botNumber < 4) {
             // TODO: death popup window
             this.player.name = this.spareBots[0].name;
@@ -372,6 +380,12 @@ class Game {
         let saveLink = document.getElementById("save-anchor");
         saveLink.href = URL.createObjectURL(tempSaveBlob);
         saveLink.download = "HEART-SAVE.json";
+    }
+
+    addToLog(text) {
+        this.overworldLog.splice(0, 1);
+        this.overworldLog.push(text);
+        updateLogDisplay();
     }
 }
 
@@ -578,6 +592,17 @@ function updateInventoryDisplay() {
         } else {
             document.getElementById("inv-td-i" + i).innerHTML = "";
             document.getElementById("inv-td-b" + i).style.display = "none";
+        }
+    }
+}
+
+function updateLogDisplay() {
+    for (let i = 0; i < 5; i++) {
+        if (game.overworldLog[4 - i] == "") {
+            document.getElementById("overworld-log-" + i).style.display = "none";
+        } else {
+            document.getElementById("overworld-log-" + i).style.display = "block";
+            document.getElementById("overworld-log-" + i).innerHTML = "> " + game.overworldLog[4 - i]
         }
     }
 }
@@ -810,6 +835,7 @@ game.player.xpos = game.overworld.spawnPoint[0];
 game.player.ypos = game.overworld.spawnPoint[1];
 
 renderMap();
+updateLogDisplay();
 
 document.addEventListener("keydown", onKeyDown);
 document.addEventListener("keyup", onKeyUp);

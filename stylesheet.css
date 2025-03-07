@@ -238,6 +238,12 @@ select:hover {
     color: lightgrey;
 }
 
+/* Stats */
+.stat {
+    margin-bottom: 0.5vh;
+    margin-top: 0.5vh;
+}
+
 /* Inventory */
 .inventory-td {
     font-size: 0.75vw;

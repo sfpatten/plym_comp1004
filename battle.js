@@ -340,9 +340,11 @@ class Battle {
         }
     }
 
-    end() {
+    end() { // More convoluted self-reference due to timeout usage
+        let selectedVerb = ["obliterated", "destroyed", "vanquished", "discombobulated", "exterminated",
+        "eviscerated", "laid waste to", "annihilated", "demolished"][Math.floor(Math.random() * 8)];
+        game.addToLog("A " + game.battle.enemy.type + " was " + selectedVerb + " by " + game.player.name + ".");
         game.setMode("overworld");
-        // TODO: add functionality for this
     }
 
     updatePlayerPos() {
