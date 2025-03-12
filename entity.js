@@ -85,6 +85,19 @@ class Player extends Entity {
         this.favFood = "apple";
         this.credits = 5000000;
     }
+
+    useItemOverworld(slot) {
+        // Ensure we aren't trying to use a non-existent item
+        if (slot >= this.inventory.length ) {
+            return;
+        }
+
+        if (!this.inventory[slot].consumable) { // There are no items other than food that can be used in the overworld
+            return;
+        }
+
+
+    }
 }
 
 class Enemy extends Entity {
