@@ -89,14 +89,37 @@ class Player extends Entity {
     useItemOverworld(slot) {
         // Ensure we aren't trying to use a non-existent item
         if (slot >= this.inventory.length ) {
-            return;
+            return false;
         }
 
-        if (!this.inventory[slot].consumable) { // There are no items other than food that can be used in the overworld
-            return;
+        // Perform whichever action is needed for the item
+        if (this.inventory[slot].consumable) { // There are no items other than food that can be used in the overworld
+            if (this.inventory[slot].type == this.favFood) {
+                this.HP += Math.floor(this.inventory[slot].consumeHP * 1.5);
+                game.addToLog(this.inventory[slot].useText);
+            } else {
+                this.HP += this.inventory[slot].consumeHP;
+                game.addToLog(this.name + " enjoyed " + this.inventory[slot].displayName + ", their favourite food." + "(+" + Math.floor(this.inventory[slot].consumeHP * 1.5) + " HP)")
+            }
+
+            if (this.HP > this.maxHP) {
+                this.HP = this.maxHP;
+            }
+
+        } else {
+            return false;
         }
 
+        // Decrease the number of item
+        if (this.inventory[slot].count < 2) {
+            this.inventory.splice(slot, 1);
+        } else {
+            this.inventory[slot].count --;
+        }
 
+        updateStatDisplay();
+        updateInventoryDisplay();
+        return true;
     }
 }
 

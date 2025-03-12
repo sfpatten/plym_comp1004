@@ -638,6 +638,31 @@ function onKeyDown(e) {
             case "KeyD":
                 game.player.move('R');
                 break;
+            // Digit keys
+            case "Digit1":
+                success = game.player.useItemOverworld(0);
+                break;
+            case "Digit2":
+                success = game.player.useItemOverworld(1);
+                break;
+            case "Digit3":
+                success = game.player.useItemOverworld(2);
+                break;
+            case "Digit4":
+                success = game.player.useItemOverworld(3);
+                break;
+            case "Digit5":
+                success = game.player.useItemOverworld(4);
+                break;
+            case "Digit6":
+                success = game.player.useItemOverworld(5);
+                break;
+            case "Digit7":
+                success = game.player.useItemOverworld(6);
+                break;
+            case "Digit8":
+                success = game.player.useItemOverworld(7);
+                break;
             default:
                 success = false; // we don't want to send an overworld update if no valid key was pressed'
         }
@@ -789,7 +814,10 @@ function battleActionButton(action) {
 }
 
 function inventoryButton(num) {
-    console.log("Not implemented yet");
+    if (game.player.useItemOverworld(num)) {
+        game.overworld.simulateAllEncounters();
+        renderMap();
+    }
 }
 
 function battleInventoryButton(num) {
