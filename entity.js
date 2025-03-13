@@ -96,10 +96,11 @@ class Player extends Entity {
         if (this.inventory[slot].consumable) { // There are no items other than food that can be used in the overworld
             if (this.inventory[slot].type == this.favFood) {
                 this.HP += Math.floor(this.inventory[slot].consumeHP * 1.5);
-                game.addToLog(this.inventory[slot].useText);
+                game.addToLog(this.name + " enjoyed " + this.inventory[slot].displayName +
+                    ", their favourite food." + "(+" + Math.floor(this.inventory[slot].consumeHP * 1.5) + " HP)");
             } else {
                 this.HP += this.inventory[slot].consumeHP;
-                game.addToLog(this.name + " enjoyed " + this.inventory[slot].displayName + ", their favourite food." + "(+" + Math.floor(this.inventory[slot].consumeHP * 1.5) + " HP)")
+                game.addToLog(this.inventory[slot].useText);
             }
 
             if (this.HP > this.maxHP) {
