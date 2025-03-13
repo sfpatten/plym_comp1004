@@ -83,7 +83,7 @@ class Player extends Entity {
         ];
         this.dream = "friendship";
         this.favFood = "apple";
-        this.credits = 5000000;
+        this.credits = 1000000;
     }
 
     useItemOverworld(slot) {
@@ -130,11 +130,13 @@ class Enemy extends Entity {
         this.type = type;
         this.flavourText = ["Flavour text placeholder"];
         this.flavourTextLow = "Low HP placeholder";
+        this.reward = 0;
         switch (this.type) {
             case "Calculator":
                 this.maxHP = 8;
                 this.str = 1;
                 this.arm = 0;
+                this.reward = 100000;
                 this.flavourText = ["The Calculator is full of add-ticipation.",
                     "Calculator is positive it is going to win.",
                     "Calculator ponders what it will do when you are out of the equation.",
@@ -145,6 +147,7 @@ class Enemy extends Entity {
                 this.maxHP = 5;
                 this.str = 1;
                 this.arm = 0;
+                this.reward = 70000;
                 this.flavourText = ["It seems you are fighting a floppy disk.", "Up to a megabyte of storage!",
                     "Floppy disk's expression is unreadable.", "The future of digital storage!"]
                 this.flavourTextLow = "Floppy disk has nearly reached capacity.";
@@ -153,6 +156,7 @@ class Enemy extends Entity {
                 this.maxHP = 15;
                 this.str = 4;
                 this.arm = 0;
+                this.reward = 250000;
                 this.flavourText = ["Power plug sold separately!", "Controllers sold separately!",
                     "Graphics card sold separately!", "Unlock volume settings with GameBox Plus!"];
                 this.flavourTextLow = "GameBox is coming to an afterlife near you.";
@@ -161,6 +165,7 @@ class Enemy extends Entity {
                 this.maxHP = 16;
                 this.str = 3;
                 this.arm = 0;
+                this.reward = 240000;
                 this.flavourText = ["The Optical disk dazzles you with its iridescent shine.",
                     "The Optical Disk attempts to insert itself in a slot, upside down.",
                     "The Optical disk spins rapidly."];
@@ -170,6 +175,7 @@ class Enemy extends Entity {
                 this.maxHP = 9;
                 this.str = 4;
                 this.arm = 1;
+                this.reward = 150000;
                 this.flavourText = ["Keyboard is spreading misinformation online.",
                     "Keyboard takes control of the situation.", "The Keyboard's 'W' key is severely worn down."
                 ];

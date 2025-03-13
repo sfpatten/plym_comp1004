@@ -343,7 +343,9 @@ class Battle {
     end() { // More convoluted self-reference due to timeout usage
         let selectedVerb = ["obliterated", "destroyed", "vanquished", "discombobulated", "exterminated",
         "eviscerated", "laid waste to", "annihilated", "demolished"][Math.floor(Math.random() * 8)];
-        game.addToLog("A " + game.battle.enemy.type + " was " + selectedVerb + " by " + game.player.name + ".");
+        game.addToLog("A " + game.battle.enemy.type + " was " + selectedVerb + " by " + game.player.name +
+            ". It dropped " + game.battle.enemy.reward + " credits.");
+        game.player.credits += game.battle.enemy.reward;
         game.setMode("overworld");
     }
 
