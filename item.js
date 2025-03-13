@@ -41,7 +41,7 @@ class Item {
                 this.consumeHP = -1;
                 break;
             case "biscuit":
-                this.displayName = "Crushed biscuit";
+                this.displayName = "Crushed Biscuit";
                 this.useText = "It tastes like a cheese-free cheesecake. (+6 HP)";
                 this.consumable = true;
                 this.consumeHP = 6;
@@ -51,6 +51,42 @@ class Item {
                 this.useText = "A savoury snack. (+4 HP)";
                 this.consumable = true;
                 this.consumeHP = 4;
+                break;
+            case "crisps":
+                this.displayName = "Stale Crisps";
+                this.useText = "The crisps do not crunch. (+5 HP)";
+                this.consumable = true;
+                this.consumeHP = 5;
+                break;
+            case "chocolate":
+                this.displayName = "Chocolate";
+                this.useText = "It's white chocolate. (+6 HP)";
+                this.consumable = true;
+                this.consumeHP = 6;
+                break;
+            case "granola":
+                this.displayName = "Frozen Granola";
+                this.useText = "Why is the granola frozen? You are unsure. (+7 HP)";
+                this.consumable = true;
+                this.consumeHP = 7;
+                break;
+            case "coffee":
+                this.displayName = "Bottle of Coffee";
+                this.useText = "You slurp the coffee out of the glass bottle, and then eat the bottle. (+4 HP)";
+                this.consumable = true;
+                this.consumeHP = 4;
+                break;
+            case "popcorn":
+                this.displayName = "Popcorn";
+                this.useText = "Most of the kernels are unpopped. (+6 HP)";
+                this.consumable = true;
+                this.consumeHP = 6;
+                break;
+            case "sandwich":
+                this.displayName = "Squashed sandwich";
+                this.useText = "The butter inside the sandwich is crunchy. (+10 HP)";
+                this.consumable = true;
+                this.consumeHP = 10;
                 break;
             default: // The wooden spoon is intended to be unobtainable, so, obviously, if it is obtainable, something has gone severely wrong.
                 this.displayName = "Wooden Spoon";

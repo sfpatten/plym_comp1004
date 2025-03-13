@@ -61,7 +61,8 @@ function getDreamFromID(id) { // The pleasant name rather than the off-putting d
 }
 
 // Arrays of IDs
-let items = ["apple","carrot", "rice", "raisins", "toast", "soap", "biscuit", "teabag"];
+let items = ["apple","carrot", "rice", "raisins", "toast", "soap", "biscuit", "teabag", "crisps", "chocolate",
+    "granola", "coffee", "popcorn", "sandwich"];
 // Note: Freedom and friendship are not included below due to being invalid dreams
 let dreams = ["friendship", "money", "chef", "rest", "hygiene", "perfection", "daredevil", "sell",
     "explore", "buy", "revenge"];

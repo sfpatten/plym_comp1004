@@ -504,9 +504,10 @@ function randomiseStartEntries() { // To make the "randomise" button work
         names.splice(pick, 1);
     }
     // Favourite food
-    let foods = ["apple", "carrot", "rice", "toast", "biscuit", "teabag"];
+    let foods = ["apple", "carrot", "rice", "toast", "biscuit", "teabag", "crisps", "chocolate",
+        "granola", "coffee", "popcorn", "sandwich"];
     for (let i = 0; i < 5; i++) {
-        pick = Math.floor(Math.random() * (6 - i));
+        pick = Math.floor(Math.random() * (12 - i));
         document.getElementById("start-food-" + i).value = foods[pick];
         foods.splice(pick, 1);
     }
