@@ -20,30 +20,34 @@ function getStatsForDream(dream) {
 
 function getNameFromItemIDGood(id) { // The pleasant name rather than the off-putting display names in inventory
     if (id == "apple") {
-        return "Apples"
+        return "Apples";
     } else if (id == "carrot") {
-        return "Carrots"
+        return "Carrots";
     } else if (id == "rice") {
-        return "Rice"
+        return "Rice";
     } else if (id == "toast") {
-        return "Toast"
+        return "Toast";
     } else if (id == "biscuit") {
-        return "Biscuits"
+        return "Biscuits";
     } else if (id == "teabag") {
-        return "Teabags"
+        return "Teabags";
     } else if (id == "crisps") {
-        return "Crisps"
+        return "Crisps";
     } else if (id == "chocolate") {
-        return "Chocolate"
+        return "Chocolate";
     } else if (id == "granola") {
-        return "Granola"
+        return "Granola";
     } else if (id == "coffee") {
-        return "Coffee"
+        return "Coffee";
     } else if (id == "popcorn") {
-        return "Popcorn"
+        return "Popcorn";
     } else if (id == "sandwich") {
-        return "Sandwich"
-    } else  {
+        return "Sandwich";
+    } else if (id == "raisins") {
+        return "Raisins";
+    } else if (id=="soap") {
+        return "Soap";
+    } else {
         return "Unknown"
     }
 }

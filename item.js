@@ -36,7 +36,7 @@ class Item {
                 break;
             case "soap":
                 this.displayName = "Unscented Soap";
-                this.useText = "Biting into the soap, I felt ashamed. (-1 HP; +1 Shame)";
+                this.useText = "Biting into the soap, you felt ashamed, yet also hygienic. (-1 HP; +1 Shame)";
                 this.consumable = true;
                 this.consumeHP = -1;
                 break;
