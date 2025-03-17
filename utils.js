@@ -31,6 +31,18 @@ function getNameFromItemIDGood(id) { // The pleasant name rather than the off-pu
         return "Biscuits"
     } else if (id == "teabag") {
         return "Teabags"
+    } else if (id == "crisps") {
+        return "Crisps"
+    } else if (id == "chocolate") {
+        return "Chocolate"
+    } else if (id == "granola") {
+        return "Granola"
+    } else if (id == "coffee") {
+        return "Coffee"
+    } else if (id == "popcorn") {
+        return "Popcorn"
+    } else if (id == "sandwich") {
+        return "Sandwich"
     } else  {
         return "Unknown"
     }
