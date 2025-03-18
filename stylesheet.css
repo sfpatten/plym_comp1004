@@ -3,7 +3,7 @@ body {
 }
 
 /* Basic font settings */
-p, h1, h2, li, td, div, label, select, option, button, input {
+p, h1, h2, li, td, th, div, label, select, option, button, input {
     font-family: monospace;
 }
 
@@ -15,14 +15,13 @@ h2 {
     font-size: 2vh;
 }
 
-p, td, li, label, option {
+p, td, th, li, label, option {
     font-size: 1.5vh;
 }
 
 
 td {
-    font-size: 4vmin;
-    line-height: 5vmin;
+    line-height: 3vmin;
 }
 
 button {
@@ -394,6 +393,18 @@ select:hover {
     position: fixed;
     left: 49vw;
     top: 14vw;
+}
+
+/* Shop */
+#shop-align-tables {
+    text-align: center;
+    width: auto;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#shop-leave-button {
+    float: revert;
 }
 
 /* Save screen */

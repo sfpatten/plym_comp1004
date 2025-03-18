@@ -122,6 +122,33 @@ class Player extends Entity {
         updateInventoryDisplay();
         return true;
     }
+
+    hasSpaceFor(itemType) { // Utility used to see if the player has inventory space for an item
+        if (this.inventory.length < 8) {
+            return true;
+        }
+        for (let i = 0; i < 8; i++) {
+            if (this.inventory[i].type == itemType) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    giveItem(itemType, count) { // This will have no effect if there's no space
+        // First, see if the item already exists
+        for (let i  = 0; i < this.inventory.length; i++) {
+            if (this.inventory[i].type == itemType) {
+                this.inventory[i].count += count;
+                return;
+            }
+        }
+
+        // If that fails, see if we can add it in
+        if (this.inventory.length < 8) {
+            this.inventory.push(new Item(itemType, count));
+        }
+    }
 }
 
 class Enemy extends Entity {

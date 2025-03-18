@@ -9,6 +9,7 @@ class Game {
         this.mode = "start";
         this.battle = null;
         this.flight = null;
+        this.shop = new Shop();
         this.fileTemp = null; // Used in loading files
         this.overworldLog = [
             "",
@@ -191,6 +192,26 @@ class Game {
             // upload a file or start a new game.
 
         }
+    }
+
+    openShopScreen() {
+        document.getElementById("overworld-grid").style.display="none";
+        document.getElementById("battle-box").style.display="none";
+        document.getElementById("fly-box").style.display="none";
+        document.getElementById("death-screen-box").style.display="none";
+        document.getElementById("start-screen-box").style.display="none";
+        document.getElementById("save-box").style.display="none";
+        document.getElementById("load-box").style.display="none";
+        document.getElementById("main-menu-box").style.display="none";
+
+        document.getElementById("shop-box").style.display = "block";
+        game.shop.populate();
+        game.shop.updateDisplay();
+    }
+
+    closeShopScreen() {
+        // Unless designs change, the shop is only accessible in the overworld, so this works
+        this.setMode("overworld");
     }
 
     localLoadFromUploadedFile() { // Assumes openLoadScreen() has already been called
@@ -839,6 +860,18 @@ function saveButton(num) {
     } else if (num == 2) {
         game.closeSaveScreen();
     }
+}
+
+function shopBuyButton(num) {
+    game.shop.buy(num);
+}
+
+function shopSellButton(num) {
+    game.shop.sell(num);
+}
+
+function shopCloseButton() {
+    game.closeShopScreen();
 }
 
 function resetKeysDown() {

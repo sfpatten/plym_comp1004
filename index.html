@@ -379,6 +379,39 @@
       </div>
     </div>
 
+    <!-- Shop screen -->
+    <div id="shop-box" class="screen-box">
+      <h1>SHOP</h1>
+      <p id="shop-welcome"></p><p id="shop-welcome-2"></p>
+      <div id="shop-align-tables">
+        <table id="shop-buy-table">
+          <tr><th colspan="4"><h1>STOCK</h1></th></tr>
+          <tr><td id="shop-buy-i0"><p></p></td><td id="shop-buy-b0"><button onclick="shopBuyButton(0)">BUY</button></td>
+            <td id="shop-buy-i1"><p></p></td><td id="shop-buy-b1"><button onclick="shopBuyButton(1)">BUY</button></td></tr>
+          <tr><td id="shop-buy-i2"><p></p></td><td id="shop-buy-b2"><button onclick="shopBuyButton(2)">BUY</button></td>
+            <td id="shop-buy-i3"><p></p></td><td id="shop-buy-b3"><button onclick="shopBuyButton(3)">BUY</button></td></tr>
+          <tr><td id="shop-buy-i4"><p></p></td><td id="shop-buy-b4"><button onclick="shopBuyButton(4)">BUY</button></td>
+            <td id="shop-buy-i5"><p></p></td><td id="shop-buy-b5"><button onclick="shopBuyButton(5)">BUY</button></td></tr>
+          <tr><td id="shop-buy-i6"><p></p></td><td id="shop-buy-b6"><button onclick="shopBuyButton(6)">BUY</button></td>
+            <td id="shop-buy-i7"><p></p></td><td id="shop-buy-b7"><button onclick="shopBuyButton(7)">BUY</button></td></tr>
+        </table>
+        <table id="shop-inventory-table">
+          <tr><th colspan="4"><h1>YOUR ITEMS</h1></th></tr>
+          <tr><td id="shop-sell-i0"><p></p></td><td id="shop-sell-b0"><button onclick="shopSellButton(0)">SELL</button></td>
+            <td id="shop-sell-i1"><p></p></td><td id="shop-sell-b1"><button onclick="shopSellButton(1)">SELL</button></td></tr>
+          <tr><td id="shop-sell-i2"><p></p></td><td id="shop-sell-b2"><button onclick="shopSellButton(2)">SELL</button></td>
+            <td id="shop-sell-i3"><p></p></td><td id="shop-sell-b3"><button onclick="shopSellButton(3)">SELL</button></td></tr>
+          <tr><td id="shop-sell-i4"><p></p></td><td id="shop-sell-b4"><button onclick="shopSellButton(4)">SELL</button></td>
+            <td id="shop-sell-i5"><p></p></td><td id="shop-sell-b5"><button onclick="shopSellButton(5)">SELL</button></td></tr>
+          <tr><td id="shop-sell-i6"><p></p></td><td id="shop-sell-b6"><button onclick="shopSellButton(6)">SELL</button></td>
+            <td id="shop-sell-i7"><p></p></td><td id="shop-sell-b7"><button onclick="shopSellButton(7)">SELL</button></td></tr>
+        </table>
+      </div>
+      <br>
+      <p id="shop-credits"></p>
+      <button id="shop-leave-button" onclick="shopCloseButton()">LEAVE</button>
+    </div>
+
     <!-- Battle screen -->
     <div id="battle-box" class="screen-box">
       <h1>BATTLE</h1>
@@ -499,6 +532,7 @@
     <script src="level.js"></script>
     <script src="entity.js"></script>
     <script src="utils.js"></script>
+    <script src="shop.js"></script>
     <script src="main.js"></script> <!-- Main must be loaded last as it depends on the other classes being declared -->
 
   </body>

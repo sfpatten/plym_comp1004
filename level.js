@@ -517,6 +517,15 @@ class Level {
             this.renderOntoOverworldTable();
         }
     }
+
+    clearUsedPOIs() {
+        for (let p = this.pois.length - 1; p >= 0; p--) {
+            if (this.pois[p].shouldDelete) {
+                this.pois.splice(p, 1);
+            }
+            this.renderOntoOverworldTable();
+        }
+    }
 }
 
 class Encounter {
@@ -619,14 +628,28 @@ class POI {
         this.ypos = ypos;
         this.type = type;
         this.displaySymbol = type[0];
+        this.shouldDelete = false;
     }
 
     use() {
-        if (this.type = "exit") {
+        if (this.type == "exit") {
             game.overworldLevelUp();
+        } else if (this.type == "vendingMachine") {
+            game.openShopScreen();
+        } else if (this.type == "grill") {
+            game.addToLog("It's a grill. The grill disintegrated.");
+            this.shouldDelete = true;
+            game.overworld.clearUsedPOIs();
+        } else if (this.type == "cactus") {
+            game.player.HP = 1;
+            game.addToLog(game.player.name + " stumbled into a cactus. Ouch! However, the cactus also disintegrated.");
+            this.shouldDelete = true;
+            game.overworld.clearUsedPOIs();
         } else if (this.type == "bed") {
             game.player.HP = game.player.maxHP;
-            //TODO: put a message in the log upon use, set a robot with a dream of "rest"'s status to dream fulfilled
+            game.addToLog(game.player.name + " had an excellent nap. However, the bed caught fire and disintegrated.");
+            this.shouldDelete = true;
+            game.overworld.clearUsedPOIs();
         }
     }
 }
