@@ -568,8 +568,14 @@ class Battle {
 					this.bullets.push(new Bullet(x, 300, 0, spd, 0, 0, "standard", randomPhrase[i], i * 4, 150));
 				}
 				break;
+            case "Telescope":
+                this.battleFrames = 200;
+                for (let i = 0; i < 20; i++) {
+                    let x = -50 + Math.random() * 120; // pick a random x position
+                    this.bullets.push(new Bullet(x, -100, 1, 4, 0, 0, "standard", "#", i * 8, 150));
+                }
             default:
-                console.log("no monster bullet pattern found");
+                console.log("no monster bullet pattern found for " + this.enemy.type);
                 break;
         }
     }

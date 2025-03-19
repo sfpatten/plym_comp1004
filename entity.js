@@ -208,6 +208,14 @@ class Enemy extends Entity {
                 ];
                 this.flavourTextLow = "The keyboard is missig a few keys"; // Intentional typo here; attempt at humour
                 break;
+            case "Telescope":
+                this.maxHP = 12;
+                this.str = 4;
+                this.arm = 2;
+                this.reward = 150000;
+                this.flavourText = ["Destined for stardom.", "The Telescope turns to you menacingly."];
+                this.flavourTextLow = "The Telescope has lost contact with ground control.";
+                break;
         }
         this.HP = this.maxHP; // set their HP to full
     }
