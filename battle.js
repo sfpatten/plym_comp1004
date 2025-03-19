@@ -570,10 +570,11 @@ class Battle {
 				break;
             case "Telescope":
                 this.battleFrames = 200;
-                for (let i = 0; i < 20; i++) {
-                    let x = -50 + Math.random() * 120; // pick a random x position
-                    this.bullets.push(new Bullet(x, -100, 1, 4, 0, 0, "standard", "#", i * 8, 150));
+                for (let i = 0; i < 30; i++) {
+                    let x = -75 + Math.random() * 150; // pick a random x position
+                    this.bullets.push(new Bullet(x, -100, 1, 4, 0, 0, "standard", "#", i * 6, 150));
                 }
+				break;
             default:
                 console.log("no monster bullet pattern found for " + this.enemy.type);
                 break;
@@ -647,6 +648,11 @@ class Bullet {
         this.bulletDiv.style.width = (this.size / 5).toString() + "vw";
         this.bulletDiv.style.height = (this.size / 5).toString() + "vw";
         this.bulletDiv.style.fontSize = (this.size / 8).toString() + "vw";
+		
+		// Hide if the bullets aren't active yet
+		if (this.waitFrames > 0) {
+			this.bulletDiv.style.display = "none";
+		}
 
         // add to document
         document.getElementById("battle-box").appendChild(this.bulletDiv);
@@ -657,6 +663,9 @@ class Bullet {
         // Handle wait frames and life frames
         if (this.waitFrames > 0) {
             this.waitFrames--;
+			if (this.waitFrames == 0) {
+				this.bulletDiv.style.display = "block";
+			}
             return;
         }
         if (this.lifeFrames > 0) {
