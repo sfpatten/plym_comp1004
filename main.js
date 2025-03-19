@@ -7,6 +7,7 @@ class Game {
         this.overworldLevel = 1;
         this.player = new Player();
         this.mode = "start";
+		this.in_menu = false;
         this.battle = null;
         this.flight = null;
         this.shop = new Shop();
@@ -106,6 +107,7 @@ class Game {
         document.getElementById("start-screen-box").style.display="none";
         document.getElementById("save-box").style.display="none";
         document.getElementById("load-box").style.display="none";
+		document.getElementById("shop-box").style.display="none";
         document.getElementById("main-menu-box").style.display="none";
         if (newMode == "main-menu") {
             document.getElementById("main-menu-box").style.display = "block";
@@ -127,9 +129,11 @@ class Game {
             document.getElementById("fly-box").style.display="block";
             this.mode = "fly";
         }
+		this.in_menu = false;
     }
 
     openSaveScreen() {
+		this.in_menu = true;
         document.getElementById("overworld-grid").style.display="none";
         document.getElementById("battle-box").style.display="none";
         document.getElementById("fly-box").style.display="none";
@@ -155,9 +159,11 @@ class Game {
         } else if (this.mode == "fly") {
             document.getElementById("fly-box").style.display="block";
         }
+		this.in_menu = false;
     }
 
     openLoadScreen() {
+		this.in_menu = true;
         document.getElementById("main-menu-box").style.display="none";
         document.getElementById("load-box").style.display="block";
 
@@ -195,6 +201,7 @@ class Game {
     }
 
     openShopScreen() {
+		this.in_menu = true;
         document.getElementById("overworld-grid").style.display="none";
         document.getElementById("battle-box").style.display="none";
         document.getElementById("fly-box").style.display="none";
@@ -631,6 +638,9 @@ function updateLogDisplay() {
 
 // Input handling
 function onKeyDown(e) {
+	if (game.in_menu) {
+		return;
+	}
     if (game.mode == "overworld") {
         let success = true;
         switch (e.code) {
@@ -754,6 +764,9 @@ function onKeyDown(e) {
 }
 
 function onKeyUp(e) {
+	if (game.in_menu) {
+		return;
+	}
     if (game.mode == "battle") {
         if (game.battle.battleFrames > 0) {
             switch (e.code) {
