@@ -103,7 +103,9 @@ class Battle {
             }
             if (game.player.HP > game.player.maxHP) {
                 game.player.HP = game.player.maxHP;
-            }
+            } else if (game.player.HP < 1) {; // This is to prevent the player from ending up with negative health due to eating soap.
+				game.player.HP = 1;
+			}
             this.updateHPDisplays();
         }
 
@@ -574,6 +576,20 @@ class Battle {
                     let x = -75 + Math.random() * 150; // pick a random x position
                     this.bullets.push(new Bullet(x, -100, 1, 4, 0, 0, "standard", "#", i * 6, 150));
                 }
+				break;
+            case "Printer":
+                this.battleFrames = 300;
+				let character = "";
+				let gap = 0;
+				for (let l = 0; l < 7; l++) { // l = line
+					gap = Math.floor(Math.random() * 10);
+					for (let r = 0; r < 10; r++) {
+						if (r != gap) { // Don't place the character if it is the gap
+							character = "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)];
+							this.bullets.push(new Bullet(r * 10 - 6, -100, 0, 2, 0, 0, "standard", character, l * 40, 200));
+						}
+					}
+				}
 				break;
             default:
                 console.log("no monster bullet pattern found for " + this.enemy.type);

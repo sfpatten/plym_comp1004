@@ -82,5 +82,5 @@ let items = ["apple","carrot", "rice", "raisins", "toast", "soap", "biscuit", "t
 // Note: Freedom and friendship are not included below due to being invalid dreams
 let dreams = ["friendship", "money", "chef", "rest", "hygiene", "perfection", "daredevil", "sell",
     "explore", "buy", "revenge"];
-let enemies = ["Calculator", "Floppy Disk", "GameBox", "Optical Disk", "Keyboard", "Telescope"];
+let enemies = ["Calculator", "GameBox", "Optical Disk", "Keyboard", "Telescope", "Printer", "VHS Player"];
 let pois = ["exit", "grill", "cactus", "vendingMachine"];

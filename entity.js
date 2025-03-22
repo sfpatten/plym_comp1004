@@ -105,7 +105,9 @@ class Player extends Entity {
 
             if (this.HP > this.maxHP) {
                 this.HP = this.maxHP;
-            }
+            } else if (this.HP < 1) {
+				this.HP = 1; // This is to prevent the player from ending up with negative health due to eating soap.
+			}
 
         } else {
             return false;
@@ -170,15 +172,6 @@ class Enemy extends Entity {
                     "The Calculator claims it is only using a fraction of its true power."]
                 this.flavourTextLow = "The Calculator's screen is cracked.";
                 break;
-            case "Floppy Disk":
-                this.maxHP = 5;
-                this.str = 1;
-                this.arm = 0;
-                this.reward = 70000;
-                this.flavourText = ["It seems you are fighting a floppy disk.", "Up to a megabyte of storage!",
-                    "Floppy disk's expression is unreadable.", "The future of digital storage!"]
-                this.flavourTextLow = "Floppy disk has nearly reached capacity.";
-                break;
             case "GameBox":
                 this.maxHP = 15;
                 this.str = 4;
@@ -212,9 +205,28 @@ class Enemy extends Entity {
                 this.maxHP = 12;
                 this.str = 4;
                 this.arm = 2;
-                this.reward = 150000;
+                this.reward = 250000;
                 this.flavourText = ["Destined for stardom.", "The Telescope turns to you menacingly."];
                 this.flavourTextLow = "The Telescope has lost contact with ground control.";
+                break;
+			case "Printer":
+                this.maxHP = 15;
+                this.str = 6;
+                this.arm = 1;
+                this.reward = 120000;
+                this.flavourText = ["Printer is trying to justify why it's here.", "It's too col-late to turn back.",
+					"Printer is taking a bold approach.", "Printer feels this battle is one-sided."];
+                this.flavourTextLow = "Printer is bleeding cyan, yellow and magenta.";
+                break;
+			case "VHS Player":
+                this.maxHP = 50;
+                this.str = 5;
+                this.arm = 2;
+                this.reward = 0;
+                this.flavourText = ["So much to do, so much to see.", "Anything is possible!",
+					"Make it your own!", "The future of entertainment!", "The whole world in your hand!",
+					""];
+                this.flavourTextLow = "Generation loss.";
                 break;
         }
         this.HP = this.maxHP; // set their HP to full

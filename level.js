@@ -368,7 +368,7 @@ class Level {
 
             // Spawn monsters in corridor
             this.spawnEncountersRandomWithinBounds(["Keyboard", "Keyboard", "Keyboard", "Optical Disk",
-                "Optical Disk"], 7, 1, 17, 19)
+                "Optical Disk", "Printer"], 7, 1, 17, 19)
 
 
             // Decide which rooms to do
@@ -416,7 +416,7 @@ class Level {
                     }
                 }
                 // Spawn room enemies
-                this.spawnEncountersRandomWithinBounds(["GameBox"], 1, topWallY + 1
+                this.spawnEncountersRandomWithinBounds([["GameBox", "Keyboard", "Optical Disk", "Printer"][Math.floor(Math.random() * 4)]], 1, topWallY + 1
                     , 5, bottomWallY - 1);
             }
 
@@ -458,7 +458,7 @@ class Level {
                     }
                 }
                 // Spawn room enemies
-                this.spawnEncountersRandomWithinBounds(["GameBox"], 19, topWallY + 1
+                this.spawnEncountersRandomWithinBounds([["GameBox", "Keyboard", "Optical Disk", "Printer"][Math.floor(Math.random() * 4)]], 19, topWallY + 1
                     , 23, bottomWallY - 1);
             }
         }

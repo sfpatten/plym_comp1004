@@ -302,7 +302,7 @@ function validateFile(gameFileObject) {
             }
         }
         if (!typeValid) {
-            console.log("Save validation error: Invalid enemy type found.");
+            console.log("Save validation error: Invalid enemy type " + gameFileObject["currentLevel"]["encounters"][e]["type"]);
             return false;
         }
             // Check that pos is an array
