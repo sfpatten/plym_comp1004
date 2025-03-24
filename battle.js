@@ -366,11 +366,10 @@ class Battle {
                 this.battleFrames = 400;
                 this.save = "int";
                 for (let i = 0; i < 56; i++) { // Create 28 bullets
-                    let randomX = 10 + Math.random() * 80 // pick a random horizontal position
+                    let randomX = -10 + Math.random() * 110 // pick a random horizontal position
                     let randomNumSymbol = "0123456789+-×÷=()%"[Math.floor(Math.random() * 18)]
                     let randomRot = (Math.random() * 6) - 3
                     this.bullets.push(new Bullet(randomX, -100, 0, 4, 0, randomRot, "standard", randomNumSymbol, i * 10, 400));
-
                 }
 
                 break;
@@ -589,6 +588,259 @@ class Battle {
 							this.bullets.push(new Bullet(r * 10 - 6, -100, 0, 2, 0, 0, "standard", character, l * 40, 200));
 						}
 					}
+				}
+				break;
+			case "VHS Player": // Six attacks, more difficult versions of the other monsters.
+				let choice = Math.floor(Math.random() * 6); // Pick which of the 6 attacks it will do
+				switch (choice) {
+					case 0: // Attack 0 - calculator symbols but at higher frequency
+						this.battleFrames = 400;
+						this.save = "int";
+						for (let i = 0; i < 112; i++) { // Create 28 bullets
+							let randomX = -10 + Math.random() * 110 // pick a random horizontal position
+							let randomNumSymbol = "0123456789+-×÷=()%"[Math.floor(Math.random() * 18)]
+							let randomRot = (Math.random() * 6) - 3
+							this.bullets.push(new Bullet(randomX, -100, 0, 4, 0, randomRot, "standard", randomNumSymbol, i * 5, 400));
+						}
+						break;
+					case 1: // Attack 1 - alternating between GameBox tetrominoes and Flappy Bird "sweepers"
+						this.battleFrames = 300;
+						let tDelay = null;
+						for (let w = 0; w < 2; w++) { // Loop for each pair of tetrominoes and flappy bird lines
+							for (let i = 0; i < 5; i++) {
+								tDelay = i * 15;
+								let tetrominoNumber = Math.floor(Math.random() * 5)
+								let x = null; // random offset used for all of the tetrominoes
+								switch (tetrominoNumber) {
+									case 0: // O - no rotations so this is the simplest
+										x = Math.random() * 80;
+										for (let a = 0; a < 2; a++) {
+											for (let b = 0; b < 2; b++) {
+												this.bullets.push(new Bullet(x + a * 10, -100 + b * 10, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											}
+										}
+                                    break;
+									case 1: // I - two rotations - pretty simple
+										let rotation = Math.floor(Math.random() * 2);
+										if (rotation == 0) { // Horizontal
+											x = Math.random() * 60;
+											for (let a = 0; a < 4; a++) {
+												this.bullets.push(new Bullet(x + a * 10, -100, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											}
+										} else { // Vertical
+											let x = Math.random() * 90;
+											for (let a = 0; a < 4; a++) {
+												this.bullets.push(new Bullet(x, -100 + a * 10, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											}
+										}
+										break;
+									case 2: {// L - two mirror images and 8 rotations between them. oh no
+										/* There are two mirror images, and 8 rotations between them.
+										* They can be notated as being either a 3-square long horizontal or vertical bar within a 3x3 grid, with one of four corners being occupied.
+										* I have used this approach here as it results in the most reusable code. */
+										x = Math.random() * 70;
+										let barRotation = Math.floor(Math.random() * 2);
+										let corner = Math.floor(Math.random() * 4);
+										//let corner = 0
+
+										// Bar
+										if (barRotation == 0) { // Vertical
+											for (let a = 0; a < 3; a++) {
+												this.bullets.push(new Bullet(x, -110 + a * 10, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											}
+
+										} else { // Horizontal
+											for (let a = 0; a < 3; a++) {
+												this.bullets.push(new Bullet(x - 10 + a * 10, -100, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											}
+										}
+										// Corner
+										switch (corner) { // Put a bullet in a corner depending on the number. this entire switch statement could be one line, but it really doesn't look nice'
+                                            case 0:
+                                                this.bullets.push(new Bullet(x - 10, -110, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+                                                break;
+                                            case 1:
+                                                this.bullets.push(new Bullet(x + 10, -110, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+                                                break
+                                            case 2:
+                                                this.bullets.push(new Bullet(x - 10, -90, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+                                                break
+                                            case 3:
+                                                this.bullets.push(new Bullet(x + 10, -90, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+                                                break
+                                        }
+
+										break;
+									}
+									case 3: // S - Very similar to L
+										x = Math.random() * 70; // random x offset
+										let barRotation = Math.floor(Math.random() * 2); // whether the bar is vertical or horizontal
+										let cornerPair = Math.floor(Math.random() * 2); // which of the diagonal corner pairs are used to form the S
+										// Bar
+										if (barRotation == 0) { // Vertical
+											// Make bar
+											for (let a = 0; a < 2; a++) {
+												this.bullets.push(new Bullet(x, -110 + a * 10, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											}
+											// Add corners
+											if (cornerPair == 0) {
+												this.bullets.push(new Bullet(x + 10, -110, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+												this.bullets.push(new Bullet(x - 10, -100, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											} else { // Horizontal
+												this.bullets.push(new Bullet(x + 10, -100, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+												this.bullets.push(new Bullet(x - 10, -110, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											}
+
+										} else { // Horizontal
+											// Make bar
+											for (let a = 0; a < 2; a++) {
+												this.bullets.push(new Bullet(x - 10 + a * 10, -100, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											}
+											// Add corners
+											if (cornerPair == 0) {
+												this.bullets.push(new Bullet(x - 10, -110, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+												this.bullets.push(new Bullet(x, -90, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											} else {
+												this.bullets.push(new Bullet(x - 10, -90, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+												this.bullets.push(new Bullet(x, -110, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+											}
+										}
+										break;
+									case 4: // T
+										x = Math.random() * 70;
+										let corner = Math.floor(Math.random() * 4); // Pick a random corner to not do
+										// Make center
+										this.bullets.push(new Bullet(x, -100, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+
+										// Do each corner except the one picked to not do
+										if (corner != 0) { // Up
+											this.bullets.push(new Bullet(x, -110, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+										}
+										if (corner != 1) { // Down
+											this.bullets.push(new Bullet(x, -90, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+										}
+										if (corner != 2) { // Left
+											this.bullets.push(new Bullet(x - 10, -100, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+										}
+										if (corner != 3) { // Right
+											this.bullets.push(new Bullet(x + 10, -100, 0, 5,  0, 0, "standard", "#", tDelay + 150 * w, 400));
+										}
+										break;
+								}
+							}
+							
+							// Flappy bird bars
+							let gap = 2 + Math.floor(Math.random() * 6);
+                            for (let tile = 0; tile < 10; tile++) {
+                                if (tile != gap) {
+                                    this.bullets.push(new Bullet(300, tile * 10 - 4, -5, 0, 0, 0, "standard", "#", 150 * w + 60, 400));
+                                }
+                            }
+							gap = 2 + Math.floor(Math.random() * 6);
+							for (let tile = 0; tile < 10; tile++) {
+                                if (tile != gap) {
+                                    this.bullets.push(new Bullet(-300, tile * 10 + 4, 5, 0, 0, 0, "standard", "#", 150 * w + 90, 400));
+                                }
+                            }
+                        }
+						break;
+					case 2: // Attack 2 - Optical disk rolling, but from both left and right
+						this.battleFrames = 400;
+						for (let x = 0; x < 12; x++) {
+							let r = 10 + Math.random() * 80 // pick a random height
+							let spd = 2 + Math.random() * 4 // pick a random speed
+							for (let y = 0; y < 6; y++) { // create six projectiles revolving around one point
+								this.bullets.push(new Bullet(-350, r, spd, 0,  y * 60, spd, "small-revolving", "#", x * 30, 400));
+							}
+						}
+						for (let x = 0; x < 12; x++) {
+							let r = 10 + Math.random() * 80 // pick a random height
+							let spd = 2 + Math.random() * 4 // pick a random speed
+							for (let y = 0; y < 6; y++) { // create six projectiles revolving around one point
+								this.bullets.push(new Bullet(350, r, 0 - spd, 0, y * 60, 0 - spd, "small-revolving", "#", x * 30, 400));
+							}
+						}
+						break;
+					case 3: // Attack 3 - Keyboard text, but from four directions
+						this.battleFrames = 250;
+						let randomPhrase = ["andwecouldallusealittlechangejhf", "moreafraidofyouthanyouareofitsdf", "yknowlifeislikeaboxofchocolatess",
+						"staydeterminedyouarethefutureoft", "universesaidiloveyouasyouarelove", "hellojonapologiesforthedeception",
+						"password123password123password12", "54f24524bd3314bfaa3c47e53635d563", "01001100010011110111011001100101",
+						"thechemistryisgonetakenforaridea"][Math.floor(Math.random() * 10)];
+						
+						// From below
+						for (let l = 0; l < 16; l++) {
+							let x = -10 + Math.random() * 120; // pick a random x position
+							let spd = -6 + Math.random() * 3;
+							this.bullets.push(new Bullet(x, 300, 0, spd, 0, 0, "standard", randomPhrase[l], l * 5, 150));
+						}
+						// From left
+						for (let l = 0; l < 16; l++) {
+							let y = -10 + Math.random() * 120; // pick a random y position
+							let spd = 3 + Math.random() * 3;
+							this.bullets.push(new Bullet(-300, y, spd, 0, 0, 0, "standard", randomPhrase[l], l * 5, 150));
+						}
+						// From above
+						for (let l = 16; l < 32; l++) {
+							let x = -10 + Math.random() * 120; // pick a random x position
+							let spd = 3 + Math.random() * 3;
+							this.bullets.push(new Bullet(x, -300, 0, spd, 0, 0, "standard", randomPhrase[l], l * 5, 150));
+						}
+						// From right
+						for (let l = 16; l < 32; l++) {
+							let y = -10 + Math.random() * 120; // pick a random y position
+							let spd = -6 + Math.random() * 3;
+							this.bullets.push(new Bullet(300, y, spd, 0, 0, 0, "standard", randomPhrase[l], l * 5, 150));
+						}
+						break;
+					case 4: // Attack 4 - Telescope meteorites but with randomness added to their trajectory and velocity
+						this.battleFrames = 250;
+						for (let i = 0; i < 120; i++) {
+							let x = -75 + Math.random() * 150; // pick a random x position
+							this.bullets.push(new Bullet(x, -100, 1 + Math.random(), 4 + Math.random(), 0, 0, "standard", "#", i * 2, 150));
+						}
+						break;
+					case 5: // Attack 5 - Printer bars from varying directions, with a slight bit of deviation
+						this.battleFrames = 400;
+						for (let l = 0; l < 12; l++) { // l = line
+							let gap = 2 + Math.floor(Math.random() * 6);
+							let direction = Math.floor(Math.random() * 4);
+							switch (direction) {
+								case 0:
+									for (let r = 0; r < 10; r++) {
+										if (r != gap) { // Don't place the character if it is the gap
+											let character = "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)];
+											this.bullets.push(new Bullet(r * 10 - 6, -100, 0, 3 + Math.random() * 0.25, 0, 0, "standard", character, l * 30, 200));
+										}
+									}
+									break;
+								case 1:
+									for (let r = 0; r < 10; r++) {
+										if (r != gap) { // Don't place the character if it is the gap
+											let character = "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)];
+											this.bullets.push(new Bullet(r * 10 - 6, 200, 0, -3 - Math.random() * 0.25, 0, 0, "standard", character, l * 30, 200));
+										}
+									}
+									break;
+								case 2:
+									for (let r = 0; r < 10; r++) {
+										if (r != gap) { // Don't place the character if it is the gap
+											let character = "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)];
+											this.bullets.push(new Bullet(-100, r * 10 - 6, 3 + Math.random() * 0.25, 0, 0, 0, "standard", character, l * 30, 200));
+										}
+									}
+									break;
+								case 3:
+									for (let r = 0; r < 10; r++) {
+										if (r != gap) { // Don't place the character if it is the gap
+											let character = "abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 26)];
+											this.bullets.push(new Bullet(200, r * 10 - 6, -3 - Math.random() * 0.25, 0, 0, 0, "standard", character, l * 30, 200));
+										}
+									}
+									break;
+							}
+						}
+						break;
 				}
 				break;
             default:

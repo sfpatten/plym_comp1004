@@ -219,13 +219,15 @@ class Enemy extends Entity {
                 this.flavourTextLow = "Printer is bleeding cyan, yellow and magenta.";
                 break;
 			case "VHS Player":
-                this.maxHP = 50;
+                this.maxHP = 80;
                 this.str = 5;
                 this.arm = 2;
                 this.reward = 0;
                 this.flavourText = ["So much to do, so much to see.", "Anything is possible!",
 					"Make it your own!", "The future of entertainment!", "The whole world in your hand!",
-					""];
+					"The sky's the limit!", "What would you like to do?", "Record-breaking!",
+					"Fast forward to tomorrow!", "The media format you can trust!",
+					"Store your precious memories in the format you can trust!"];
                 this.flavourTextLow = "Generation loss.";
                 break;
         }
