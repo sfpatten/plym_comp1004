@@ -25,33 +25,7 @@ class Level {
     generate(genType, params=[]) {
         this.encounters.length = 0; // This very upsetting line of code is what is used instead of a .clear() method for arrays
         this.pois.length = 0; // This very upsetting line of code is what is used instead of a .clear() method for arrays
-        if (genType == "temp") {
-            // Move the
-            this.encounters = [
-                new Encounter(24, 24, "GameBox"),
-                new Encounter(12, 24, "GameBox"),
-                new Encounter(24, 12, "GameBox"),
-                new Encounter(12, 12, "GameBox"),
-                new Encounter(0, 24, "Calculator"),
-                new Encounter(24, 0, "Optical Disk")
-            ];
-            // temp - add two random horizontal and one veritcal wall
-            for (let i =0; i < 2; i++) {
-                let y = Math.floor(Math.random() * (this.size - 4)) + 2;
-                for (let x = 0; x < this.size; x++) {
-                    if (Math.random() > 0.5) {
-                        this.levelGrid[x][y] = 1;
-                    }
-                }
-            }
-            let x = Math.floor(Math.random() * (this.size - 4)) + 2;
-            for (let y = 0; y < this.size; y++) {
-                if (Math.random() > 0.25) {
-                    this.levelGrid[x][y] = 1;
-                }
-            }
-
-        } else if (genType == "storage") {
+        if (genType == "storage") {
             this.pois.push(new POI(12, 0, "exit"));
             // Fill entire map with blocks
             for (let x = 0; x < 25; x++) {
@@ -461,7 +435,32 @@ class Level {
                 this.spawnEncountersRandomWithinBounds([["GameBox", "Keyboard", "Optical Disk", "Printer"][Math.floor(Math.random() * 4)]], 19, topWallY + 1
                     , 23, bottomWallY - 1);
             }
-        }
+        } else if (genType == "vault") {
+			// Clear
+            for (let i = 0; i < 25; i++) {
+                for (let j = 0; j < 25; j++) {
+                    this.levelGrid[i][j] = 0;
+                }
+            }
+			
+			for (let i = 1; i < 24; i++) {
+				this.levelGrid[i][0] = 1;
+				this.levelGrid[i][22] = 1;
+			}
+			for (let i = 1; i < 23; i++) {
+				this.levelGrid[1][i] = 1;
+				this.levelGrid[23][i] = 1;
+			}
+			this.levelGrid[12][22] = 0;
+			this.levelGrid[9][23] = 1;
+			this.levelGrid[9][24] = 1;
+			this.levelGrid[15][23] = 1;
+			this.levelGrid[15][24] = 1;
+			this.pois.push(new POI(10, 23, "vendingMachine"));
+			this.pois.push(new POI(14, 23, "bed"));
+			this.pois.push(new POI(12, 22, "door"));
+			this.pois.push(new POI(12, 11, "artifact"));
+		}
     }
 
     spawnEncounterAt(encounterType, x, y) {
@@ -647,9 +646,16 @@ class POI {
             game.overworld.clearUsedPOIs();
         } else if (this.type == "bed") {
             game.player.HP = game.player.maxHP;
+			updateStatDisplay();
             game.addToLog(game.player.name + " had an excellent nap. However, the bed caught fire and disintegrated.");
             this.shouldDelete = true;
             game.overworld.clearUsedPOIs();
-        }
+        } else if (this.type == "door") {
+			game.startBattle("VHS Player");
+			this.shouldDelete = true;
+			game.overworld.clearUsedPOIs();
+		} else if (this.type == "artifact") {
+			game.setMode("finale");
+		}
     }
 }

@@ -26,7 +26,7 @@
       <div id="main-menu-lore">
         <h1>THE MISSION</h1>
         <p>Pull off the perfect heist – in space!</p>
-        <p>Blast off to the station, fight your way to the secure vault, crack the code and make your daring escape.</p>
+        <p>Blast off to the station, fight your way to the secure vault, defeat the guard, and make your daring escape.</p>
         <p>The mission is perilous, but you’re not alone. In fact, you’re not going at all.</p>
         <p>Instead, we have H.E.A.R.T: the Highly Expendable Android Recovery Team – rather than risking your own life, risk the lives of the five hastily-constructed robots. Each robot is personalised with its own dream and favourite food.</p>
         <p>Sacrifices must be made for the Company, after all.</p>
@@ -279,6 +279,7 @@
         <!-- This is a regular button rather than a form buttonto allow custom behaviour on input validation -->
         <button id="game-randomise-button" onclick="randomiseStartEntries()">RANDOMISE</button>
         <button id="game-begin-button" onclick="submitStartAttempt()">BEGIN MISSION</button>
+		<br><br><button onclick="returnMainMenuButton()">MAIN MENU</button>
       </span>
     </div>
 
@@ -291,9 +292,9 @@
       <!-- Flying HUD -->
       <div id="fly-progress-bar"></div>
       <div id="fly-progress-player">@</div>
-      <div id="fly-status-name">PLAYERNAME</div>
+      <div id="fly-status-name"></div>
       <div id="fly-status-player">@</div>
-      <div id="fly-status-HP">??/20 HP</div>
+      <div id="fly-status-HP"></div>
 
       <div id="fly-progress-top">END</div>
       <div id="fly-progress-bottom">START</div>
@@ -313,11 +314,11 @@
         </ul>
 
         <h1>LOG</h1>
-        <p id="overworld-log-0">> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p id="overworld-log-1">> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p id="overworld-log-2">> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p id="overworld-log-3">> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p id="overworld-log-4">> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p id="overworld-log-0"></p>
+        <p id="overworld-log-1"></p>
+        <p id="overworld-log-2"></p>
+        <p id="overworld-log-3"></p>
+        <p id="overworld-log-4"></p>
       </div>
 
       <!-- Map -->
@@ -514,6 +515,7 @@
       <button id="load-upload-file-button" onclick="game.localLoadFromUploadedFile()">UPLOAD FILE</button>
       <p id="load-new-file-prompt">Alternatively, you can create a new game below:</p>
       <button onclick="mainMenuButton(1)">START NEW GAME</button>
+	  <br><br><button onclick="returnMainMenuButton()">MAIN MENU</button>
     </div>
 
     <!-- Death screen -->
@@ -522,8 +524,24 @@
       <p>All robots of your H.E.A.R.T unit have been destroyed. The Company is not happy, to say the least.</p>
       <h2>YOUR FATE</h2>
       <p>For failing your mission, you are to be sent to be recycled into slurry.</p>
-      <button>TRY AGAIN</button>
+      <button onclick="returnMainMenuButton()">TRY AGAIN</button>
     </div>
+	
+	<!-- Final flight screen -->
+    <div id="finale-screen-box" class="screen-box">
+      <h1>CONGRATULATIONS</h1>
+      <p>You have obtained the artifact! But don't celebrate too soon - your mission is not quite over.<br>
+	  Successfully fly back through the asteroid field to seal your victory.</p>
+      <button onclick="finaleButton()">BLAST OFF</button>
+    </div>
+	
+	<!-- Win screen -->
+    <div id="win-screen-box" class="screen-box">
+      <h1>YOU WIN</h1>
+      <p>Congratulations. You have won the game.</p>
+      <button returnMainMenuButton()>MAIN MENU</button>
+    </div>
+	
     <!-- script here - you need the elements to exist before you can manipulate them -->
     <script src="flight.js"></script>
     <script src="validateFile.js"></script>

@@ -347,7 +347,8 @@ function validateFile(gameFileObject) {
             }
         }
         if (!typeValid) {
-            console.log("Save validation error: Invalid POI type found.");
+            console.log("Save validation error: Invalid POI type " +
+			gameFileObject["currentLevel"]["pois"][p]["type"] + " found.");
             return false;
         }
         // Check that pos is an array

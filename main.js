@@ -109,6 +109,8 @@ class Game {
         document.getElementById("load-box").style.display="none";
 		document.getElementById("shop-box").style.display="none";
         document.getElementById("main-menu-box").style.display="none";
+		document.getElementById("finale-screen-box").style.display="none";
+		document.getElementById("win-screen-box").style.display="none";
         if (newMode == "main-menu") {
             document.getElementById("main-menu-box").style.display = "block";
         } else if (newMode == "overworld") {
@@ -128,7 +130,13 @@ class Game {
         } else if (newMode == "fly") {
             document.getElementById("fly-box").style.display="block";
             this.mode = "fly";
-        }
+        } else if (newMode == "finale") {
+			document.getElementById("finale-screen-box").style.display="block";
+            this.mode = "finale";
+		} else if (newMode == "win") {
+			document.getElementById("win-screen-box").style.display="block";
+            this.mode = "win";
+		}
 		this.in_menu = false;
     }
 
@@ -256,7 +264,11 @@ class Game {
     }
 
     startFlight(mode) {
-        this.flight = new Flight();
+		if (mode == "exit") {
+			this.flight = new Flight("exit");
+		} else {
+			this.flight = new Flight("enter");
+		}
         this.flight.start();
         this.setMode("fly");
     }
@@ -299,9 +311,11 @@ class Game {
         this.overworld.pois.length = 0;
         if (this.overworldLevel < 5) {
             this.overworld.generate("narrow");
-        } else {
+        } else if (this.overworldLevel < 10) {
             this.overworld.generate("wide");
-        } //TODO: add vault room when it's created
+        } else {
+			this.overworld.generate("vault");
+		} //TODO: add vault room when it's created
 
         this.player.xpos = this.overworld.spawnPoint[0];
         this.player.ypos = this.overworld.spawnPoint[1];
@@ -885,6 +899,14 @@ function shopSellButton(num) {
 
 function shopCloseButton() {
     game.closeShopScreen();
+}
+
+function finaleButton() {
+	game.startFlight("exit")
+}
+
+function returnMainMenuButton() {
+	game.setMode("main-menu")
 }
 
 function resetKeysDown() {

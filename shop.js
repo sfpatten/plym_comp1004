@@ -76,6 +76,7 @@ class Shop {
 
     populate() {
         // This will generate stock based on the player's position and the current level
+		this.items.length = 0;
 
         // Generate name
         let name = ["MechaMerchant", "VendBot", "Sell-O-Matic"][game.player.xpos % 3] + " " +

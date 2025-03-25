@@ -23,6 +23,7 @@ class Flight {
 
     distributeProjectiles() {
         if (this.exit) { // Harder version for the escape
+			console.log("exited");
             for (let i = 10; i < 120; i++) {
                 this.projectiles.push(new flyProjectile(Math.random() * 90, i * 10));
                 this.projectiles.push(new flyProjectile(Math.random() * 90, i * 10));
@@ -90,9 +91,11 @@ class Flight {
             game.flight.playerY+=1;
             setTimeout(game.flight.flightFrame, 25);
         } else {
-            if (!this.exit) {
-                game.setMode("overworld");
-            }
+            if (game.flight.exit) {
+                game.setMode("win");
+            } else {
+				game.setMode("overworld");
+			}
         }
     }
 
