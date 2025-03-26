@@ -88,6 +88,12 @@ class Item {
                 this.consumable = true;
                 this.consumeHP = 10;
                 break;
+			case "char":
+				this.displayName = "Charred food";
+                this.useText = "Even by current standards, this is not good food. (+0 HP)";
+                this.consumable = true;
+                this.consumeHP = 0;
+                break;
             default: // The wooden spoon is intended to be unobtainable, so, obviously, if it is obtainable, something has gone severely wrong.
                 this.displayName = "Wooden Spoon";
                 this.useText = "There is nothing you can do with this.";

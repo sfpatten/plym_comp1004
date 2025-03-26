@@ -295,6 +295,9 @@ class Game {
             this.player.favFood = this.spareBots[0].favFood;
             this.botNumber++;
             this.spareBots.splice(0, 1);
+			// A robot may immediately have the credit threshold. This results in an amusingly tone-deaf narration.
+			this.robotWealthDreamCheck();
+			
         } else { // game over - to do
             if (this.mode == "battle") {
                 this.battle.end();
@@ -315,7 +318,16 @@ class Game {
             this.overworld.generate("wide");
         } else {
 			this.overworld.generate("vault");
-		} //TODO: add vault room when it's created
+		}
+		
+		if (this.player.dream == "explore") { // Exploration dream
+			if (this.player.dreamProgress < 3) { // This equates to 5 rooms given they are already in one when they start.
+				this.player.dreamProgress ++;
+			} else {
+				this.robotDreamFulfilled();
+				game.addToLog(game.player.name + " fulfilled their lifelong dream of exploration.");
+			}
+		}
 
         this.player.xpos = this.overworld.spawnPoint[0];
         this.player.ypos = this.overworld.spawnPoint[1];
@@ -342,6 +354,7 @@ class Game {
                 "int":this.player.int,
                 "cha":this.player.cha,
                 "dream":this.player.dream,
+				"dreamProgress":this.player.dreamProgress,
                 "favFood":this.player.favFood
             },
             "spareBots": [], // Populated below
@@ -429,6 +442,69 @@ class Game {
         this.overworldLog.push(text);
         updateLogDisplay();
     }
+	
+	robotDreamFulfilled() {
+		// Current player
+		this.player.maxHP += 4;
+		this.player.HP += 4;
+		this.player.dream = "fulfilled";
+		// Boost 3 random stats
+		for (let i = 0; i < 3; i++) {
+			let choice = Math.floor(Math.random() * 5);
+			switch (choice) {
+				case 0:
+					this.player.str ++;
+					break;
+				case 1:
+					this.player.arm ++;
+					break;
+				case 2:
+					this.player.dex ++;
+					break;
+				case 3:
+					this.player.int ++;
+					break;
+				case 4:
+					this.player.cha ++;
+					break;
+			}
+		}
+		updateStatDisplay();
+		
+		// Spare robots (if any)
+		for (let r = 0; r < this.spareBots.length; r++) {
+			this.spareBots[r].maxHP += 4;
+			this.spareBots[r].HP += 4;
+			// Boost stats - other bots do not get as much of a boost as the current
+			let choice = Math.floor(Math.random() * 5);
+			switch (choice) {
+				case 0:
+					this.spareBots[r].str ++;
+					break;
+				case 1:
+					this.spareBots[r].arm ++;
+					break;
+				case 2:
+					this.spareBots[r].dex ++;
+					break;
+				case 3:
+					this.spareBots[r].int ++;
+					break;
+				case 4:
+					this.spareBots[r].cha ++;
+					break;
+			}
+		}
+		
+		
+	}
+	
+	robotWealthDreamCheck() { // Credits can be obtained in multiple places, so it has a separate function.
+		if (this.player.dream == "money" && this.player.credits >= 2500000) { // Fun trivia: I'm no economist, but I think 2.5 million credits is likely equal to under £5.
+			this.robotDreamFulfilled();
+			game.addToLog(game.player.name + " fulfilled their lifelong dream of wealth.");
+		}
+	}
 }
 
 class SpareBot { // A separate class to reduce memory usage - they would be structs if they existed in JS, hence not appearing on class diagrams
@@ -524,14 +600,24 @@ function submitStartAttempt() {
     for (let i = 1; i < 5; i++) {
         stats = getStatsForDream(document.getElementById("start-dream-" + i).value);
         game.spareBots.push(new SpareBot(document.getElementById("start-name-" + i).value,
-            20, stats[0], stats[1], stats[2], stats[3], stats[4],
+            12, stats[0], stats[1], stats[2], stats[3], stats[4],
             document.getElementById("start-dream-" + i).value,
             document.getElementById("start-food-" + i).value))
     }
     // Start game
     updateStatDisplay();
     updateInventoryDisplay();
-    game.startFlight("enter")
+	if (game.player.name == "Skippy") { // A debugging function turned easter egg to skip to level 2
+		game.setMode("overworld");
+		game.overworldLevelUp();
+	} else if (game.player.name == "Arnold") {
+		// I have not watched any Terminator films, but I needed another debugging function, and this seemed apt.
+		debugOPMode();
+		game.startFlight("enter");
+	} else {
+		game.startFlight("enter");
+	}
+    
 }
 
 function randomiseStartEntries() { // To make the "randomise" button work
@@ -539,9 +625,9 @@ function randomiseStartEntries() { // To make the "randomise" button work
     // Names
     let names = ["Sprocket", "Rusty", "Pico", "Clank II", "Mettaton", "Plug", "Atlas", "Robot #5", "Gears",
         "Polished", "Silver", "Tungsten V", "Clunk III", "Clink IV", "Calibrated", "Magnus", "Jerry", "Wheatley",
-        "Saturn", "Venus"]
+        "Saturn", "Venus", "AM"]
     for (let i = 0; i < 5; i++) {
-        pick = Math.floor(Math.random() * (20 - i));
+        pick = Math.floor(Math.random() * (21 - i));
         document.getElementById("start-name-" + i).value = names[pick];
         names.splice(pick, 1);
     }

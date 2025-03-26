@@ -249,9 +249,17 @@ class Level {
                         }
 
                         // Place enemy
-                        //TODO: vary enemy placed when more enemies are implemented
                         this.spawnEncountersRandomWithinBounds(["Calculator"], i * 5, j * 5,
                             i * 5 + 4, j * 5 + 4)
+							
+						// Place a POI
+						if (Math.random() > 0.5) {
+							// Pick a corner; these are added to the top left corner of the room's interior
+							let cornerX = Math.floor(Math.random() * 2) * 2; // 0 if left, 2 if right
+							let cornerY = Math.floor(Math.random() * 2) * 2; // 0 up, 2 down
+							let poiPick = Math.floor(Math.random() * 4);
+							this.pois.push(new POI(i * 5 + 1 + cornerX, j * 5 + 1 + cornerY, ["vendingMachine", "grill", "cactus", "bed"][Math.floor(Math.random() * 4)]));
+						}
                     } else { // C, X and E, which are all corridors
                         // Place in corners
                         this.levelGrid[i * 5][j * 5] = 1;
@@ -379,13 +387,13 @@ class Level {
                     let poiY = topWallY + 1 + Math.floor(Math.random() * (bottomWallY - topWallY - 1));
                     switch (bonusFeature) {
                         case 1:
-                            this.pois.push(new POI(1, poiY, "vendingMachine"))
+                            this.pois.push(new POI(1, poiY, "vendingMachine"));
                             break;
                         case 2:
-                            this.pois.push(new POI(1, poiY, "grill"))
+                            this.pois.push(new POI(1, poiY, "grill"));
                             break;
                         case 3:
-                            this.pois.push(new POI(1, poiY, "cactus"))
+                            this.pois.push(new POI(1, poiY, "cactus"));
                             break;
                     }
                 }
@@ -636,18 +644,45 @@ class POI {
         } else if (this.type == "vendingMachine") {
             game.openShopScreen();
         } else if (this.type == "grill") {
-            game.addToLog("It's a grill. The grill disintegrated.");
-            this.shouldDelete = true;
-            game.overworld.clearUsedPOIs();
+			if (game.player.inventory.length > 0) {
+				let itemPick = Math.floor(Math.random() * game.player.inventory.length);
+				let count = game.player.inventory[itemPick].count;
+				game.player.inventory.splice(itemPick, 1);
+				game.player.inventory.push(new Item("char", count))
+				updateInventoryDisplay();
+				game.player.HP -= 5;
+				if (game.player.HP < 1) {
+					game.player.HP = 1;
+				}
+				if (game.player.dream == "chef") {
+					game.robotDreamFulfilled();
+					game.addToLog(game.player.name + " achieved their lifelong dream of cooking. The grill did not survive.");
+				} else {
+					game.addToLog("The grill disintegrated.");
+				}
+				this.shouldDelete = true;
+				game.overworld.clearUsedPOIs();
+			} else {
+				game.addToLog("It's a grill. With some ingredients, perhaps one could cook something.");
+			}
+            
+            
         } else if (this.type == "cactus") {
             game.player.HP = 1;
+			updateStatDisplay();
             game.addToLog(game.player.name + " stumbled into a cactus. Ouch! However, the cactus also disintegrated.");
             this.shouldDelete = true;
             game.overworld.clearUsedPOIs();
         } else if (this.type == "bed") {
             game.player.HP = game.player.maxHP;
 			updateStatDisplay();
-            game.addToLog(game.player.name + " had an excellent nap. However, the bed caught fire and disintegrated.");
+            
+			if (game.player.dream == "rest") {
+				game.robotDreamFulfilled();
+				game.addToLog(game.player.name + " achieved their lifelong dream of a good night's sleep.");
+			} else {
+				game.addToLog(game.player.name + " had an excellent nap. However, the bed caught fire and disintegrated.");
+			}
             this.shouldDelete = true;
             game.overworld.clearUsedPOIs();
         } else if (this.type == "door") {

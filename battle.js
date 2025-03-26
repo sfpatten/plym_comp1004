@@ -12,12 +12,15 @@ class Battle {
         this.playerImmunityFrames = 0;
         this.bullets = [];
         this.save = "arm"; // default to armour save for attacks
+		this.playerWasHit = false; // Used for the "perfection" dream
+		this.playerThrill = false; // Used for the "daredevil" dream
     }
 
     start() {
         this.updateHPDisplays();
         this.updateNameDisplays();
         this.playerTurnStart();
+		this.playerWasHit = false;
         resetKeysDown();
     }
 
@@ -48,6 +51,15 @@ class Battle {
             let flavourText = this.enemy.flavourText[Math.floor(Math.random() * this.enemy.flavourText.length)]
             document.getElementById("battle-log").innerHTML = flavourText;
         }
+		
+		// Check conditions for Thrill dream
+		if (this.playerThrill) {
+			game.robotDreamFulfilled();
+			game.addToLog(game.player.name + " fulfilled their lifelong dream of true thrill.");
+			document.getElementById("battle-log").innerHTML = game.player.name + " fulfilled their lifelong dream of true thrill.";
+			this.updateHPDisplays();
+			this.playerThrill = false;
+		}
 
         // hide monster attack stuff
         document.getElementById("battle-board").style.display="none";
@@ -106,8 +118,13 @@ class Battle {
             } else if (game.player.HP < 1) {; // This is to prevent the player from ending up with negative health due to eating soap.
 				game.player.HP = 1;
 			}
-            this.updateHPDisplays();
         }
+		
+		// Fulfill the dream of hygiene if the player eats soap;
+		if (game.player.inventory[number].type == "soap") {
+			game.robotDreamFulfilled();
+			game.addToLog(game.player.name + " fulfilled their lifelong dream of hygiene.");
+		}
 
         // Decrease the number of items
         if (game.player.inventory[number].count < 2) {
@@ -117,6 +134,7 @@ class Battle {
         }
 
         game.battle.hideBattleInventory();
+		this.updateHPDisplays();
 
         setTimeout(this.enemyTurnStart, 850);
         setTimeout(game.battle.playerShrinkAnimationFrame, 350, 0);
@@ -148,6 +166,8 @@ class Battle {
             damage = 1;
         }
         game.player.HP -= damage;
+		this.updateHPDisplays();
+		this.playerWasHit = true;
 
         if (game.player.HP > 0) {
             this.playerImmunityFrames = 20;
@@ -156,6 +176,7 @@ class Battle {
             game.robotDied();
             this.updateNameDisplays();
             this.updateHPDisplays();
+			this.playerThrill = false; // Thrill dream - death resets it
         }
 
     }
@@ -175,8 +196,11 @@ class Battle {
         game.battle.battleFrames = 0;
 
         game.battle.updatePlayerPos();
-
-
+		
+		// Set the flag if the player's dream is Thrill and they are at less than 20% HP
+		if (game.player.dream == "daredevil" && game.player.HP <= game.player.maxHP * 0.2) {
+			game.battle.playerThrill = true;
+		}
 
         game.battle.timeout = setTimeout(game.battle.runDefendFrame, 50);
 
@@ -274,8 +298,6 @@ class Battle {
     runDefendFrame() {
         // NOTE: because of JS's quirks, the "this" keyword does not work, hence the constant convoluted self-referencing.
         if (game.battle.battleFrames > 1) {
-            game.battle.updateHPDisplays();
-
             // simulate player
             if (keysDown[0]) {
                 game.battle.playerVelY -= 1
@@ -343,11 +365,23 @@ class Battle {
     }
 
     end() { // More convoluted self-reference due to timeout usage
+		if (game.player.dream == "perfection" && !game.battle.playerWasHit) {
+			game.robotDreamFulfilled();
+			game.addToLog(game.player.name + " fulfilled their lifelong dream of perfection.");
+		} else if (game.player.dream == "revenge") {
+			if (game.player.dreamProgress < 4) {
+				game.player.dreamProgress++;
+			} else {
+				game.robotDreamFulfilled();
+				game.addToLog(game.player.name + " fulfilled their lifelong dream of revenge.");
+			}
+		}
         let selectedVerb = ["obliterated", "destroyed", "vanquished", "discombobulated", "exterminated",
         "eviscerated", "laid waste to", "annihilated", "demolished"][Math.floor(Math.random() * 8)];
         game.addToLog("A " + game.battle.enemy.type + " was " + selectedVerb + " by " + game.player.name +
             ". It dropped " + game.battle.enemy.reward + " credits.");
         game.player.credits += game.battle.enemy.reward;
+		game.robotWealthDreamCheck();
         game.setMode("overworld");
     }
 

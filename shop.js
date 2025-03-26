@@ -49,9 +49,20 @@ class Shop {
             this.setStatusText("Purchase successful!");
             game.player.giveItem(this.items[slot].type, 1);
         }
-        // Deduct money whether they paid or not
+		
+        // Deduct money whether they got the item or not
         game.player.credits -= this.items[slot].price;
         this.updateDisplay();
+		
+		// Advance dream if the robot dreams of shopping
+		if (game.player.dream == "buy") {
+			if (game.player.dreamProgress < 2) {
+				game.player.dreamProgress++;
+			} else {
+				game.robotDreamFulfilled();
+				game.addToLog(game.player.name + " fulfilled their lifelong dream of shopping.");
+			}
+		}
     }
 
     sell(slot) {
@@ -71,7 +82,18 @@ class Shop {
 
         // Selling items gives 1 - 1000 credits. Considering this is a vending machine, this is generous.
         game.player.credits += Math.floor(1 + Math.random() * 1000);
+		game.robotWealthDreamCheck();
         this.updateDisplay();
+		
+		// Advance dream if the robot dreams of business
+		if (game.player.dream == "sell") {
+			if (game.player.dreamProgress < 2) {
+				game.player.dreamProgress++;
+			} else {
+				game.robotDreamFulfilled();
+				game.addToLog(game.player.name + " fulfilled their lifelong dream of business.");
+			}
+		}
     }
 
     populate() {
@@ -116,8 +138,7 @@ class Shop {
     }
 
     updateDisplay() {
-        // Stock (TODO)
-        console.log(this.items);
+		// Stock
         for (let i = 0; i < 8; i++) {
             if (i < this.items.length) {
                 document.getElementById("shop-buy-i" + i).innerHTML = getNameFromItemIDGood(this.items[i].type)

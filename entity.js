@@ -69,8 +69,8 @@ class Player extends Entity {
         this.name = "Robot 1";
         this.str = 5;
         this.arm = 5;
-        this.maxHP = 20;
-        this.HP = 20;
+        this.maxHP = 12;
+        this.HP = 12;
         this.inventory = [ // Temporarily populated to stress test the UI
             new Item("apple", 2),
             new Item("toast", 1),
@@ -82,6 +82,7 @@ class Player extends Entity {
             new Item("teabag", 1),
         ];
         this.dream = "friendship";
+		this.dreamProgress = 0; // A number to denote dream progress for dreams that take multiple steps
         this.favFood = "apple";
         this.credits = 1000000;
     }
@@ -112,7 +113,13 @@ class Player extends Entity {
         } else {
             return false;
         }
-
+		
+		// Achieve hygiene dream if the item is soap
+		if (this.inventory[slot].type == "soap") {
+			game.robotDreamFulfilled();
+			game.addToLog(this.name + " fulfilled their lifelong dream of hygiene.");
+		}
+		
         // Decrease the number of item
         if (this.inventory[slot].count < 2) {
             this.inventory.splice(slot, 1);

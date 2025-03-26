@@ -22,6 +22,7 @@ class Flight {
     }
 
     distributeProjectiles() {
+		this.projectiles.length = 0;
         if (this.exit) { // Harder version for the escape
 			console.log("exited");
             for (let i = 10; i < 120; i++) {

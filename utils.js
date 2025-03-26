@@ -47,40 +47,45 @@ function getNameFromItemIDGood(id) { // The pleasant name rather than the off-pu
         return "Raisins";
     } else if (id=="soap") {
         return "Soap";
-    } else {
+    } else if (id="char") {
+		return "Charred food";
+	} else {
         return "Unknown"
     }
 }
 
 function getDreamFromID(id) { // The pleasant name rather than the off-putting display names in inventory
     if (id == "money") {
-        return "Wealth"
+        return "Wealth";
     } else if (id == "chef") {
-        return "Cooking"
+        return "Cooking";
     } else if (id == "rest") {
-        return "Sleep"
+        return "Sleep";
     } else if (id == "hygiene") {
-        return "Hyiene"
+        return "Hyiene";
     } else if (id == "perfection") {
-        return "Perfection"
+        return "Perfection";
     } else if (id == "daredevil") {
-        return "Thrill"
+        return "Thrill";
     } else if (id == "sell") {
-        return "Business"
+        return "Business";
     } else if (id == "explore") {
-        return "Exploration"
+        return "Exploration";
     } else if (id == "buy") {
-        return "Shopping"
+        return "Shopping";
     } else if (id == "revenge") {
-        return "Revenge"
-    }
+        return "Revenge";
+    } else if (id == "fulfilled") {
+		return "Fulfilled!";
+	}
 }
 
 // Arrays of IDs
 let items = ["apple","carrot", "rice", "raisins", "toast", "soap", "biscuit", "teabag", "crisps", "chocolate",
-    "granola", "coffee", "popcorn", "sandwich"];
-// Note: Freedom and friendship are not included below due to being invalid dreams
+    "granola", "coffee", "popcorn", "sandwich", "char"];
+/* Note: Freedom and friendship are not included below due to being invalid dreams. "fulfilled" does what it
+says on the tin */
 let dreams = ["friendship", "money", "chef", "rest", "hygiene", "perfection", "daredevil", "sell",
-    "explore", "buy", "revenge"];
+    "explore", "buy", "revenge", "fulfilled"];
 let enemies = ["Calculator", "GameBox", "Optical Disk", "Keyboard", "Telescope", "Printer", "VHS Player"];
 let pois = ["exit", "grill", "cactus", "vendingMachine", "bed", "door", "artifact"];
