@@ -316,7 +316,6 @@ class Level {
                             this.levelGrid[i * 5 + 2][j * 5] = 0;
                         } else {
                             // Place enemy
-                            //TODO: vary enemy placed when more enemies are implemented
                             if (Math.random() > 0.6) {
                                 this.spawnEncountersRandomWithinBounds([["Keyboard"], ["Telescope"]][Math.floor(Math.random() * 2)], i * 5, j * 5,
                                     i * 5 + 4, j * 5 + 4)

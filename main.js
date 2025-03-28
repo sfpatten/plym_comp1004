@@ -57,45 +57,40 @@ class Game {
                 this.fileTemp["spareBots"][botNum]["int"], this.fileTemp["spareBots"][botNum]["cha"],
             this.fileTemp["spareBots"][botNum]["dream"], this.fileTemp["spareBots"][botNum]["favFood"]));
         }
+		
+		// Overworld
+		this.overworldLevel = this.fileTemp["game"]["level"];
 
-        let modeTemp = this.fileTemp["game"]["mode"];
-        if (modeTemp[0] == "o") { // There is no need to initialise overworld if the player is in the vault or exiting
-            this.overworldLevel = Number(modeTemp.slice(1));
+			// Grid
+		for (let x = 0; x < 25; x++) {
+			for (let y = 0; y < 25; y++) {
+				this.overworld.levelGrid[x][y] = this.fileTemp["currentLevel"]["grid"][x][y];
+			}
+		}
 
-            // Overworld level
-                // Grid
-            for (let x = 0; x < 25; x++) {
-                for (let y = 0; y < 25; y++) {
-                    this.overworld.levelGrid[x][y] = this.fileTemp["currentLevel"]["grid"][x][y];
-                }
-            }
+			// Spawn point
+		this.overworld.spawnPoint = this.fileTemp["currentLevel"]["spawnPoint"];
 
-                // Spawn point
-            this.overworld.spawnPoint = this.fileTemp["currentLevel"]["spawnPoint"];
+			// Encounters
+		this.overworld.encounters.length = 0;
+		for (let e = 0; e < this.fileTemp["currentLevel"]["encounters"].length; e++) {
+			this.overworld.encounters.push(new Encounter(this.fileTemp["currentLevel"]["encounters"][e]["pos"][0],
+				this.fileTemp["currentLevel"]["encounters"][e]["pos"][1],
+				this.fileTemp["currentLevel"]["encounters"][e]["type"]))
+		}
 
-                // Encounters
-            this.overworld.encounters.length = 0;
-            for (let e = 0; e < this.fileTemp["currentLevel"]["encounters"].length; e++) {
-                this.overworld.encounters.push(new Encounter(this.fileTemp["currentLevel"]["encounters"][e]["pos"][0],
-                    this.fileTemp["currentLevel"]["encounters"][e]["pos"][1],
-                    this.fileTemp["currentLevel"]["encounters"][e]["type"]))
-            }
+			// POIs
+		this.overworld.pois.length = 0;
+		for (let e = 0; e < this.fileTemp["currentLevel"]["pois"].length; e++) {
+			this.overworld.pois.push(new POI(this.fileTemp["currentLevel"]["pois"][e]["pos"][0],
+				this.fileTemp["currentLevel"]["pois"][e]["pos"][1],
+				this.fileTemp["currentLevel"]["pois"][e]["type"]))
+		}
 
-                // POIs
-            this.overworld.pois.length = 0;
-            for (let e = 0; e < this.fileTemp["currentLevel"]["pois"].length; e++) {
-                this.overworld.pois.push(new POI(this.fileTemp["currentLevel"]["pois"][e]["pos"][0],
-                    this.fileTemp["currentLevel"]["pois"][e]["pos"][1],
-                    this.fileTemp["currentLevel"]["pois"][e]["type"]))
-            }
-
-            this.setMode("overworld");
-            renderMap();
-            updateInventoryDisplay();
-            updateStatDisplay();
-        } else {
-            console.log("Not yet implemented."); // TODO: add file loading for vault and escape when implemented
-        }
+		this.setMode("overworld");
+		renderMap();
+		updateInventoryDisplay();
+		updateStatDisplay();
     }
 
     setMode(newMode) {
@@ -176,8 +171,16 @@ class Game {
         document.getElementById("load-box").style.display="block";
 
         // Validate our local save file to decide what to do next
-        let file = JSON.parse(localStorage["saveGame"])
-        let validFile = validateFile(file);
+		let file = null;
+		let validFile = null;
+		
+		if ("saveGame" in localStorage) {
+			file = JSON.parse(localStorage["saveGame"])
+			validFile = validateFile(file);
+		} else {
+			validFile = false;
+		}
+        
 
         if (validFile) {
             this.fileTemp = file;
@@ -188,14 +191,12 @@ class Game {
             document.getElementById("load-you-name").innerHTML = file["currentPlayer"]["name"];
             document.getElementById("load-you-HP").innerHTML = "HP: " + file["currentPlayer"]["HP"] + "/" +
                 file["currentPlayer"]["maxHP"];
-            let tempLevel = file["game"]["mode"];
-            if (tempLevel[0] == "o") {
-                document.getElementById("load-you-level").innerHTML = "Level " + tempLevel.slice(1);
-            } else if (tempLevel[0] == "v") {
-                document.getElementById("load-you-level").innerHTML = "The Vault";
-            } else if (tempLevel[0] == "e") {
-                document.getElementById("load-you-level").innerHTML = "The Escape";
-            }
+            let tempLevel = file["game"]["level"];
+            if (tempLevel < 10) {
+                document.getElementById("load-you-level").innerHTML = "Level " + tempLevel;
+            } else {
+				document.getElementById("load-you-level").innerHTML = "The Vault";
+			}
             // console.log("valid file in local storage :)"); // This line of code was a reassuring presence for the nine hours it took to implement save file validation, I'm not yet ready to say goodbye to it
         } else {
             document.getElementById("load-status").innerHTML = "No save file has been detected:"
@@ -204,7 +205,6 @@ class Game {
             document.getElementById("load-file-valid").style.display = "none";
             // If there is no valid file, we will hide the "load-you" div and indicate that the player must either
             // upload a file or start a new game.
-
         }
     }
 
@@ -235,29 +235,23 @@ class Game {
             let reader = new FileReader();
             // It's time for some asynchronous antics here, with a lambda function to respond once it's finished
             reader.onload = function () {
-                try {
-                    let parsedData = JSON.parse(reader.result);
-                    if (validateFile(parsedData)) {
-                        game.fileTemp = parsedData;
-                        document.getElementById("load-status").innerHTML = "You have uploaded the following file:";
-                        document.getElementById("load-upload-prompt").innerHTML = "You can upload another local save file below:";
-                        document.getElementById("load-you-name").innerHTML = game.fileTemp["currentPlayer"]["name"];
-                        document.getElementById("load-you-HP").innerHTML = "HP: " + game.fileTemp["currentPlayer"]["HP"] + "/" +
-                            game.fileTemp["currentPlayer"]["maxHP"];
-                        let tempLevel = game.fileTemp["game"]["mode"];
-                        if (tempLevel[0] == "o") {
-                            document.getElementById("load-you-level").innerHTML = "Level " + tempLevel.slice(1);
-                        } else if (tempLevel[0] == "v") {
-                            document.getElementById("load-you-level").innerHTML = "The Vault";
-                        } else if (tempLevel[0] == "e") {
-                            document.getElementById("load-you-level").innerHTML = "The Escape";
-                        }
-                    } else {
-                        document.getElementById("load-upload-prompt").innerHTML = "Invalid file. You can try uploading another:";
-                    }
-                } catch {
-                    document.getElementById("load-upload-prompt").innerHTML = "Invalid file. You can try uploading another:";
-                }
+				let parsedData = JSON.parse(reader.result);
+				if (validateFile(parsedData)) {
+					game.fileTemp = parsedData;
+					document.getElementById("load-status").innerHTML = "You have uploaded the following file:";
+					document.getElementById("load-upload-prompt").innerHTML = "You can upload another local save file below:";
+					document.getElementById("load-you-name").innerHTML = game.fileTemp["currentPlayer"]["name"];
+					document.getElementById("load-you-HP").innerHTML = "HP: " + game.fileTemp["currentPlayer"]["HP"] + "/" +
+						game.fileTemp["currentPlayer"]["maxHP"];
+					let tempLevel = game.fileTemp["game"]["level"];
+					if (tempLevel < 10) {
+						document.getElementById("load-you-level").innerHTML = "Level " + tempLevel;
+					} else {
+						document.getElementById("load-you-level").innerHTML = "The Vault";
+					}
+				} else {
+					document.getElementById("load-upload-prompt").innerHTML = "Invalid file. You can try uploading another:";
+				}
             }
             reader.readAsText(fileListTemp[0]);
         }
@@ -303,7 +297,7 @@ class Game {
                 this.battle.end();
             }
             this.setMode("death");
-            console.log("game over");
+
 
         }
     }
@@ -332,6 +326,7 @@ class Game {
         this.player.xpos = this.overworld.spawnPoint[0];
         this.player.ypos = this.overworld.spawnPoint[1];
         renderMap();
+		updateStatDisplay();
         this.openSaveScreen();
     }
 
@@ -339,7 +334,7 @@ class Game {
         let tempSaveObj = {
             "game":{
                 "botNumber":this.botNumber,
-                "mode":"" // Populated below
+                "level":this.overworldLevel
             },
             "currentPlayer":{
                 "position":[this.player.xpos, game.player.ypos],
@@ -366,15 +361,6 @@ class Game {
             }
         };
         // There are a few parts of this that are not so trivial to populate:
-        // Mode
-        if (this.mode == "overworld") {
-            tempSaveObj.game.mode = "o" + this.overworldLevel;
-        } else if (this.mode == "vault") {
-            tempSaveObj.game.mode = "v0";
-            // TODO: implement when vault is implemented
-        } else if (this.mode == "flight") {
-            tempSaveObj.game.mode = "e0";
-        }
         // Inventory
         for (let itemSlot = 0; itemSlot < this.player.inventory.length; itemSlot++) {
             tempSaveObj.currentPlayer.inventory.push({"item":this.player.inventory[itemSlot].type, "count":this.player.inventory[itemSlot].count});
@@ -711,6 +697,7 @@ function updateStatDisplay() {
     document.getElementById("stats-favFood").innerHTML = "Favourite food: " + getNameFromItemIDGood(game.player.favFood);
     document.getElementById("stats-dream").innerHTML = "Dream: " + getDreamFromID(game.player.dream);
     document.getElementById("stats-roboNum").innerHTML = "Robot " + (game.botNumber + 1) + " of 5";
+	document.getElementById("stats-level").innerHTML = "Level " + game.overworldLevel + " of 10";
 }
 
 function updateInventoryDisplay() {

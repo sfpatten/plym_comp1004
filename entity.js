@@ -71,15 +71,9 @@ class Player extends Entity {
         this.arm = 5;
         this.maxHP = 12;
         this.HP = 12;
-        this.inventory = [ // Temporarily populated to stress test the UI
+        this.inventory = [ // Starting items - 2 unripe apples and a piece of burnt toast
             new Item("apple", 2),
-            new Item("toast", 1),
-            new Item("raisins", 1),
-            new Item("carrot", 1),
-            new Item("rice", 1),
-            new Item("soap", 1),
-            new Item("biscuit", 1),
-            new Item("teabag", 1),
+            new Item("toast", 1)
         ];
         this.dream = "friendship";
 		this.dreamProgress = 0; // A number to denote dream progress for dreams that take multiple steps
@@ -185,7 +179,8 @@ class Enemy extends Entity {
                 this.arm = 0;
                 this.reward = 250000;
                 this.flavourText = ["Power plug sold separately!", "Controllers sold separately!",
-                    "Graphics card sold separately!", "Unlock volume settings with GameBox Plus!"];
+                    "Graphics card sold separately!", "Unlock volume settings with GameBox Plus!",
+					"GameBox recommends that you save yourself, and quit."];
                 this.flavourTextLow = "GameBox is coming to an afterlife near you.";
                 break;
             case "Optical Disk":

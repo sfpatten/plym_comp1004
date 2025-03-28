@@ -23,14 +23,14 @@ function validateFile(gameFileObject) {
 
     // Step 2; Check all subkeys exist
     // game
-    if (!("botNumber" in gameFileObject["game"] && "mode" in gameFileObject["game"])) {
+    if (!("botNumber" in gameFileObject["game"] && "level" in gameFileObject["game"])) {
         console.log("Save validation error: missing game state field.")
         return false;
     }
 
     // currentPlayer
     fields = ["position", "inventory", "credits", "name", "HP", "maxHP", "str", "arm", "dex", "int", "cha", "dream",
-        "favFood"]
+        "dreamProgress", "favFood"]
     for (let key = 0; key < fields.length; key++) {
         if (!(fields[key] in gameFileObject["currentPlayer"])) {
             console.log("Save validation error: Key currentPlayer." + fields[key] + " not found.")
@@ -63,7 +63,7 @@ function validateFile(gameFileObject) {
 
     let typesTemp = [
         ["game", "botNumber", "number"],
-        ["game", "mode", "string"],
+        ["game", "level", "number"],
         ["currentPlayer", "position", "object"],
         ["currentPlayer", "inventory", "object"],
         ["currentPlayer", "credits", "number"],
@@ -76,6 +76,7 @@ function validateFile(gameFileObject) {
         ["currentPlayer", "int", "number"],
         ["currentPlayer", "cha", "number"],
         ["currentPlayer", "dream", "string"],
+		["currentPlayer", "dreamProgress", "number"],
         ["currentPlayer", "favFood", "string"],
         ["currentLevel", "grid", "object"],
         ["currentLevel", "spawnPoint", "object"],
@@ -106,37 +107,15 @@ function validateFile(gameFileObject) {
         return false;
     }
 
-        // game.mode must be in the following format:
-        // "o1", "o2", ... "o10" for overworld levels 1-10, "v1", ... "v3" for vaults and "e0" for escape
-    if (gameFileObject["game"]["mode"][0] == "o") {
-        let n = Number(gameFileObject["game"]["mode"].slice(1));
-        // Check it is an integer - this also catches out NaN
-        if (!Number.isInteger(n)) {
-            console.log("Save validation error: Invalid overworld level number.");
-            return false;
-        }
-        if (n < 1 || n > 10) {
-            console.log("Save validation error: Invalid overworld level number.");
-            return false;
-        }
-    } else if (gameFileObject["game"]["mode"][0] == "v") {
-        let n = Number(gameFileObject["game"]["mode"].slice(1));
-        // Check it is an integer - this also catches out NaN
-        if (!Number.isInteger(n)) {
-            console.log("Save validation error: Invalid vault level number.");
-            return false;
-        }
-        if (n < 1 || n > 3) {
-            console.log("Save validation error: Invalid vault level number.");
-            return false;
-        }
-    } else if (gameFileObject["game"]["mode"][0] != "e") { // We don't really care what "e" has after it
-        return false;
+        // game.level must be between 1 and 10
+    if (gameFileObject["game"]["level"] < 1 || gameFileObject["game"]["level"] > 10) {
+        console.log("Save validation error: Invalid overworld level number.");
+		return false;
     }
 
         // currentPlayer.position is an array of length 2 and is an integer within range. Arrays and {} objects are both
         // "object" type according to typeof(), but .length returns undefined for {} objects, so while it is
-        //  distressing, it works perfectly fine.
+        // distressing, it works perfectly fine.
             // Correct length (and an array)
     if (gameFileObject["currentPlayer"]["position"].length != 2) {
         console.log("Save validation error: Invalid player position array");
@@ -267,6 +246,7 @@ function validateFile(gameFileObject) {
             if (gameFileObject["currentLevel"]["grid"][x][y] != 0 &&
                 gameFileObject["currentLevel"]["grid"][x][y] != 1) {
                 console.log("Save validation error: Invalid tile at X: " + x + ", Y: " + y);
+				return false;
             }
         }
     }

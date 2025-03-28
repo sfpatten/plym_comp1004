@@ -24,7 +24,6 @@ class Flight {
     distributeProjectiles() {
 		this.projectiles.length = 0;
         if (this.exit) { // Harder version for the escape
-			console.log("exited");
             for (let i = 10; i < 120; i++) {
                 this.projectiles.push(new flyProjectile(Math.random() * 90, i * 10));
                 this.projectiles.push(new flyProjectile(Math.random() * 90, i * 10));
